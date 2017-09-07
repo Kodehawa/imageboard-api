@@ -55,20 +55,13 @@ public class ImageboardAPI<T> {
         this.clazz = clazz1;
     }
 
+    // ----- Async methods -----
     public void get(int limit, Consumer<List<T>> handler) {
         get(limit, null, handler);
     }
 
     public void get(Consumer<List<T>> handler) {
         get(60, null, handler);
-    }
-
-    public void getBlocking(int limit, Consumer<List<T>> handler) {
-        getBlocking(limit, null, handler);
-    }
-
-    public void getBlocking(Consumer<List<T>> handler) {
-        getBlocking(60, null, handler);
     }
 
     public void onSearch(int limit, String search, Consumer<List<T>> handler) {
@@ -79,12 +72,21 @@ public class ImageboardAPI<T> {
         get(60, search, handler);
     }
 
-    public void onSearchBlocking(int limit, String search, Consumer<List<T>> handler) {
-        getBlocking(limit, search, handler);
+    // ----- Blocking methods -----
+    public List<T> getBlocking(int limit) {
+        return getBlocking(limit, null);
     }
 
-    public void onSearchBlocking(String search, Consumer<List<T>> handler) {
-        getBlocking(60, search, handler);
+    public List<T> getBlocking() {
+        return getBlocking(60, null);
+    }
+
+    public List<T> onSearchBlocking(int limit, String search) {
+        return getBlocking(limit, search);
+    }
+
+    public List<T> onSearchBlocking(String search) {
+        return getBlocking(60, search);
     }
 
     private List<T> get(int limit, String search) throws Exception {
@@ -117,12 +119,12 @@ public class ImageboardAPI<T> {
         });
     }
 
-    private void getBlocking(int limit, String search, Consumer<List<T>> result) {
+    private List<T> getBlocking(int limit, String search) {
         try {
-            List<T> wallpapers = get(limit, search);
-            result.accept(wallpapers);
+            return get(limit, search);
         } catch(Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
