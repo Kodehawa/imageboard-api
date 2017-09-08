@@ -16,20 +16,21 @@
 
 package net.kodehawa.lib.imageboards.entities;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-@JacksonXmlRootElement(localName = "posts")
 public class Rule34Image {
 
-    @JacksonXmlProperty(isAttribute = true)
-    public String file_url;
+    public String directory;
+    public String image;
     public Integer height;
     public String tags;
     public Integer width;
 
+    //Backwards-compatible.
     public String getFile_url() {
-        return file_url;
+        return "https://img.rule34.xxx/images/" + directory + "/" + image;
+    }
+
+    public String getImageUrl(){
+        return getFile_url();
     }
 
     public Integer getHeight() {

@@ -39,12 +39,11 @@ public class ImageboardTest {
 
         rule34.get(2, (images) -> {
             for(Rule34Image image : images) {
-                if(image.file_url == null) {
-                    //TODO... uhh
+                if(image.getImageUrl() == null) {
                     System.out.println("Hmm?, R34");
                     continue;
                 }
-                System.out.println(image.file_url + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
+                System.out.println(image.getImageUrl() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
             }
         });
 
@@ -103,13 +102,18 @@ public class ImageboardTest {
     @Test
     public void tagsReturnRelevantResults() {
         String tag = "animal_ears";
+        String[] knownAliases = {"animal_ear", "animal_humanoid"};
 
-        //TODO: fix
-        assertTrue(e621.onSearchBlocking(1, tag).get(0).getTags().contains(tag));
+        assertTrue(e621.onSearchBlocking(1, tag).get(0).getTags().contains(tag) ||
+                e621.onSearchBlocking(1, tag).get(0).getTags().contains(knownAliases[1]));
+
         assertTrue(konachan.onSearchBlocking(1, tag).get(0).getTags().contains(tag));
-        //TODO: fix
-        assertTrue(rule34.onSearchBlocking(1, tag).get(0).getTags().contains(tag));
+
+        assertTrue(rule34.onSearchBlocking(1, tag).get(0).getTags().contains(tag) ||
+                rule34.onSearchBlocking(1, tag).get(0).getTags().contains(knownAliases[0]));
+
         assertTrue(yandere.onSearchBlocking(1, tag).get(0).getTags().contains(tag));
+
         assertTrue(danbooru.onSearchBlocking(1, tag).get(0).getTag_string().contains(tag));
     }
 }

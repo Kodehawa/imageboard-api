@@ -25,7 +25,7 @@ import net.kodehawa.lib.imageboards.entities.*;
 public class Imageboards {
     public static final ImageboardAPI<FurryImage> E621 = new ImageboardAPI<>(ImageboardAPI.Boards.E621, ImageboardAPI.Type.JSON, FurryImage[].class);
     public static final ImageboardAPI<KonachanImage> KONACHAN = new ImageboardAPI<>(ImageboardAPI.Boards.KONACHAN, ImageboardAPI.Type.JSON, KonachanImage[].class);
-    public static final ImageboardAPI<Rule34Image> RULE34 = new ImageboardAPI<>(ImageboardAPI.Boards.R34, ImageboardAPI.Type.XML, Rule34Image[].class);
+    public static final ImageboardAPI<Rule34Image> RULE34 = new ImageboardAPI<>(ImageboardAPI.Boards.R34, ImageboardAPI.Type.JSON, Rule34Image[].class);
     public static final ImageboardAPI<YandereImage> YANDERE = new ImageboardAPI<>(ImageboardAPI.Boards.YANDERE, ImageboardAPI.Type.JSON, YandereImage[].class);
     public static final ImageboardAPI<DanbooruImage> DANBOORU = new ImageboardAPI<>(ImageboardAPI.Boards.DANBOORU, ImageboardAPI.Type.JSON, DanbooruImage[].class);
 }
