@@ -72,6 +72,7 @@ public void getImages() {
     List<KonachanImage> imagesLimited = konachan.getBlocking(2, "animal_ears");
     
     //Handling here..
+}
 ```
 
 Copyright 2017 Kodehawa
