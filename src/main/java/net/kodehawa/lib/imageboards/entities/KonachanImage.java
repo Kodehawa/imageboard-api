@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class KonachanWallpaper {
+public class KonachanImage {
 
     private String author;
     private Integer created_at;

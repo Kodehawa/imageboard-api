@@ -146,7 +146,8 @@ public class ImageboardAPI<T> {
         E621("https://e621.net/post/index.json", "?"),
         //Normal APIs
         KONACHAN("http://konachan.com/post.json", "?"),
-        YANDERE("https://yande.re/post.json", "?");
+        YANDERE("https://yande.re/post.json", "?"),
+        DANBOORU("https://danbooru.donmai.us/posts.json", "?");
 
         private String separator;
         private String url;
