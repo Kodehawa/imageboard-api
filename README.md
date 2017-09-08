@@ -9,8 +9,7 @@ Note: **There is a `Imageboards` class located under utils, that one contains st
 
 ### Random images:
 
-```
-java
+```java
 //This is a simple example of grabbing a random image
 //Please refer to the examples directory for more examples.
 
@@ -44,8 +43,7 @@ public void getImages() {
 
 ### Tag search:
 
-```
-java
+```java
 //This is a simple example of grabbing a image using tag search
 //Please refer to the examples directory for more examples.
 //You can find more imageboards on the Imageboards class.
