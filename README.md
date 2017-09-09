@@ -19,7 +19,7 @@ public void getImages() {
     //Async
     konachan.get((images) -> {
         for(KonachanImage image : images) {
-            System.out.println(image.file_url + " " + image.getTags() + " " + 
+            System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + 
                 image.getHeight() + " " + image.getWidth());
         }
     });
@@ -28,7 +28,7 @@ public void getImages() {
     //limit = how many images at once
     konachan.get(2, (images) -> {
         for(KonachanImage image : images) {
-            System.out.println(image.file_url + " " + image.getTags() + " " + 
+            System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + 
                 image.getHeight() + " " + image.getWidth());
         }
     });
@@ -53,7 +53,7 @@ public void getImages() {
     //Async
     konachan.onSearch("animal_ears", (images) -> {
         for(KonachanImage image : images) {
-            System.out.println(image.file_url + " " + image.getTags() + " " + 
+            System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + 
                 image.getHeight() + " " + image.getWidth());
         }
     });
@@ -62,7 +62,7 @@ public void getImages() {
     //limit = how many images at once
     konachan.get(2, "animal_ears", (images) -> {
         for(KonachanImage image : images) {
-            System.out.println(image.file_url + " " + image.getTags() + " " + 
+            System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + 
                 image.getHeight() + " " + image.getWidth());
         }
     });
