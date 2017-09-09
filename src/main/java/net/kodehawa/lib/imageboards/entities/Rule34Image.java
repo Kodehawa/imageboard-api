@@ -20,9 +20,9 @@ public class Rule34Image {
 
     public String directory;
     public String image;
-    public Integer height;
+    public int height;
     public String tags;
-    public Integer width;
+    public int width;
 
     //Backwards-compatible.
     public String getFile_url() {
@@ -33,7 +33,7 @@ public class Rule34Image {
         return getFile_url();
     }
 
-    public Integer getHeight() {
+    public int getHeight() {
         return height;
     }
 
@@ -41,7 +41,7 @@ public class Rule34Image {
         return tags;
     }
 
-    public Integer getWidth() {
+    public int getWidth() {
         return width;
     }
 }

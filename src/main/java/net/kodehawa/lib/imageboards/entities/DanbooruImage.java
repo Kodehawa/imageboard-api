@@ -8,24 +8,24 @@ import java.util.List;
 
 @Data
 public class DanbooruImage {
-    public int uploader_id;
-    public int score;
-    public String source;
-    public String rating;
-    public int image_width;
-    public int image_height;
-    public String tag_string;
-    public String file_ext;
-    public int file_size;
-    public int up_score;
-    public int down_score;
-    public int tag_count;
-    public String uploader_name;
-    public String tag_string_artist;
-    public String tag_string_character;
-    public String file_url;
-    public String large_file_url;
-    public String preview_file_url;
+    private int uploader_id;
+    private int score;
+    private String source;
+    private String rating;
+    private int image_width;
+    private int image_height;
+    private String tag_string;
+    private String file_ext;
+    private int file_size;
+    private int up_score;
+    private int down_score;
+    private int tag_count;
+    private String uploader_name;
+    private String tag_string_artist;
+    private String tag_string_character;
+    private String file_url;
+    private String large_file_url;
+    private String preview_file_url;
 
     /**
      * Danbooru normally returns the URL as <p>"file_url": "/data/__furude_rika_higurashi_no_naku_koro_ni_drawn_by_kamaboko_red__fc6fb27e9c6ea2a77c849e5483eafc40.png"</p>

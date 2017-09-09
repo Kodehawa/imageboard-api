@@ -23,38 +23,38 @@ import java.util.List;
 public class KonachanImage {
 
     private String author;
-    private Integer created_at;
+    private int created_at;
     private long file_size;
     private String file_url;
-    private Integer height;
-    private Integer id;
+    private int height;
+    private int id;
     private long jpeg_file_size;
-    private Integer jpeg_height;
+    private int jpeg_height;
     private String jpeg_url;
-    private Integer jpeg_width;
-    private Integer preview_height;
+    private int jpeg_width;
+    private int preview_height;
     private String preview_url;
-    private Integer preview_width;
+    private int preview_width;
     private String rating;
     private long sample_file_size;
-    private Integer sample_height;
+    private int sample_height;
     private String sample_url;
-    private Integer sample_width;
-    private Integer score;
+    private int sample_width;
+    private int score;
     private String source;
     private String status;
     private String tags;
-    private Integer width;
+    private int width;
 
     public String getAuthor() {
         return author;
     }
 
-    public Integer getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -74,7 +74,7 @@ public class KonachanImage {
         return tags == null ? new ArrayList<>(Arrays.asList("empty", "")) : new ArrayList<>(Arrays.asList(tags.split(" ")));
     }
 
-    public Integer getWidth() {
+    public int getWidth() {
         return width;
     }
 }

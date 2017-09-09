@@ -8,7 +8,7 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.13.0'
     id 'com.github.johnrengelman.shadow' version '2.0.1'
 }
-def versionObj = new Version(major: 1, minor: 0, revision: 3)
+def versionObj = new Version(major: 1, minor: 1, revision: 0)
 
 group 'net.kodehawa'
 def artifactid = 'imageboard-api'

@@ -17,11 +17,11 @@
 package net.kodehawa.lib.imageboards.entities;
 
 public class FurryImage {
-    public String description = null;
-    public String file_url = null;
-    public Integer height = null;
-    public String tags = null;
-    public Integer width = null;
+    private String description;
+    private String file_url;
+    private int height;
+    private String tags;
+    private int width;
 
     //Image description
     public String getDescription() {
@@ -32,7 +32,7 @@ public class FurryImage {
         return file_url;
     }
 
-    public Integer getHeight() {
+    public int getHeight() {
         return height;
     }
 
@@ -40,7 +40,7 @@ public class FurryImage {
         return tags;
     }
 
-    public Integer getWidth() {
+    public int getWidth() {
         return width;
     }
 }

@@ -67,6 +67,7 @@ public class ImageboardTest {
             }
         });
 
+
         System.out.println(e621.onSearchBlocking(1, "animal_ears").get(0).getTags());
     }
 
