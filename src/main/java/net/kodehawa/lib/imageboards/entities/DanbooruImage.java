@@ -33,7 +33,7 @@ public class DanbooruImage {
      * @return The *reachable* URL to get this image. PNG format, or the extension defined in file_ext.
      */
     public String getParsedFileUrl() {
-        return "https://safebooru.donmai.us/" + file_url;
+        return "https://danbooru.donmai.us" + file_url;
     }
 
     /**
@@ -42,7 +42,7 @@ public class DanbooruImage {
      * @return The *reachable* URL to get this image. JPG format.
      */
     public String getParsedLargeFileUrl() {
-        return "https://safebooru.donmai.us/" + large_file_url;
+        return "https://danbooru.donmai.us" + large_file_url;
     }
 
     /**

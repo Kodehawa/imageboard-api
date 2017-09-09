@@ -28,4 +28,5 @@ public class Imageboards {
     public static final ImageboardAPI<Rule34Image> RULE34 = new ImageboardAPI<>(ImageboardAPI.Boards.R34, ImageboardAPI.Type.JSON, Rule34Image[].class);
     public static final ImageboardAPI<YandereImage> YANDERE = new ImageboardAPI<>(ImageboardAPI.Boards.YANDERE, ImageboardAPI.Type.JSON, YandereImage[].class);
     public static final ImageboardAPI<DanbooruImage> DANBOORU = new ImageboardAPI<>(ImageboardAPI.Boards.DANBOORU, ImageboardAPI.Type.JSON, DanbooruImage[].class);
+    public static final ImageboardAPI<SafebooruImage> SAFEBOORU = new ImageboardAPI<>(ImageboardAPI.Boards.SAFEBOORU, ImageboardAPI.Type.JSON, SafebooruImage[].class);
 }

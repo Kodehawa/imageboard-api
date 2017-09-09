@@ -107,8 +107,8 @@ public class ImageboardAPI<T> {
 
     private List<T> get(int page, int limit, String search) throws Exception {
         HashMap<String, Object> queryParams = new HashMap<>();
-        if(page != 0) queryParams.put("page", page);
-        queryParams.put(apiHome.pageMarker, limit);
+        if(page != 0) queryParams.put(apiHome.pageMarker, page);
+        queryParams.put("limit", limit);
         T[] wallpapers;
 
         if(search != null) queryParams.put("tags", search.toLowerCase().trim());
@@ -155,7 +155,7 @@ public class ImageboardAPI<T> {
 
     /**
      * The supported Imageboard as in this release.
-     * Currently supported: Rule34 (R34), e631 (E621), Konachan (KONACHAN) and Yande.re (YANDERE).
+     * Currently supported: Rule34 (R34), e631 (E621), Konachan (KONACHAN) and Yande.re (YANDERE), Danbooru (DANBOORU) and Safebooru (SAFEBOORU).
      */
     public enum Boards {
         //Lewd APIs
@@ -164,7 +164,8 @@ public class ImageboardAPI<T> {
         //Normal APIs
         KONACHAN("http://konachan.com/post.json", "?", "page"),
         YANDERE("https://yande.re/post.json", "?", "page"),
-        DANBOORU("https://danbooru.donmai.us/posts.json", "?", "page");
+        DANBOORU("https://danbooru.donmai.us/posts.json", "?", "page"),
+        SAFEBOORU("https://safebooru.org/index.php?page=dapi&s=post&q=index&pid=1&limit=5&json=1", "&", "pid");
 
         private String separator;
         private String url;

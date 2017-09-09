@@ -18,11 +18,11 @@ package net.kodehawa.lib.imageboards.entities;
 
 public class Rule34Image {
 
-    public String directory;
-    public String image;
-    public int height;
-    public String tags;
-    public int width;
+    private String directory;
+    private String image;
+    private int height;
+    private String tags;
+    private int width;
 
     //Backwards-compatible.
     public String getFile_url() {

@@ -58,6 +58,10 @@ public class KonachanImage {
         return id;
     }
 
+    public String getParsedUrl() {
+        return "https:" + jpeg_url;
+    }
+
     public String getJpeg_url() {
         return jpeg_url;
     }

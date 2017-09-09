@@ -14,16 +14,17 @@ public class ImageboardTest {
     private static final ImageboardAPI<Rule34Image> rule34 = Imageboards.RULE34;
     private static final ImageboardAPI<YandereImage> yandere = Imageboards.YANDERE;
     private static final ImageboardAPI<DanbooruImage> danbooru = Imageboards.DANBOORU;
+    private static final ImageboardAPI<SafebooruImage> safebooru = Imageboards.SAFEBOORU;
 
     //Run this first to check if everything returns as expected
     public static void main(String[] args) {
         e621.get(2, (images) -> {
             for(FurryImage image : images) {
-                if(image.file_url == null) {
+                if(image.getFile_url() == null) {
                     System.out.println("Hmm?, e621");
                     return;
                 }
-                System.out.println(image.file_url + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
+                System.out.println(image.getFile_url() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
             }
         });
 
@@ -33,7 +34,7 @@ public class ImageboardTest {
                     System.out.println("Hmm?, konachan");
                     continue;
                 }
-                System.out.println(image.getJpeg_url() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
+                System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
             }
         });
 
@@ -59,16 +60,23 @@ public class ImageboardTest {
 
         danbooru.get(2, (images) -> {
             for(DanbooruImage image : images) {
-                if(image.file_url == null) {
+                if(image.getFile_url() == null) {
                     System.out.println("Hmm?, danbooru");
                     continue;
                 }
-                System.out.println(image.file_url + " " + image.tag_string + " " + image.image_height + " " + image.image_width);
+                System.out.println(image.getParsedFileUrl() + " " + image.getTag_string() + " " + image.getImage_height() + " " + image.getImage_width());
             }
         });
 
-
-        System.out.println(e621.onSearchBlocking(1, "animal_ears").get(0).getTags());
+        safebooru.get(2, (images) -> {
+            for(SafebooruImage image : images) {
+                if (image.getFile_url() == null) {
+                    System.out.println("Hmm?, safebooru");
+                    continue;
+                }
+                System.out.println(image.getFile_url() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
+            }
+        });
     }
 
     @Test
