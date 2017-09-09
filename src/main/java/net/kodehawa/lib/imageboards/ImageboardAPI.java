@@ -108,7 +108,7 @@ public class ImageboardAPI<T> {
     private List<T> get(int page, int limit, String search) throws Exception {
         HashMap<String, Object> queryParams = new HashMap<>();
         if(page != 0) queryParams.put("page", page);
-        queryParams.put("limit", limit);
+        queryParams.put(apiHome.pageMarker, limit);
         T[] wallpapers;
 
         if(search != null) queryParams.put("tags", search.toLowerCase().trim());
@@ -159,19 +159,21 @@ public class ImageboardAPI<T> {
      */
     public enum Boards {
         //Lewd APIs
-        R34("https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1", "&"),
-        E621("https://e621.net/post/index.json", "?"),
+        R34("https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1", "&", "pid"),
+        E621("https://e621.net/post/index.json", "?", "page"),
         //Normal APIs
-        KONACHAN("http://konachan.com/post.json", "?"),
-        YANDERE("https://yande.re/post.json", "?"),
-        DANBOORU("https://danbooru.donmai.us/posts.json", "?");
+        KONACHAN("http://konachan.com/post.json", "?", "page"),
+        YANDERE("https://yande.re/post.json", "?", "page"),
+        DANBOORU("https://danbooru.donmai.us/posts.json", "?", "page");
 
         private String separator;
         private String url;
+        private String pageMarker;
 
-        Boards(String url, String separator) {
+        Boards(String url, String separator, String pageMarker) {
             this.url = url;
             this.separator = separator;
+            this.pageMarker = pageMarker;
         }
 
         @Override
