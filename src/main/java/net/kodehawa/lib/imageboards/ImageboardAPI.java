@@ -56,41 +56,58 @@ public class ImageboardAPI<T> {
     }
 
     // ----- Async methods -----
+    public void get(int page, int limit, Consumer<List<T>> handler) {
+        get(page, limit, null, handler);
+    }
+
     public void get(int limit, Consumer<List<T>> handler) {
-        get(limit, null, handler);
+        get(0, limit, null, handler);
     }
 
     public void get(Consumer<List<T>> handler) {
-        get(60, null, handler);
+        get(0, 60, null, handler);
+    }
+
+    public void onSearch(int page, int limit, String search, Consumer<List<T>> handler) {
+        get(page, limit, search, handler);
     }
 
     public void onSearch(int limit, String search, Consumer<List<T>> handler) {
-        get(limit, search, handler);
+        get(0, limit, search, handler);
     }
 
     public void onSearch(String search, Consumer<List<T>> handler) {
-        get(60, search, handler);
+        get(0, 60, search, handler);
     }
 
     // ----- Blocking methods -----
+    public List<T> getBlocking(int page, int limit) {
+        return getBlocking(page, limit, null);
+    }
+
     public List<T> getBlocking(int limit) {
-        return getBlocking(limit, null);
+        return getBlocking(0, limit, null);
     }
 
     public List<T> getBlocking() {
-        return getBlocking(60, null);
+        return getBlocking(0, 60, null);
+    }
+
+    public List<T> onSearchBlocking(int page, int limit, String search) {
+        return getBlocking(page, limit, search);
     }
 
     public List<T> onSearchBlocking(int limit, String search) {
-        return getBlocking(limit, search);
+        return getBlocking(0, limit, search);
     }
 
     public List<T> onSearchBlocking(String search) {
-        return getBlocking(60, search);
+        return getBlocking(0, 60, search);
     }
 
-    private List<T> get(int limit, String search) throws Exception {
+    private List<T> get(int page, int limit, String search) throws Exception {
         HashMap<String, Object> queryParams = new HashMap<>();
+        if(page != 0) queryParams.put("page", page);
         queryParams.put("limit", limit);
         T[] wallpapers;
 
@@ -108,10 +125,10 @@ public class ImageboardAPI<T> {
         return Arrays.asList(wallpapers);
     }
 
-    private void get(int limit, String search, Consumer<List<T>> result) {
+    private void get(int page, int limit, String search, Consumer<List<T>> result) {
         executorService.execute(() -> {
             try {
-                List<T> wallpapers = get(limit, search);
+                List<T> wallpapers = get(page, limit, search);
                 result.accept(wallpapers);
             } catch(Exception e) {
                 e.printStackTrace();
@@ -119,9 +136,9 @@ public class ImageboardAPI<T> {
         });
     }
 
-    private List<T> getBlocking(int limit, String search) {
+    private List<T> getBlocking(int page, int limit, String search) {
         try {
-            return get(limit, search);
+            return get(page, limit, search);
         } catch(Exception e) {
             e.printStackTrace();
             return null;
