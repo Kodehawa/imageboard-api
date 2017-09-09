@@ -75,6 +75,31 @@ public void getImages() {
 }
 ```
 
+#### Adding it to your dependencies:
+
+In gradle:
+```groovy
+repositories {
+    maven {
+        url  "https://dl.bintray.com/kodehawa/maven" 
+    }
+}
+
+dependencies { 
+    compile 'net.kodehawa:imageboard-api:1.1'
+}
+```
+
+In maven:
+Add: https://hastebin.com/uqaquqecur.xml, and:
+```xml
+<dependency>
+  <groupId>net.kodehawa</groupId>
+  <artifactId>imageboard-api</artifactId>
+  <version>1.1</version>
+  <type>pom</type>
+</dependency>
+```
 Copyright 2017 Kodehawa
 
 Licensed under the Apache License, Version 2.0 (the "License");
