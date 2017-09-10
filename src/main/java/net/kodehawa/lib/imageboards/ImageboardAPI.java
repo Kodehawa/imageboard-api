@@ -102,11 +102,10 @@ public class ImageboardAPI<T> {
             if(response == null) return null;
 
             wallpapers = type.equals(Type.JSON) ? gson.fromJson(response, clazz) : XML_MAPPER.readValue(response, clazz);
+            return Arrays.asList(wallpapers);
         } catch(Exception e) {
             return null;
         }
-
-        return Arrays.asList(wallpapers);
     }
 
     private void get(int page, int limit, String search, Consumer<List<T>> result) {
