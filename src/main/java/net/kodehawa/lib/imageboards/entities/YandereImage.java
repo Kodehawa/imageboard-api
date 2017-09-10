@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class YandereImage {
+public class YandereImage implements BoardImage {
 
     private int actual_preview_width;
     private String author;
@@ -87,10 +87,6 @@ public class YandereImage {
         return file_url;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
     public int getId() {
         return id;
     }
@@ -123,10 +119,6 @@ public class YandereImage {
         return preview_width;
     }
 
-    public String getRating() {
-        return rating;
-    }
-
     public int getSample_file_size() {
         return sample_file_size;
     }
@@ -151,11 +143,28 @@ public class YandereImage {
         return status;
     }
 
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public String getRating() {
+        return rating;
+    }
+
+    @Override
     public List<String> getTags() {
         return new ArrayList<>(Arrays.asList(tags.split(" ")));
     }
 
-    public int getWidth() {
-        return width;
+    @Override
+    public String getImageUrl() {
+        return getFile_url();
     }
 }
