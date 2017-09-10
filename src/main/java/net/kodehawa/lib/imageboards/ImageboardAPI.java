@@ -157,7 +157,7 @@ public class ImageboardAPI<T extends BoardImage> {
         KONACHAN("http://konachan.com/post.json", "?", "page"),
         YANDERE("https://yande.re/post.json", "?", "page"),
         DANBOORU("https://danbooru.donmai.us/posts.json", "?", "page"),
-        SAFEBOORU("https://safebooru.org/index.php?page=dapi&s=post&q=index&pid=1&limit=5&json=1", "&", "pid");
+        SAFEBOORU("https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1", "&", "pid");
 
         private String separator;
         private String url;
