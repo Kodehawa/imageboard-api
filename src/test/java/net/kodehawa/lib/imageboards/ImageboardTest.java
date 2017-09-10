@@ -20,21 +20,21 @@ public class ImageboardTest {
     public static void main(String[] args) {
         e621.get(2, (images) -> {
             for(FurryImage image : images) {
-                if(image.getFile_url() == null) {
+                if(image.getImageUrl() == null) {
                     System.out.println("Hmm?, e621");
                     return;
                 }
-                System.out.println(image.getFile_url() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
+                System.out.println(image.getImageUrl() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
             }
         });
 
         konachan.get(2, (images) -> {
             for(KonachanImage image : images) {
-                if(image.getJpeg_url() == null) {
+                if(image.getImageUrl() == null) {
                     System.out.println("Hmm?, konachan");
                     continue;
                 }
-                System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
+                System.out.println(image.getImageUrl() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
             }
         });
 
@@ -50,31 +50,31 @@ public class ImageboardTest {
 
         yandere.get(2, (images) -> {
             for(YandereImage image : images) {
-                if(image.getFile_url() == null) {
+                if(image.getImageUrl() == null) {
                     System.out.println("Hmm?");
                     continue;
                 }
-                System.out.println(image.getFile_url() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
+                System.out.println(image.getImageUrl() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
             }
         });
 
         danbooru.get(2, (images) -> {
             for(DanbooruImage image : images) {
-                if(image.getFile_url() == null) {
+                if(image.getImageUrl() == null) {
                     System.out.println("Hmm?, danbooru");
                     continue;
                 }
-                System.out.println(image.getParsedFileUrl() + " " + image.getTag_string() + " " + image.getImage_height() + " " + image.getImage_width());
+                System.out.println(image.getImageUrl() + " " + image.getTag_string() + " " + image.getImage_height() + " " + image.getImage_width());
             }
         });
 
         safebooru.get(2, (images) -> {
             for(SafebooruImage image : images) {
-                if (image.getFile_url() == null) {
+                if (image.getImageUrl() == null) {
                     System.out.println("Hmm?, safebooru");
                     continue;
                 }
-                System.out.println(image.getFile_url() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
+                System.out.println(image.getImageUrl() + " " + image.getTags() + " " + image.getHeight() + " " + image.getWidth());
             }
         });
     }
