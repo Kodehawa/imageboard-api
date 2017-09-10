@@ -82,28 +82,33 @@ public class ImageboardTest {
     @Test
     public void returnsNonNullValues() {
         e621.get(1, (images) -> {
-            assertNotEquals(images.get(0).getFile_url(), null);
+            assertNotEquals(images.get(0).getImageUrl(), null);
             assertNotEquals(images.get(0).getTags(), null);
         });
 
         konachan.get(1, (images) -> {
-            assertNotEquals(images.get(0).getJpeg_url(), null);
+            assertNotEquals(images.get(0).getImageUrl(), null);
             assertNotEquals(images.get(0).getTags(), null);
         });
 
         rule34.get(1, (images) -> {
-            assertNotEquals(images.get(0).getFile_url(), null);
+            assertNotEquals(images.get(0).getImageUrl(), null);
             assertNotEquals(images.get(0).getTags(), null);
         });
 
         yandere.get(1, (images) -> {
-            assertNotEquals(images.get(0).getFile_url(), null);
+            assertNotEquals(images.get(0).getImageUrl(), null);
             assertNotEquals(images.get(0).getTags(), null);
         });
 
         danbooru.get(1, (images) -> {
-            assertNotEquals(images.get(0).getFile_url(), null);
-            assertNotEquals(images.get(0).getTag_string(), null);
+            assertNotEquals(images.get(0).getImageUrl(), null);
+            assertNotEquals(images.get(0).getTags(), null);
+        });
+
+        safebooru.get(1, (images) -> {
+            assertNotEquals(images.get(0).getImageUrl(), null);
+            assertNotEquals(images.get(0).getTags(), null);
         });
 
     }
@@ -123,6 +128,30 @@ public class ImageboardTest {
 
         assertTrue(yandere.onSearchBlocking(1, tag).get(0).getTags().contains(tag));
 
-        assertTrue(danbooru.onSearchBlocking(1, tag).get(0).getTag_string().contains(tag));
+        assertTrue(danbooru.onSearchBlocking(1, tag).get(0).getTags().contains(tag));
+
+        assertTrue(safebooru.onSearchBlocking(1, tag).get(0).getTags().contains(tag));
     }
+
+    @Test
+    public void returnsProperClasses() {
+        assertTrue(e621.getBoardType().equals(ImageboardAPI.Boards.E621));
+        assertTrue(e621.getImageType().equals(FurryImage.class));
+
+        assertTrue(konachan.getBoardType().equals(ImageboardAPI.Boards.KONACHAN));
+        assertTrue(konachan.getImageType().equals(KonachanImage.class));
+
+        assertTrue(rule34.getBoardType().equals(ImageboardAPI.Boards.R34));
+        assertTrue(rule34.getImageType().equals(Rule34Image.class));
+
+        assertTrue(yandere.getBoardType().equals(ImageboardAPI.Boards.YANDERE));
+        assertTrue(yandere.getImageType().equals(YandereImage.class));
+
+        assertTrue(danbooru.getBoardType().equals(ImageboardAPI.Boards.DANBOORU));
+        assertTrue(danbooru.getImageType().equals(DanbooruImage.class));
+
+        assertTrue(safebooru.getBoardType().equals(ImageboardAPI.Boards.SAFEBOORU));
+        assertTrue(safebooru.getImageType().equals(SafebooruImage.class));
+    }
+
 }

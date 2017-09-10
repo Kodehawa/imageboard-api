@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class KonachanImage {
-
+public class KonachanImage implements BoardImage {
     private String author;
     private int created_at;
     private long file_size;
@@ -34,10 +33,6 @@ public class KonachanImage {
         return author;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
     public int getId() {
         return id;
     }
@@ -50,19 +45,33 @@ public class KonachanImage {
         return jpeg_url;
     }
 
-    public String getRating() {
-        return rating;
-    }
-
     public String getStatus() {
         return status;
     }
 
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public String getRating() {
+        return rating;
+    }
+
+
+    @Override
     public List<String> getTags() {
         return tags == null ? new ArrayList<>(Arrays.asList("empty", "")) : new ArrayList<>(Arrays.asList(tags.split(" ")));
     }
 
-    public int getWidth() {
-        return width;
+    @Override
+    public String getImageUrl() {
+        return getParsedUrl();
     }
 }

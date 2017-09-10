@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
+import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.util.Requester;
 import net.kodehawa.lib.imageboards.util.Utils;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-public class ImageboardAPI<T> {
+public class ImageboardAPI<T extends BoardImage> {
 
     //Async executor.
     private final ExecutorService executorService = Executors.newCachedThreadPool();
@@ -126,6 +127,14 @@ public class ImageboardAPI<T> {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Boards getBoardType() {
+        return apiHome;
+    }
+
+    public Class<?> getImageType() {
+        return clazz.getComponentType();
     }
 
     /**

@@ -1,6 +1,10 @@
 package net.kodehawa.lib.imageboards.entities;
 
-public class Rule34Image {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Rule34Image implements BoardImage {
 
     private String directory;
     private String image;
@@ -13,19 +17,28 @@ public class Rule34Image {
         return "https://img.rule34.xxx/images/" + directory + "/" + image;
     }
 
-    public String getImageUrl(){
-        return getFile_url();
+    @Override
+    public int getWidth() {
+        return width;
     }
 
+    @Override
     public int getHeight() {
         return height;
     }
 
-    public String getTags() {
-        return tags;
+    @Override
+    public String getRating() {
+        return "e";
     }
 
-    public int getWidth() {
-        return width;
+    @Override
+    public List<String> getTags() {
+        return new ArrayList<>(Arrays.asList(tags.split(" ")));
+    }
+
+    @Override
+    public String getImageUrl(){
+        return getFile_url();
     }
 }

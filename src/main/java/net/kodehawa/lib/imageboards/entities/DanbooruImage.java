@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Data
-public class DanbooruImage {
+public class DanbooruImage implements BoardImage {
     private int uploader_id;
     private int score;
     private String source;
@@ -54,7 +54,29 @@ public class DanbooruImage {
         return "https://safebooru.donmai.us/" + preview_file_url;
     }
 
-    public List<String> getTagsArray() {
+
+    @Override
+    public int getWidth() {
+        return image_width;
+    }
+
+    @Override
+    public int getHeight() {
+        return image_height;
+    }
+
+    @Override
+    public String getRating() {
+        return rating;
+    }
+
+    @Override
+    public List<String> getTags() {
         return new ArrayList<>(Arrays.asList(tag_string.split(" ")));
+    }
+
+    @Override
+    public String getImageUrl() {
+        return getParsedFileUrl();
     }
 }
