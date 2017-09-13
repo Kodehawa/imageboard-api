@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
+import net.kodehawa.lib.imageboards.entities.QueryFailedException;
+import net.kodehawa.lib.imageboards.entities.QueryParseException;
 import net.kodehawa.lib.imageboards.util.Requester;
 import net.kodehawa.lib.imageboards.util.Utils;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -42,27 +45,27 @@ public class ImageboardAPI<T extends BoardImage> {
 
     // ----- Async methods -----
     public void get(int page, int limit, Consumer<List<T>> handler) {
-        get(page, limit, null, handler);
+        getAsync(page, limit, null, handler);
     }
 
     public void get(int limit, Consumer<List<T>> handler) {
-        get(0, limit, null, handler);
+        getAsync(0, limit, null, handler);
     }
 
     public void get(Consumer<List<T>> handler) {
-        get(0, 60, null, handler);
+        getAsync(0, 60, null, handler);
     }
 
     public void onSearch(int page, int limit, String search, Consumer<List<T>> handler) {
-        get(page, limit, search, handler);
+        getAsync(page, limit, search, handler);
     }
 
     public void onSearch(int limit, String search, Consumer<List<T>> handler) {
-        get(0, limit, search, handler);
+        getAsync(0, limit, search, handler);
     }
 
     public void onSearch(String search, Consumer<List<T>> handler) {
-        get(0, 60, search, handler);
+        getAsync(0, 60, search, handler);
     }
 
     // ----- Blocking methods -----
@@ -90,43 +93,42 @@ public class ImageboardAPI<T extends BoardImage> {
         return getBlocking(0, 60, search);
     }
 
-    private List<T> get(int page, int limit, String search) throws Exception {
+    private List<T> get(int page, int limit, String search) throws QueryParseException, QueryFailedException {
         HashMap<String, Object> queryParams = new HashMap<>();
-        if(page != 0) queryParams.put(apiHome.pageMarker, page);
+        if (page != 0) queryParams.put(apiHome.pageMarker, page);
         queryParams.put("limit", limit);
+        if (search != null) queryParams.put("tags", search.toLowerCase().trim());
+
+        String response = null;
         T[] wallpapers;
-
-        if(search != null) queryParams.put("tags", search.toLowerCase().trim());
-
         try {
-            String response = requester.request(apiHome + apiHome.separator + Utils.urlEncodeUTF8(queryParams));
-            if(response == null) return null;
-
+            response = requester.request(apiHome + apiHome.separator + Utils.urlEncodeUTF8(queryParams));
+            if (response == null)
+                return null;
             wallpapers = type.equals(Type.JSON) ? gson.fromJson(response, clazz) : XML_MAPPER.readValue(response, clazz);
-            return Arrays.asList(wallpapers);
-        } catch(Exception e) {
-            return null;
+        } catch (IOException e) {
+            throw new QueryParseException(response, e);
         }
+
+        if (wallpapers != null)
+            return Arrays.asList(wallpapers);
+        else
+            return null;
     }
 
-    private void get(int page, int limit, String search, Consumer<List<T>> result) {
+    private void getAsync(int page, int limit, String search, Consumer<List<T>> result) {
         executorService.execute(() -> {
             try {
                 List<T> wallpapers = get(page, limit, search);
                 result.accept(wallpapers);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
     private List<T> getBlocking(int page, int limit, String search) {
-        try {
-            return get(page, limit, search);
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return get(page, limit, search);
     }
 
     public Boards getBoardType() {
