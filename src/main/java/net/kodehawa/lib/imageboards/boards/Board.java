@@ -14,37 +14,27 @@
  * limitations under the License.
  */
 
-package net.kodehawa.lib.imageboards.entities;
-
-import java.util.List;
+package net.kodehawa.lib.imageboards.boards;
 
 /**
- * Common board image interface.
- * @author Napstr
+ * Information about the board.
+ *
+ * @author Avarel
+ * @author Kodehawa
  */
-public interface BoardImage {
+public interface Board {
     /**
-     * @return Width of the image.
-     */
-    int getWidth();
-
-    /**
-     * @return Height of the image.
-     */
-    int getHeight();
-
-    /**
-     * @return Rating of the image.
-     */
-    Rating getRating();
-
-    /**
-     * @return Tags of the image.
-     */
-    List<String> getTags();
-
-    /**
-     * @return Image url.
+     * @return Base url of the board.
      */
     String getURL();
+
+    /**
+     * @return The string that separates the base url from the queries.
+     */
+    String getSeparator();
+
+    /**
+     * @return Page marker.
+     */
+    String getPageMarker();
 }

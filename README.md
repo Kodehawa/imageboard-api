@@ -1,83 +1,11 @@
-# imageboard-api
-Simple asynchronous API wrapper around the most popular danbooru-compatible imageboard APIs.
+# ImageBoard API
+ImageBoard API is a simple asynchronous API wrapper around 
+    the most popular danbooru-compatible imageboard APIs.
+    The interface also supports other types of custom boards
+    given a little tweaking.
 
-## To start:
-Note: **There is a `Imageboards` class located under utils, that one contains static, pre-created ImageboardAPI objects for you, but you can roll your own**
-
-#### Supported Imageboards:
-`Konachan, Yande.re, Danbooru, Rule34, e621` 
-
-### Random images:
-
-```java
-//This is a simple example of grabbing a random image
-//Please refer to the examples directory for more examples.
-
-private final ImageboardAPI<KonachanImage> konachan = Imageboards.KONACHAN;
-
-public void getImages() { 
-    //Async
-    konachan.get((images) -> {
-        for(KonachanImage image : images) {
-            System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + 
-                image.getHeight() + " " + image.getWidth());
-        }
-    });
-    
-    //Async with limit
-    //limit = how many images at once
-    konachan.get(2, (images) -> {
-        for(KonachanImage image : images) {
-            System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + 
-                image.getHeight() + " " + image.getWidth());
-        }
-    });
-    
-    //Blocking
-    List<KonachanImage> images = konachan.getBlocking();
-    List<KonachanImage> imagesLimited = konachan.getBlocking(2);
-    
-    //Handling here..
-}
-```
-
-### Tag search:
-
-```java
-//This is a simple example of grabbing a image using tag search
-//Please refer to the examples directory for more examples.
-//You can find more imageboards on the Imageboards class.
-private final ImageboardAPI<KonachanImage> konachan = Imageboards.KONACHAN;
-
-public void getImages() { 
-    //Async
-    konachan.onSearch("animal_ears", (images) -> {
-        for(KonachanImage image : images) {
-            System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + 
-                image.getHeight() + " " + image.getWidth());
-        }
-    });
-    
-    //Async with limit
-    //limit = how many images at once
-    konachan.get(2, "animal_ears", (images) -> {
-        for(KonachanImage image : images) {
-            System.out.println(image.getParsedUrl() + " " + image.getTags() + " " + 
-                image.getHeight() + " " + image.getWidth());
-        }
-    });
-    
-    //Blocking
-    List<KonachanImage> images = konachan.onSearchBlocking("animal_ears");
-    List<KonachanImage> imagesLimited = konachan.getBlocking(2, "animal_ears");
-    
-    //Handling here..
-}
-```
-
-#### Adding it to your dependencies:
-
-In gradle:
+## Dependencies
+#### Gradle
 ```groovy
 repositories {
     maven {
@@ -89,27 +17,84 @@ dependencies {
     compile 'net.kodehawa:imageboard-api:1.1'
 }
 ```
-
-In maven:
-Add: https://hastebin.com/uqaquqecur.xml, and:
+#### Maven
+Add: https://hastebin.com/uqaquqecur.xml.
 ```xml
 <dependency>
   <groupId>net.kodehawa</groupId>
   <artifactId>imageboard-api</artifactId>
   <version>1.1</version>
-  <type>pom</type>
+  <responseFormat>pom</responseFormat>
 </dependency>
 ```
-Copyright 2017 Kodehawa
+## Set Up
+There is a `ImageBoards` class located under utils, that one contains static, pre-created 
+    ImageBoardAPI objects for you, but you can roll your own.
+    
+#### Default Image Boards
+ * Rule34
+ * e621
+ * Konachan
+ * Yande.re
+ * Danbooru
+ * Safebooru
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Creating your own Image Board API instance is possible, but would require a little tweaking.
+    Please refer to the `ImageBoards.java` and `CustomBoard.java` to set up boards that are not included
+    with this API.
 
-   http://www.apache.org/licenses/LICENSE-2.0
+### Random Images
+```java
+import net.kodehawa.lib.imageboards.entities.BoardImage;
+import net.kodehawa.lib.imageboards.util.ImageBoards;
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+public class RandomImages {
+    public static void main(String[] args) {
+        // Asynchronous GET
+        // 60 random images
+        ImageBoards.KONACHAN.get().async(images -> {
+            for (BoardImage image : images) System.out.println(image.getURL());
+        });
+        
+        // Asynchronous GET
+        // 30 random images
+        ImageBoards.KONACHAN.get(30).async(images -> {
+            for (BoardImage image : images) System.out.println(image.getURL());
+        });
+
+        // Blocking GET
+        // 5 random image
+        BoardImage image = ImageBoards.KONACHAN.get(5).blocking().get(0);
+        System.out.println(image.getURL());
+        System.out.println(image.getRating());
+        System.out.println(image.getTags());
+        System.out.println(image.getHeight());
+        System.out.println(image.getWidth());
+    }
+}
+```
+
+### Image Tag Search
+```java
+import net.kodehawa.lib.imageboards.entities.BoardImage;
+import net.kodehawa.lib.imageboards.util.ImageBoards;
+
+public class TagImages {
+    public static void main(String[] args) {
+        // Asynchronous GET
+        // 20 images tagged with animal_ears
+        ImageBoards.KONACHAN.search(20, "animal_ears").async(images -> {
+            for (BoardImage image : images) System.out.println(image.getURL());
+        });
+
+        // Blocking GET
+        // 60 images tagged with animal_ears
+        BoardImage image = ImageBoards.KONACHAN.search("animal_ears").blocking().get(0);
+        System.out.println(image.getURL());
+        System.out.println(image.getRating());
+        System.out.println(image.getTags());
+        System.out.println(image.getHeight());
+        System.out.println(image.getWidth());
+    }
+}
+```
