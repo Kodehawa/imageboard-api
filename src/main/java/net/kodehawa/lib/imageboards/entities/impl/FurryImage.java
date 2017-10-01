@@ -19,8 +19,8 @@ package net.kodehawa.lib.imageboards.entities.impl;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,6 +29,7 @@ import java.util.List;
 public class FurryImage implements BoardImage {
     private String description;
     private String file_url;
+    private int score;
     private int height;
     private int width;
     private String tags;
@@ -53,17 +54,22 @@ public class FurryImage implements BoardImage {
     }
 
     @Override
+    public int getScore() {
+        return score;
+    }
+
+    @Override
     public Rating getRating() {
         return Rating.EXPLICIT;
     }
 
     @Override
     public List<String> getTags() {
-        return new ArrayList<>(Arrays.asList(tags.split(" ")));
+        return Collections.unmodifiableList(Arrays.asList(tags.split(" ")));
     }
 
     @Override
     public String getURL() {
-        return getFile_url();
+        return file_url;
     }
 }

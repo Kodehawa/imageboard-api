@@ -31,32 +31,46 @@ package net.kodehawa.lib.imageboards.boards;
  */
 public enum DefaultBoards implements Board {
     //Lewd APIs
-    R34("https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1", "&", "pid"),
-    E621("https://e621.net/post/index.json", "?", "page"),
+    R34("https", "rule34.xxx", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
+    E621("https", "e621.net", "post/index.json", null, "page"),
     //Normal APIs
-    KONACHAN("http://konachan.com/post.json", "?", "page"),
-    YANDERE("https://yande.re/post.json", "?", "page"),
-    DANBOORU("https://danbooru.donmai.us/posts.json", "?", "page"),
-    SAFEBOORU("https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1", "&", "pid");
+    KONACHAN("http", "konachan.com", "post.json", null, "page"),
+    YANDERE("https", "yande.re", "post.json", null, "page"),
+    DANBOORU("https", "danbooru.donmai.us", "posts.json", null, "page"),
+    SAFEBOORU("https", "safebooru.org", "index.php", "page=dapi&s=post&q=index&json=1", "pid");
 
-    private final String separator;
-    private final String url;
+    private final String scheme;
+    private final String pathSegment;
+    private final String host;
+    private final String query;
     private final String pageMarker;
 
-    DefaultBoards(String url, String separator, String pageMarker) {
-        this.url = url;
-        this.separator = separator;
+    DefaultBoards(String scheme, String host, String pathSegment, String query, String pageMarker) {
+        this.scheme = scheme;
+        this.host = host;
+        this.query = query;
+        this.pathSegment = pathSegment;
         this.pageMarker = pageMarker;
     }
 
     @Override
-    public String getSeparator() {
-        return separator;
+    public String getScheme() {
+        return scheme;
     }
 
     @Override
-    public String getURL() {
-        return url;
+    public String getPath() {
+        return pathSegment;
+    }
+
+    @Override
+    public String getQuery() {
+        return query;
+    }
+
+    @Override
+    public String getHost() {
+        return host;
     }
 
     @Override

@@ -17,9 +17,8 @@
 package net.kodehawa.lib.imageboards;
 
 import net.kodehawa.lib.imageboards.boards.DefaultBoards;
-import net.kodehawa.lib.imageboards.entities.*;
+import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.impl.*;
-import net.kodehawa.lib.imageboards.util.ImageBoards;
 import org.junit.Test;
 
 import java.util.List;
@@ -28,27 +27,27 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ImageBoardTest {
-    private static final ImageBoardAPI<FurryImage> e621 = ImageBoards.E621;
-    private static final ImageBoardAPI<KonachanImage> konachan = ImageBoards.KONACHAN;
-    private static final ImageBoardAPI<Rule34Image> rule34 = ImageBoards.RULE34;
-    private static final ImageBoardAPI<YandereImage> yandere = ImageBoards.YANDERE;
-    private static final ImageBoardAPI<DanbooruImage> danbooru = ImageBoards.DANBOORU;
-    private static final ImageBoardAPI<SafebooruImage> safebooru = ImageBoards.SAFEBOORU;
+    private static final ImageBoard<FurryImage> e621 = DefaultImageBoards.E621;
+    private static final ImageBoard<KonachanImage> konachan = DefaultImageBoards.KONACHAN;
+    private static final ImageBoard<Rule34Image> rule34 = DefaultImageBoards.RULE34;
+    private static final ImageBoard<YandereImage> yandere = DefaultImageBoards.YANDERE;
+    private static final ImageBoard<DanbooruImage> danbooru = DefaultImageBoards.DANBOORU;
+    private static final ImageBoard<SafebooruImage> safebooru = DefaultImageBoards.SAFEBOORU;
 
     //Run this first to check if everything returns as expected
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         e621.get(2).async(ImageBoardTest::printImages);
         konachan.get(2).async(ImageBoardTest::printImages);
         rule34.get(2).async(ImageBoardTest::printImages);
         yandere.get(2).async(ImageBoardTest::printImages);
         danbooru.get(2).async(ImageBoardTest::printImages);
         safebooru.get(2).async(ImageBoardTest::printImages);
-
     }
 
     private static void printImages(List<? extends BoardImage> images) {
         for (BoardImage image : images) {
             System.out.println(image.getURL()
+                    + " " + image.getScore()
                     + " " + image.getRating()
                     + " " + image.getTags()
                     + " " + image.getHeight()

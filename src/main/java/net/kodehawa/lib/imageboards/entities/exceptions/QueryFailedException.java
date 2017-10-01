@@ -27,13 +27,13 @@ public class QueryFailedException extends RuntimeException {
     private final String url;
 
     public QueryFailedException(int code, String url) {
-        super("Failed to query, " + url + ".");
+        super("Failed to query " + url);
         this.code = code;
         this.url = url;
     }
 
     public QueryFailedException(int code, String url, Throwable e) {
-        super("Failed to query " + url + ".", e);
+        super("Failed to query " + url, e);
         this.code = code;
         this.url = url;
     }

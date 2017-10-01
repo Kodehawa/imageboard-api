@@ -24,14 +24,24 @@ package net.kodehawa.lib.imageboards.boards;
  */
 public interface Board {
     /**
+     * @return Scheme of the board. ie. http/https
+     */
+    String getScheme();
+
+    /**
      * @return Base url of the board.
      */
-    String getURL();
+    String getHost();
+
+    /**
+     * @return Path segment.
+     */
+    String getPath();
 
     /**
      * @return The string that separates the base url from the queries.
      */
-    String getSeparator();
+    String getQuery();
 
     /**
      * @return Page marker.

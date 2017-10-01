@@ -23,14 +23,7 @@ package net.kodehawa.lib.imageboards.entities.exceptions;
  * @author Kodehawa
  */
 public class QueryParseException extends RuntimeException {
-    private final String response;
-
-    public QueryParseException(String response, Throwable e) {
+    public QueryParseException(Throwable e) {
         super("Failed to parse response from an ImageBoard.", e);
-        this.response = response;
-    }
-
-    public String getResponse() {
-        return response;
     }
 }

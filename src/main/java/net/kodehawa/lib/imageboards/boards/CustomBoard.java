@@ -22,24 +22,38 @@ package net.kodehawa.lib.imageboards.boards;
  * @author Avarel
  */
 public class CustomBoard implements Board {
-    private final String url;
+    private final String host;
+    private final String scheme;
+    private final String pathSegment;
     private final String separator;
     private final String pageMarker;
 
-    public CustomBoard(String url, String separator, String pageMarker) {
+    public CustomBoard(String scheme, String host, String pathSegment, String separator, String pageMarker) {
+        this.scheme = scheme;
+        this.pathSegment = pathSegment;
         this.separator = separator;
-        this.url = url;
+        this.host = host;
         this.pageMarker = pageMarker;
     }
 
     @Override
-    public String getSeparator() {
-        return separator;
+    public String getScheme() {
+        return scheme;
     }
 
     @Override
-    public String getURL() {
-        return url;
+    public String getHost() {
+        return host;
+    }
+
+    @Override
+    public String getPath() {
+        return pathSegment;
+    }
+
+    @Override
+    public String getQuery() {
+        return separator;
     }
 
     @Override

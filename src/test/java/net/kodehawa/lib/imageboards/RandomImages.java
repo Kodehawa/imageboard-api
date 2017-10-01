@@ -17,19 +17,18 @@
 package net.kodehawa.lib.imageboards;
 
 import net.kodehawa.lib.imageboards.entities.BoardImage;
-import net.kodehawa.lib.imageboards.util.ImageBoards;
 
 public class RandomImages {
     public static void main(String[] args) {
         // Asynchronous GET
         // 60 random images
-        ImageBoards.KONACHAN.get().async(images -> {
+        DefaultImageBoards.KONACHAN.get().async(images -> {
             for (BoardImage image : images) System.out.println(image.getURL());
         });
 
         // Blocking GET
         // 1 random image
-        BoardImage image = ImageBoards.KONACHAN.get(1).blocking().get(0);
+        BoardImage image = DefaultImageBoards.KONACHAN.get(1).blocking().get(0);
         System.out.println(image.getURL());
         System.out.println(image.getRating());
         System.out.println(image.getTags());

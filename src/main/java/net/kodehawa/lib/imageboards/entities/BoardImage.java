@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Common board image interface.
- * @author Napstr
+ * @author NatchRaben
  */
 public interface BoardImage {
     /**
@@ -32,6 +32,11 @@ public interface BoardImage {
      * @return Height of the image.
      */
     int getHeight();
+
+    /**
+     * @return Score of the image.
+     */
+    int getScore();
 
     /**
      * @return Rating of the image.

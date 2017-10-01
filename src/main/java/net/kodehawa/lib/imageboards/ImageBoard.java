@@ -24,16 +24,15 @@ import net.kodehawa.lib.imageboards.boards.Board;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.exceptions.QueryFailedException;
 import net.kodehawa.lib.imageboards.entities.exceptions.QueryParseException;
-import net.kodehawa.lib.imageboards.util.Requester;
-import net.kodehawa.lib.imageboards.util.Utils;
+import net.kodehawa.lib.imageboards.requests.RequestAction;
+import net.kodehawa.lib.imageboards.requests.RequestFactory;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Image board API instance.
@@ -42,7 +41,7 @@ import java.util.concurrent.Executors;
  * @author Avarel
  * @author Kodehawa
  */
-public class ImageBoardAPI<T extends BoardImage> {
+public class ImageBoard<T extends BoardImage> {
     /**
      * Current version of the image board library.
      */
@@ -51,12 +50,12 @@ public class ImageBoardAPI<T extends BoardImage> {
     /**
      * Requester client.
      */
-    private final Requester requester;
+    private final RequestFactory requestFactory;
     
     /**
-     * The URL of the imageboard's API endpoint.
+     * Image board's endpoint.
      */
-    private Board apiHome;
+    private Board board;
 
     /**
      * Deserialization target.
@@ -74,7 +73,7 @@ public class ImageBoardAPI<T extends BoardImage> {
      * @param landing Board {@link Board API landing}.
      * @param cls
      */
-    public ImageBoardAPI(Board landing, Class<T> cls) {
+    public ImageBoard(Board landing, Class<T> cls) {
         this(landing, ResponseFormat.JSON, cls);
     }
 
@@ -85,26 +84,42 @@ public class ImageBoardAPI<T extends BoardImage> {
      * @param responseFormat Response format of the board.
      * @param cls
      */
-    public ImageBoardAPI(Board landing, ResponseFormat responseFormat, Class<T> cls) {
-        this(Executors.newCachedThreadPool(), new OkHttpClient(), landing, responseFormat, cls);
+    public ImageBoard(Board landing, ResponseFormat responseFormat, Class<T> cls) {
+        this(new OkHttpClient.Builder()
+                        .readTimeout(2, TimeUnit.SECONDS)
+                        .build(),
+                landing,
+                responseFormat,
+                cls);
     }
 
     /**
      * Create a new image board instance.
      *
-     * @param executor {@link Requester}'s executor.
-     * @param client {@link Requester}'s request client.
+     * @param client {@link RequestFactory}'s request client.
+     * @param landing Board {@link Board API landing}.
+     * @param cls
+     */
+    public apImageBoard(OkHttpClient client,
+                        Board landing,
+                        Class<T> cls) {
+        this(client, landing, ResponseFormat.JSON, cls);
+    }
+
+    /**
+     * Create a new image board instance.
+     *
+     * @param client {@link RequestFactory}'s request client.
      * @param landing Board {@link Board API landing}.
      * @param responseFormat Response format of the board.
      * @param cls
      */
-    public ImageBoardAPI(ExecutorService executor,
-                         OkHttpClient client,
-                         Board landing,
-                         ResponseFormat responseFormat,
-                         Class<T> cls) {
-        this.requester = new Requester(executor, client);
-        this.apiHome = landing;
+    public ImageBoard(OkHttpClient client,
+                      Board landing,
+                      ResponseFormat responseFormat,
+                      Class<T> cls) {
+        this.requestFactory = new RequestFactory(client);
+        this.board = landing;
         this.responseFormat = responseFormat;
         this.cls = cls;
     }
@@ -114,7 +129,7 @@ public class ImageBoardAPI<T extends BoardImage> {
      * @return Board type.
      */
     public Board getBoardType() {
-        return apiHome;
+        return board;
     }
 
     /**
@@ -127,9 +142,9 @@ public class ImageBoardAPI<T extends BoardImage> {
 
     /**
      * Get first page results of the image board, limited at 60 images.
-     * @return A {@link Requester.Action request action} that returns a list of images.
+     * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public Requester.Action<List<T>> get() {
+    public RequestAction<List<T>> get() {
         return get(60);
     }
 
@@ -137,9 +152,9 @@ public class ImageBoardAPI<T extends BoardImage> {
      * Get first page results of the image board.
      *
      * @param limit Maximum number of images.
-     * @return A {@link Requester.Action request action} that returns a list of images.
+     * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public Requester.Action<List<T>> get(int limit) {
+    public RequestAction<List<T>> get(int limit) {
         return get(0, limit);
     }
 
@@ -148,9 +163,9 @@ public class ImageBoardAPI<T extends BoardImage> {
      *
      * @param page Page number.
      * @param limit Maximum number of images.
-     * @return A {@link Requester.Action request action} that returns a list of images.
+     * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public Requester.Action<List<T>> get(int page, int limit) {
+    public RequestAction<List<T>> get(int page, int limit) {
         return makeRequest(page, limit, null);
     }
 
@@ -158,9 +173,9 @@ public class ImageBoardAPI<T extends BoardImage> {
      * Get the first page's results from the image board search, limited at 60 images.
      *
      * @param search Image tags.
-     * @return A {@link Requester.Action request action} that returns a list of images.
+     * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public Requester.Action<List<T>> search(String search) {
+    public RequestAction<List<T>> search(String search) {
         return search(60, search);
     }
 
@@ -169,9 +184,9 @@ public class ImageBoardAPI<T extends BoardImage> {
      *
      * @param limit Maximum number of images.
      * @param search Image tags.
-     * @return A {@link Requester.Action request action} that returns a list of images.
+     * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public Requester.Action<List<T>> search(int limit, String search) {
+    public RequestAction<List<T>> search(int limit, String search) {
         return search(0, limit, search);
     }
 
@@ -181,38 +196,38 @@ public class ImageBoardAPI<T extends BoardImage> {
      * @param page Page number.
      * @param limit Maximum number of images.
      * @param search Image tags.
-     * @return A {@link Requester.Action request action} that returns a list of images.
+     * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public Requester.Action<List<T>> search(int page, int limit, String search) {
+    public RequestAction<List<T>> search(int page, int limit, String search) {
         return makeRequest(page, limit, search);
     }
 
-    private Requester.Action<List<T>> makeRequest(int page, int limit, String search) throws QueryParseException, QueryFailedException {
-        HashMap<String, Object> queryParams = new HashMap<>();
+    private RequestAction<List<T>> makeRequest(int page, int limit, String search) throws QueryParseException, QueryFailedException {
+        HttpUrl.Builder url = new HttpUrl.Builder()
+                .scheme(board.getScheme())
+                .host(board.getHost())
+                .addPathSegments(board.getPath())
+                .query(board.getQuery())
+                .addQueryParameter("limit", String.valueOf(limit));
+        if (page != 0) url.addQueryParameter(board.getPageMarker(), String.valueOf(page));
+        if (search != null) url.addQueryParameter("tags", search.toLowerCase().trim());
 
-        if (page != 0) {
-            queryParams.put(apiHome.getPageMarker(), page);
-        }
+        return requestFactory.makeRequest(url.build(), response -> {
+            try (ResponseBody body = response.body()) {
+                if (body == null) throw new QueryParseException(new NullPointerException());
 
-        queryParams.put("limit", limit);
-
-        if (search != null) {
-            queryParams.put("tags", search.toLowerCase().trim());
-        }
-
-        HttpUrl url = HttpUrl.parse(apiHome.getURL() + apiHome.getSeparator() + Utils.urlEncodeUTF8(queryParams));
-        return requester.makeRequest(url, response -> {
-            try {
-                List<T> wallpapers = responseFormat.readValue(response,
+                List<T> wallpapers = responseFormat.mapper.readValue(body.byteStream(),
                         responseFormat.mapper.getTypeFactory().constructCollectionType(List.class, cls));
+
+                body.close();
 
                 if (wallpapers != null) {
                     return wallpapers;
                 } else {
                     return null;
                 }
-            } catch (Exception e) {
-                throw new QueryParseException(response, e);
+            } catch (IOException e) {
+                throw new QueryParseException(e);
             }
         });
     }

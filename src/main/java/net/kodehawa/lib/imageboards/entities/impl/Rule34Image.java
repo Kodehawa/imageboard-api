@@ -19,8 +19,8 @@ package net.kodehawa.lib.imageboards.entities.impl;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,6 +38,14 @@ public class Rule34Image implements BoardImage {
         return "https://img.rule34.xxx/images/" + directory + "/" + image;
     }
 
+    public String getDirectory() {
+        return directory;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
     @Override
     public int getWidth() {
         return width;
@@ -49,13 +57,18 @@ public class Rule34Image implements BoardImage {
     }
 
     @Override
+    public int getScore() {
+        return 0;
+    }
+
+    @Override
     public Rating getRating() {
         return Rating.EXPLICIT;
     }
 
     @Override
     public List<String> getTags() {
-        return new ArrayList<>(Arrays.asList(tags.split(" ")));
+        return Collections.unmodifiableList(Arrays.asList(tags.split(" ")));
     }
 
     @Override

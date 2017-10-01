@@ -19,8 +19,8 @@ package net.kodehawa.lib.imageboards.entities.impl;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,11 +30,19 @@ public class SafebooruImage implements BoardImage {
     private String directory;
     private String image;
     private int height;
-    private String tags;
     private int width;
+    private String tags;
 
-    public String getFile_url() {
+    public String getFileUrl() {
         return "https://safebooru.org/images/" + directory + "/" + image;
+    }
+
+    public String getDirectory() {
+        return directory;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     @Override
@@ -47,6 +55,10 @@ public class SafebooruImage implements BoardImage {
         return height;
     }
 
+    public int getScore() {
+        return 0;
+    }
+
     @Override
     public Rating getRating() {
         return Rating.SAFE;
@@ -54,11 +66,11 @@ public class SafebooruImage implements BoardImage {
 
     @Override
     public List<String> getTags() {
-        return new ArrayList<>(Arrays.asList(tags.split(" ")));
+        return Collections.unmodifiableList(Arrays.asList(tags.split(" ")));
     }
 
     @Override
     public String getURL(){
-        return getFile_url();
+        return getFileUrl();
     }
 }

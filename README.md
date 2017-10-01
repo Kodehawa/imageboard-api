@@ -46,7 +46,7 @@ Creating your own Image Board API instance is possible, but would require a litt
 ### Random Images
 ```java
 import net.kodehawa.lib.imageboards.entities.BoardImage;
-import net.kodehawa.lib.imageboards.util.ImageBoards;
+import net.kodehawa.lib.imageboards.DefaultImageBoards;
 
 public class RandomImages {
     public static void main(String[] args) {
@@ -77,7 +77,7 @@ public class RandomImages {
 ### Image Tag Search
 ```java
 import net.kodehawa.lib.imageboards.entities.BoardImage;
-import net.kodehawa.lib.imageboards.util.ImageBoards;
+import net.kodehawa.lib.imageboards.DefaultImageBoards;
 
 public class TagImages {
     public static void main(String[] args) {

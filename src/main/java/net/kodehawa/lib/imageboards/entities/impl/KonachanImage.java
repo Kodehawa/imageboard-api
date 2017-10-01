@@ -19,8 +19,8 @@ package net.kodehawa.lib.imageboards.entities.impl;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -102,10 +102,6 @@ public class KonachanImage implements BoardImage {
         return sample_width;
     }
 
-    public int getScore() {
-        return score;
-    }
-
     public String getSource() {
         return source;
     }
@@ -133,6 +129,11 @@ public class KonachanImage implements BoardImage {
     }
 
     @Override
+    public int getScore() {
+        return score;
+    }
+
+    @Override
     public int getWidth() {
         return width;
     }
@@ -149,7 +150,7 @@ public class KonachanImage implements BoardImage {
 
     @Override
     public List<String> getTags() {
-        return tags == null ? new ArrayList<>(Arrays.asList("empty", "")) : new ArrayList<>(Arrays.asList(tags.split(" ")));
+        return tags == null ? Collections.emptyList() : Collections.unmodifiableList(Arrays.asList(tags.split(" ")));
     }
 
     @Override

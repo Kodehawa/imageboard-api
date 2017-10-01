@@ -38,12 +38,12 @@ public enum Rating {
     QUESTIONABLE,
 
     /**
+     * Default rating, assume the worst.
      * Board images with explicit/NSFW ratings.
      * Dirty af. Go see a therapist.
      */
+    @JsonEnumDefaultValue
     @JsonProperty("e")
     EXPLICIT,
 
-    @JsonEnumDefaultValue
-    UNKNOWN,
 }
