@@ -28,14 +28,14 @@ public enum Rating {
      * Safe for family and friends. If you had any.
      */
     @JsonProperty("s")
-    SAFE,
+    SAFE("s"),
 
     /**
      * Questionable board images. Borderline explicit.
      * Would you show this to your grandma?
      */
     @JsonProperty("q")
-    QUESTIONABLE,
+    QUESTIONABLE("q"),
 
     /**
      * Default rating, assume the worst.
@@ -44,6 +44,50 @@ public enum Rating {
      */
     @JsonEnumDefaultValue
     @JsonProperty("e")
-    EXPLICIT,
+    EXPLICIT("e");
 
+    String shortName, longName;
+
+    Rating(String shortName) {
+        this.shortName = shortName;
+        this.longName = this.name().toLowerCase();
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public String getLongName() {
+        return longName;
+    }
+
+    /**
+     * Looks up the rating based on the full name, if nothing is found returns null.
+     *
+     * @param name The String value to match
+     * @return The badge, or null if nothing is found.
+     */
+    public static Rating lookupFromString(String name) {
+        for(Rating b : Rating.values()) {
+            if(b.name().equalsIgnoreCase(name)) {
+                return b;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Looks up the rating based on the full name, if nothing is found returns null.
+     *
+     * @param shortName The short name to match
+     * @return The badge, or null if nothing is found.
+     */
+    public static Rating lookupFromStringShort(String shortName) {
+        for(Rating b : Rating.values()) {
+            if(b.getShortName().equalsIgnoreCase(shortName)) {
+                return b;
+            }
+        }
+        return null;
+    }
 }
