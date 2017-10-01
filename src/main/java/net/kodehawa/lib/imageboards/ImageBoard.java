@@ -136,8 +136,8 @@ public class ImageBoard<T extends BoardImage> {
      * Get the image return type of this board.
      * @return A java class of the image return type.
      */
-    public Class<?> getImageType() {
-        return cls.getComponentType();
+    public Class<T> getImageType() {
+        return cls;
     }
 
     /**

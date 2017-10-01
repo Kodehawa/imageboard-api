@@ -80,6 +80,7 @@ public class ImageBoardTest {
         e621.get(1).async(null);
     }
 
+
     public static void assertImages(List<? extends BoardImage> images) {
         assertNotEquals(images.get(0).getURL(), null);
         assertNotEquals(images.get(0).getTags(), null);
