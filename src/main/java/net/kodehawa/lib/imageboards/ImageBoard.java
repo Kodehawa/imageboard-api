@@ -71,7 +71,7 @@ public class ImageBoard<T extends BoardImage> {
      * Create a new image board instance.
      *
      * @param landing Board {@link Board API landing}.
-     * @param cls
+     * @param cls The class this refers to.
      */
     public ImageBoard(Board landing, Class<T> cls) {
         this(landing, ResponseFormat.JSON, cls);
@@ -82,7 +82,7 @@ public class ImageBoard<T extends BoardImage> {
      *
      * @param landing Board {@link Board API landing}.
      * @param responseFormat Response format of the board.
-     * @param cls
+     * @param cls The class this refers to.
      */
     public ImageBoard(Board landing, ResponseFormat responseFormat, Class<T> cls) {
         this(new OkHttpClient.Builder()
@@ -98,7 +98,7 @@ public class ImageBoard<T extends BoardImage> {
      *
      * @param client {@link RequestFactory}'s request client.
      * @param landing Board {@link Board API landing}.
-     * @param cls
+     * @param cls The class this refers to.
      */
     public ImageBoard(OkHttpClient client,
                         Board landing,
@@ -112,7 +112,7 @@ public class ImageBoard<T extends BoardImage> {
      * @param client {@link RequestFactory}'s request client.
      * @param landing Board {@link Board API landing}.
      * @param responseFormat Response format of the board.
-     * @param cls
+     * @param cls The class this refers to.
      */
     public ImageBoard(OkHttpClient client,
                       Board landing,
