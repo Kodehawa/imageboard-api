@@ -1,17 +1,35 @@
-package net.kodehawa.lib.imageboards.entities;
+/*
+ * Copyright 2017 Kodehawa
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import lombok.Data;
+package net.kodehawa.lib.imageboards.entities.impl;
+import net.kodehawa.lib.imageboards.entities.BoardImage;
+import net.kodehawa.lib.imageboards.entities.Rating;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-@Data
+/**
+ * @author Kodehawa
+ */
 public class DanbooruImage implements BoardImage {
     private int uploader_id;
     private int score;
     private String source;
-    private String rating;
+    private Rating rating;
     private int image_width;
     private int image_height;
     private String tag_string;
@@ -54,7 +72,6 @@ public class DanbooruImage implements BoardImage {
         return "https://safebooru.donmai.us/" + preview_file_url;
     }
 
-
     @Override
     public int getWidth() {
         return image_width;
@@ -66,17 +83,86 @@ public class DanbooruImage implements BoardImage {
     }
 
     @Override
-    public String getRating() {
+    public Rating getRating() {
         return rating;
     }
 
     @Override
-    public List<String> getTags() {
-        return new ArrayList<>(Arrays.asList(tag_string.split(" ")));
+    public int getScore() {
+        return score;
     }
 
     @Override
-    public String getImageUrl() {
+    public List<String> getTags() {
+        return Collections.unmodifiableList(Arrays.asList(tag_string.split(" ")));
+    }
+
+    @Override
+    public String getURL() {
         return getParsedFileUrl();
+    }
+
+    public int getUploader_id() {
+        return uploader_id;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public int getImage_width() {
+        return image_width;
+    }
+
+    public int getImage_height() {
+        return image_height;
+    }
+
+    public String getTag_string() {
+        return tag_string;
+    }
+
+    public String getFile_ext() {
+        return file_ext;
+    }
+
+    public int getFile_size() {
+        return file_size;
+    }
+
+    public int getUp_score() {
+        return up_score;
+    }
+
+    public int getDown_score() {
+        return down_score;
+    }
+
+    public int getTag_count() {
+        return tag_count;
+    }
+
+    public String getUploader_name() {
+        return uploader_name;
+    }
+
+    public String getTag_string_artist() {
+        return tag_string_artist;
+    }
+
+    public String getTag_string_character() {
+        return tag_string_character;
+    }
+
+    public String getFile_url() {
+        return file_url;
+    }
+
+    public String getLarge_file_url() {
+        return large_file_url;
+    }
+
+    public String getPreview_file_url() {
+        return preview_file_url;
     }
 }

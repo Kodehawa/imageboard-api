@@ -1,27 +1,32 @@
 /*
- * Copyright (C) 2016-2017 David Alejandro Rubio Escares / Kodehawa
+ * Copyright 2017 Kodehawa
  *
- * Mantaro is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * Mantaro is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * You should have received a copy of the GNU General Public License
- * along with Mantaro.  If not, see http://www.gnu.org/licenses/
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-package net.kodehawa.lib.imageboards.entities;
+package net.kodehawa.lib.imageboards.entities.impl;
 
-import java.util.ArrayList;
+import net.kodehawa.lib.imageboards.entities.BoardImage;
+import net.kodehawa.lib.imageboards.entities.Rating;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Kodehawa
+ */
 public class YandereImage implements BoardImage {
-
     private int actual_preview_width;
     private String author;
     private String file_ext;
@@ -36,7 +41,7 @@ public class YandereImage implements BoardImage {
     private int preview_height;
     private String preview_url;
     private int preview_width;
-    private String rating;
+    private Rating rating;
     private int sample_file_size;
     private int sample_height;
     private String sample_url;
@@ -135,12 +140,13 @@ public class YandereImage implements BoardImage {
         return sample_width;
     }
 
-    public int getScore() {
-        return score;
-    }
-
     public String getStatus() {
         return status;
+    }
+
+    @Override
+    public int getScore() {
+        return score;
     }
 
     @Override
@@ -154,17 +160,17 @@ public class YandereImage implements BoardImage {
     }
 
     @Override
-    public String getRating() {
+    public Rating getRating() {
         return rating;
     }
 
     @Override
     public List<String> getTags() {
-        return new ArrayList<>(Arrays.asList(tags.split(" ")));
+        return Collections.unmodifiableList(Arrays.asList(tags.split(" ")));
     }
 
     @Override
-    public String getImageUrl() {
+    public String getURL() {
         return getFile_url();
     }
 }

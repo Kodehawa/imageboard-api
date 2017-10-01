@@ -14,42 +14,16 @@
  * limitations under the License.
  */
 
-package net.kodehawa.lib.imageboards.entities;
-
-import java.util.List;
+package net.kodehawa.lib.imageboards.entities.exceptions;
 
 /**
- * Common board image interface.
- * @author NatchRaben
+ * Exception thrown when the image board return a response
+ * that causes errors during parsing.
+ *
+ * @author Kodehawa
  */
-public interface BoardImage {
-    /**
-     * @return Width of the image.
-     */
-    int getWidth();
-
-    /**
-     * @return Height of the image.
-     */
-    int getHeight();
-
-    /**
-     * @return Score of the image.
-     */
-    int getScore();
-
-    /**
-     * @return Rating of the image.
-     */
-    Rating getRating();
-
-    /**
-     * @return Tags of the image.
-     */
-    List<String> getTags();
-
-    /**
-     * @return Image url.
-     */
-    String getURL();
+public class QueryParseException extends RuntimeException {
+    public QueryParseException(Throwable e) {
+        super("Failed to parse response from an ImageBoard.", e);
+    }
 }

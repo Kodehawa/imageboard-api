@@ -16,40 +16,34 @@
 
 package net.kodehawa.lib.imageboards.entities;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Common board image interface.
- * @author NatchRaben
+ * Board image ratings. Just remember that God is watching.
+ * @author Avarel
  */
-public interface BoardImage {
+public enum Rating {
     /**
-     * @return Width of the image.
+     * Safe for family and friends. If you had any.
      */
-    int getWidth();
+    @JsonProperty("s")
+    SAFE,
 
     /**
-     * @return Height of the image.
+     * Questionable board images. Borderline explicit.
+     * Would you show this to your grandma?
      */
-    int getHeight();
+    @JsonProperty("q")
+    QUESTIONABLE,
 
     /**
-     * @return Score of the image.
+     * Default rating, assume the worst.
+     * Board images with explicit/NSFW ratings.
+     * Dirty af. Go see a therapist.
      */
-    int getScore();
+    @JsonEnumDefaultValue
+    @JsonProperty("e")
+    EXPLICIT,
 
-    /**
-     * @return Rating of the image.
-     */
-    Rating getRating();
-
-    /**
-     * @return Tags of the image.
-     */
-    List<String> getTags();
-
-    /**
-     * @return Image url.
-     */
-    String getURL();
 }
