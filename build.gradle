@@ -82,7 +82,7 @@ bintray {
     pkg {
         repo = 'maven'
         name = 'imageboard-api'
-        licenses = ['GPL-3.0']
+        licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/Kodehawa/imageboard-api.git'
         publish = true
         version {
@@ -118,7 +118,6 @@ String getProjectProperty(String propertyName)
 task wrapper(type: Wrapper) {
     gradleVersion = '3.5'
 }
-
 
 build {
     dependsOn clean

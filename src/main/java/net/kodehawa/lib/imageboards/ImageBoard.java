@@ -100,7 +100,7 @@ public class ImageBoard<T extends BoardImage> {
      * @param landing Board {@link Board API landing}.
      * @param cls
      */
-    public apImageBoard(OkHttpClient client,
+    public ImageBoard(OkHttpClient client,
                         Board landing,
                         Class<T> cls) {
         this(client, landing, ResponseFormat.JSON, cls);
