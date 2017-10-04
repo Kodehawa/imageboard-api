@@ -52,7 +52,7 @@ public class RandomImages {
     public static void main(String[] args) {
         // Asynchronous GET
         // 60 random images
-        ImageBoards.KONACHAN.get().async(images -> {
+        DefaultImageBoards.KONACHAN.get().async(images -> {
             for (BoardImage image : images) System.out.println(image.getURL());
         });
         
@@ -64,7 +64,7 @@ public class RandomImages {
 
         // Blocking GET
         // 5 random image
-        BoardImage image = ImageBoards.KONACHAN.get(5).blocking().get(0);
+        BoardImage image = DefaultImageBoards.KONACHAN.get(5).blocking().get(0);
         System.out.println(image.getURL());
         System.out.println(image.getRating());
         System.out.println(image.getTags());
@@ -83,13 +83,13 @@ public class TagImages {
     public static void main(String[] args) {
         // Asynchronous GET
         // 20 images tagged with animal_ears
-        ImageBoards.KONACHAN.search(20, "animal_ears").async(images -> {
+        DefaultImageBoards.KONACHAN.search(20, "animal_ears").async(images -> {
             for (BoardImage image : images) System.out.println(image.getURL());
         });
 
         // Blocking GET
         // 60 images tagged with animal_ears
-        BoardImage image = ImageBoards.KONACHAN.search("animal_ears").blocking().get(0);
+        BoardImage image = DefaultImageBoards.KONACHAN.search("animal_ears").blocking().get(0);
         System.out.println(image.getURL());
         System.out.println(image.getRating());
         System.out.println(image.getTags());
