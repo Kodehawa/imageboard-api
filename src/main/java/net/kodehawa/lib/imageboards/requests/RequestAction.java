@@ -67,7 +67,9 @@ public class RequestAction<T> {
      * @return Executor promise.
      */
     public Future<T> submit() {
-        return CompletableFuture.supplyAsync(this::blocking);
+        CompletableFuture<T> future = new CompletableFuture<>();
+        async(future::complete, future::completeExceptionally);
+        return future;
     }
 
     /**
