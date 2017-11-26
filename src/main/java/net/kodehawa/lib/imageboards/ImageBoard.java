@@ -29,8 +29,11 @@ import net.kodehawa.lib.imageboards.requests.RequestFactory;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +45,8 @@ import java.util.concurrent.TimeUnit;
  * @author Kodehawa
  */
 public class ImageBoard<T extends BoardImage> {
+    private static final Logger log = LoggerFactory.getLogger(ImageBoard.class);
+
     /**
      * Current version of the image board library.
      */
@@ -66,6 +71,11 @@ public class ImageBoard<T extends BoardImage> {
      * GET return format of the board.
      */
     private ResponseFormat responseFormat;
+
+    /**
+     * Changes whether we're gonna throw exceptions on EOF or no
+     */
+    public static boolean throwExceptionOnEOF = true;
 
     /**
      * Create a new image board instance.
@@ -203,18 +213,26 @@ public class ImageBoard<T extends BoardImage> {
     }
 
     private RequestAction<List<T>> makeRequest(int page, int limit, String search) throws QueryParseException, QueryFailedException {
-        HttpUrl.Builder url = new HttpUrl.Builder()
+        HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
                 .scheme(board.getScheme())
                 .host(board.getHost())
                 .addPathSegments(board.getPath())
                 .query(board.getQuery())
                 .addQueryParameter("limit", String.valueOf(limit));
-        if (page != 0) url.addQueryParameter(board.getPageMarker(), String.valueOf(page));
-        if (search != null) url.addQueryParameter("tags", search.toLowerCase().trim());
+        if (page != 0) urlBuilder.addQueryParameter(board.getPageMarker(), String.valueOf(page));
+        if (search != null) urlBuilder.addQueryParameter("tags", search.toLowerCase().trim());
 
-        return requestFactory.makeRequest(url.build(), response -> {
+        HttpUrl url = urlBuilder.build();
+        return requestFactory.makeRequest(url, response -> {
+            log.debug("Making request to {} (Response format: {}, Imageboard: {}, Target: {})", url.toString(), responseFormat, board, cls);
             try (ResponseBody body = response.body()) {
-                if (body == null) throw new QueryParseException(new NullPointerException());
+                if (body == null) {
+                    if(throwExceptionOnEOF) {
+                        throw new QueryParseException(new NullPointerException("Received an empty body from the imageboard URL. (From board: " + board + ", Target: " + cls + ")"));
+                    } else {
+                        return Collections.emptyList();
+                    }
+                }
 
                 List<T> wallpapers = responseFormat.mapper.readValue(body.byteStream(),
                         responseFormat.mapper.getTypeFactory().constructCollectionType(List.class, cls));
