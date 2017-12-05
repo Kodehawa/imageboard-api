@@ -176,7 +176,19 @@ public class ImageBoard<T extends BoardImage> {
      * @return A {@link RequestAction request action} that returns a list of images.
      */
     public RequestAction<List<T>> get(int page, int limit) {
-        return makeRequest(page, limit, null);
+        return makeRequest(page, limit, null, null);
+    }
+
+    /**
+     * Get the provided page's results of the image board.
+     *
+     * @param page Page number.
+     * @param limit Maximum number of images.
+     * @param rating The rating to look for.
+     * @return A {@link RequestAction request action} that returns a list of images.
+     */
+    public RequestAction<List<T>> get(int page, int limit, String rating) {
+        return makeRequest(page, limit, null, rating);
     }
 
     /**
@@ -209,18 +221,33 @@ public class ImageBoard<T extends BoardImage> {
      * @return A {@link RequestAction request action} that returns a list of images.
      */
     public RequestAction<List<T>> search(int page, int limit, String search) {
-        return makeRequest(page, limit, search);
+        return makeRequest(page, limit, search, null);
     }
 
-    private RequestAction<List<T>> makeRequest(int page, int limit, String search) throws QueryParseException, QueryFailedException {
+    /**
+     * Get the first page's results from the image board search, limited at 60 images.
+     *
+     * @param page Page number.
+     * @param limit Maximum number of images.
+     * @param search Image tags.
+     * @param rating The rating to look for.
+     * @return A {@link RequestAction request action} that returns a list of images.
+     */
+    public RequestAction<List<T>> search(int page, int limit, String search, String rating) {
+        return makeRequest(page, limit, search, rating);
+    }
+
+    private RequestAction<List<T>> makeRequest(int page, int limit, String search, String rating) throws QueryParseException, QueryFailedException {
         HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
                 .scheme(board.getScheme())
                 .host(board.getHost())
                 .addPathSegments(board.getPath())
                 .query(board.getQuery())
                 .addQueryParameter("limit", String.valueOf(limit));
+
         if (page != 0) urlBuilder.addQueryParameter(board.getPageMarker(), String.valueOf(page));
         if (search != null) urlBuilder.addQueryParameter("tags", search.toLowerCase().trim());
+        if (rating != null) urlBuilder.addQueryParameter("rating", rating.toLowerCase().trim());
 
         HttpUrl url = urlBuilder.build();
         return requestFactory.makeRequest(url, response -> {
@@ -245,6 +272,10 @@ public class ImageBoard<T extends BoardImage> {
                     return null;
                 }
             } catch (IOException e) {
+                if(e.getMessage().contains("No content to map due to end-of-input") && !throwExceptionOnEOF) {
+                    return Collections.emptyList();
+                }
+
                 throw new QueryParseException(e);
             }
         });
