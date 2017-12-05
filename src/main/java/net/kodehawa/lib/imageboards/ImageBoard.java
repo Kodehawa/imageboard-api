@@ -176,7 +176,7 @@ public class ImageBoard<T extends BoardImage> {
      * @return A {@link RequestAction request action} that returns a list of images.
      */
     public RequestAction<List<T>> get(int page, int limit) {
-        return makeRequest(page, limit, null, null);
+        return get(page, limit, null);
     }
 
     /**
@@ -190,6 +190,18 @@ public class ImageBoard<T extends BoardImage> {
     public RequestAction<List<T>> get(int page, int limit, String rating) {
         return makeRequest(page, limit, null, rating);
     }
+
+    /**
+     * Get the provided page's results of the image board.
+     *
+     * @param limit Maximum number of images.
+     * @param rating The rating to look for.
+     * @return A {@link RequestAction request action} that returns a list of images.
+     */
+    public RequestAction<List<T>> get(int limit, String rating) {
+        return get(0, limit, rating);
+    }
+
 
     /**
      * Get the first page's results from the image board search, limited at 60 images.
@@ -235,6 +247,17 @@ public class ImageBoard<T extends BoardImage> {
      */
     public RequestAction<List<T>> search(int page, int limit, String search, String rating) {
         return makeRequest(page, limit, search, rating);
+    }
+
+    /**
+     * Get the first page's results from the image board search, limited at 60 images.
+     *
+     * @param search Image tags.
+     * @param rating The rating to look for.
+     * @return A {@link RequestAction request action} that returns a list of images.
+     */
+    public RequestAction<List<T>> search(String search, String rating) {
+        return search(0, 60, search, rating);
     }
 
     private RequestAction<List<T>> makeRequest(int page, int limit, String search, String rating) throws QueryParseException, QueryFailedException {
