@@ -117,7 +117,7 @@ public class KonachanImage implements BoardImage {
     }
 
     public String getParsedUrl() {
-        return "https:" + jpeg_url;
+        return jpeg_url;
     }
 
     public String getJpeg_url() {
