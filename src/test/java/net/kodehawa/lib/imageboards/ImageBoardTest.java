@@ -69,7 +69,7 @@ public class ImageBoardTest {
     public void blockingTest() {
         printImages(e621.get(2).blocking());
         printImages(konachan.get(2).blocking());
-        printImages(rule34.get(2).blocking());
+        //printImages(rule34.get(2).blocking());
         printImages(yandere.get(2).blocking());
         printImages(danbooru.get(2).blocking());
         printImages(safebooru.get(2).blocking());
@@ -96,8 +96,8 @@ public class ImageBoardTest {
 
         assertTrue(konachan.search(1, tag).blocking().get(0).getTags().contains(tag));
 
-        assertTrue(rule34.search(1, tag).blocking().get(0).getTags().contains(tag) ||
-                rule34.search(1, tag).blocking().get(0).getTags().contains(knownAliases[0]));
+        /*assertTrue(rule34.search(1, tag).blocking().get(0).getTags().contains(tag) ||
+                rule34.search(1, tag).blocking().get(0).getTags().contains(knownAliases[0]));*/
 
         assertTrue(yandere.search(1, tag).blocking().get(0).getTags().contains(tag));
 

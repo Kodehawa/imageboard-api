@@ -16,6 +16,7 @@
 
 package net.kodehawa.lib.imageboards.entities.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
@@ -116,6 +117,7 @@ public class KonachanImage implements BoardImage {
         return id;
     }
 
+    @JsonIgnore
     public String getParsedUrl() {
         return jpeg_url;
     }

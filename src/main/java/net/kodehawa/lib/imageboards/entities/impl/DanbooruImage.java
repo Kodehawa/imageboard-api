@@ -51,7 +51,7 @@ public class DanbooruImage implements BoardImage {
      * @return The *reachable* URL to get this image. PNG format, or the extension defined in file_ext.
      */
     public String getParsedFileUrl() {
-        return "https://danbooru.donmai.us" + file_url;
+        return file_url.startsWith("https://danbooru.donmai.us") ? file_url : "https://danbooru.donmai.us" + file_url;
     }
 
     /**
@@ -60,7 +60,7 @@ public class DanbooruImage implements BoardImage {
      * @return The *reachable* URL to get this image. JPG format.
      */
     public String getParsedLargeFileUrl() {
-        return "https://danbooru.donmai.us" + large_file_url;
+        return large_file_url.startsWith("https://danbooru.donmai.us") ? large_file_url : "https://danbooru.donmai.us" + large_file_url;
     }
 
     /**
@@ -69,7 +69,7 @@ public class DanbooruImage implements BoardImage {
      * @return The *reachable* URL to get this image. JPG format.
      */
     public String getParsedPreviewFileUrl() {
-        return "https://safebooru.donmai.us/" + preview_file_url;
+        return preview_file_url.startsWith("https://danbooru.donmai.us") ? preview_file_url : "https://danbooru.donmai.us" + preview_file_url;
     }
 
     @Override
