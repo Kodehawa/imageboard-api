@@ -14,16 +14,16 @@ repositories {
 }
 
 dependencies { 
-    compile 'net.kodehawa:imageboard-api:2.0'
+    compile 'net.kodehawa:imageboard-api:2.0.3_2'
 }
 ```
 #### Maven
-Add: https://hastebin.com/uqaquqecur.xml.
+Add the `https://dl.bintray.com/kodehawa/maven` repository to your pom.
 ```xml
 <dependency>
   <groupId>net.kodehawa</groupId>
   <artifactId>imageboard-api</artifactId>
-  <version>2.0</version>
+  <version>2.0.3_2</version>
   <type>pom</type>
 </dependency>
 ```
