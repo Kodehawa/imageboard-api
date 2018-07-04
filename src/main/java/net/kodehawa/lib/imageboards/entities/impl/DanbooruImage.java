@@ -21,6 +21,8 @@ import net.kodehawa.lib.imageboards.entities.Rating;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Kodehawa
@@ -45,13 +47,15 @@ public class DanbooruImage implements BoardImage {
     private String large_file_url;
     private String preview_file_url;
 
+    private Pattern urlPattern = Pattern.compile("https(:)?//[\\w\\d.]*donmai.us");
+
     /**
      * Danbooru normally returns the URL as <p>"file_url": "/data/__furude_rika_higurashi_no_naku_koro_ni_drawn_by_kamaboko_red__fc6fb27e9c6ea2a77c849e5483eafc40.png"</p>
      * Which isn't reachable. This methods gets around it.
      * @return The *reachable* URL to get this image. PNG format, or the extension defined in file_ext.
      */
     public String getParsedFileUrl() {
-        return file_url.startsWith("https://danbooru.donmai.us") ? file_url : "https://danbooru.donmai.us" + file_url;
+        return getFixedURL(file_url);
     }
 
     /**
@@ -60,7 +64,7 @@ public class DanbooruImage implements BoardImage {
      * @return The *reachable* URL to get this image. JPG format.
      */
     public String getParsedLargeFileUrl() {
-        return large_file_url.startsWith("https://danbooru.donmai.us") ? large_file_url : "https://danbooru.donmai.us" + large_file_url;
+        return getFixedURL(large_file_url);
     }
 
     /**
@@ -69,7 +73,22 @@ public class DanbooruImage implements BoardImage {
      * @return The *reachable* URL to get this image. JPG format.
      */
     public String getParsedPreviewFileUrl() {
-        return preview_file_url.startsWith("https://danbooru.donmai.us") ? preview_file_url : "https://danbooru.donmai.us" + preview_file_url;
+        return getFixedURL(this.preview_file_url);
+    }
+
+    private String getFixedURL(String url) {
+        Matcher matcher = urlPattern.matcher(url);
+        if(matcher.find()) {
+            if(matcher.group(1).isEmpty()) {
+                // Broken URL (https//)
+                return url.replace("https//", "https://");
+            } else {
+                return url; // Valid URL
+            }
+        } else {
+            // URL without domain (/data/XXX)
+            return "https://danbooru.donmai.us" + url;
+        }
     }
 
     @Override
