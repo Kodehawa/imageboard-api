@@ -23,7 +23,7 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletionStage;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -62,11 +62,11 @@ public class RequestAction<T> {
 
     /**
      * Obtain the result by submitting the task to an executor and
-     * returning a {@link Future promise}.
+     * returning a {@link CompletionStage promise}.
      *
      * @return Executor promise.
      */
-    public Future<T> submit() {
+    public CompletionStage<T> submit() {
         CompletableFuture<T> future = new CompletableFuture<>();
         async(future::complete, future::completeExceptionally);
         return future;
