@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import net.kodehawa.lib.imageboards.boards.Board;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
+import net.kodehawa.lib.imageboards.entities.Rating;
 import net.kodehawa.lib.imageboards.entities.exceptions.QueryFailedException;
 import net.kodehawa.lib.imageboards.entities.exceptions.QueryParseException;
 import net.kodehawa.lib.imageboards.requests.RequestAction;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Image board API instance.
@@ -187,7 +189,7 @@ public class ImageBoard<T extends BoardImage> {
      * @param rating The rating to look for.
      * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public RequestAction<List<T>> get(int page, int limit, String rating) {
+    public RequestAction<List<T>> get(int page, int limit, Rating rating) {
         return makeRequest(page, limit, null, rating);
     }
 
@@ -198,7 +200,7 @@ public class ImageBoard<T extends BoardImage> {
      * @param rating The rating to look for.
      * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public RequestAction<List<T>> get(int limit, String rating) {
+    public RequestAction<List<T>> get(int limit, Rating rating) {
         return get(0, limit, rating);
     }
 
@@ -245,7 +247,7 @@ public class ImageBoard<T extends BoardImage> {
      * @param rating The rating to look for.
      * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public RequestAction<List<T>> search(int page, int limit, String search, String rating) {
+    public RequestAction<List<T>> search(int page, int limit, String search, Rating rating) {
         return makeRequest(page, limit, search, rating);
     }
 
@@ -256,11 +258,19 @@ public class ImageBoard<T extends BoardImage> {
      * @param rating The rating to look for.
      * @return A {@link RequestAction request action} that returns a list of images.
      */
-    public RequestAction<List<T>> search(String search, String rating) {
+    public RequestAction<List<T>> search(String search, Rating rating) {
         return search(0, 60, search, rating);
     }
 
-    private RequestAction<List<T>> makeRequest(int page, int limit, String search, String rating) throws QueryParseException, QueryFailedException {
+    public RequestAction<List<T>> search(List<String> search, Rating rating) {
+        return search(0, 60, String.join(" ", search), rating);
+    }
+
+    public RequestAction<List<T>> search(String[] search, Rating rating) {
+        return search(0, 60, String.join(" ", search), rating);
+    }
+
+    private RequestAction<List<T>> makeRequest(int page, int limit, String search, Rating rating) throws QueryParseException, QueryFailedException {
         HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
                 .scheme(board.getScheme())
                 .host(board.getHost())
@@ -268,9 +278,14 @@ public class ImageBoard<T extends BoardImage> {
                 .query(board.getQuery())
                 .addQueryParameter("limit", String.valueOf(limit));
 
-        if (page != 0) urlBuilder.addQueryParameter(board.getPageMarker(), String.valueOf(page));
-        if (search != null) urlBuilder.addQueryParameter("tags", search.toLowerCase().trim());
-        if (rating != null) urlBuilder.addQueryParameter("rating", rating.toLowerCase().trim());
+        if (page != 0)
+            urlBuilder.addQueryParameter(board.getPageMarker(), String.valueOf(page));
+        if (search != null) {
+            StringBuilder tags = new StringBuilder(search.toLowerCase().trim());
+            if(rating != null)
+                tags.append(" rating:").append(rating.getShortName());
+            urlBuilder.addQueryParameter("tags", tags.toString());
+        }
 
         HttpUrl url = urlBuilder.build();
         return requestFactory.makeRequest(url, response -> {

@@ -9,7 +9,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.1'
 }
 
-def versionObj = new Version(major: 2, minor: 0, revision: "5")
+def versionObj = new Version(major: 2, minor: 0, revision: "6")
 
 group 'net.kodehawa'
 def artifactid = 'imageboard-api'

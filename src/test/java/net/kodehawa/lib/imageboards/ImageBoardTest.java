@@ -18,13 +18,13 @@ package net.kodehawa.lib.imageboards;
 
 import net.kodehawa.lib.imageboards.boards.DefaultBoards;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
+import net.kodehawa.lib.imageboards.entities.Rating;
 import net.kodehawa.lib.imageboards.entities.impl.*;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ImageBoardTest {
     private static final ImageBoard<FurryImage> e621 = DefaultImageBoards.E621;
@@ -35,7 +35,7 @@ public class ImageBoardTest {
     private static final ImageBoard<SafebooruImage> safebooru = DefaultImageBoards.SAFEBOORU;
 
     //Run this first to check if everything returns as expected
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         e621.get(2).async(ImageBoardTest::printImages);
         konachan.get(2).async(ImageBoardTest::printImages);
         rule34.get(2).async(ImageBoardTest::printImages);
@@ -103,27 +103,33 @@ public class ImageBoardTest {
 
         assertTrue(danbooru.search(1, tag).blocking().get(0).getTags().contains(tag));
 
-        assertTrue(safebooru.search(1, tag).blocking().get(0).getTags().contains(tag));
+        //assertTrue(safebooru.search(1, tag).blocking().get(0).getTags().contains(tag));
+
+        assertTrue(yandere.search("animal_ears yuri", Rating.EXPLICIT).blocking().get(0).getTags().contains(tag));
+
+        assertSame(yandere.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
+        assertSame(danbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
+        assertSame(konachan.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
     }
 
     @Test
     public void returnsProperClasses() {
-        assertTrue(e621.getBoardType().equals(DefaultBoards.E621));
-        assertTrue(e621.getImageType().equals(FurryImage.class));
+        assertEquals(e621.getBoardType(), DefaultBoards.E621);
+        assertEquals(e621.getImageType(), FurryImage.class);
 
-        assertTrue(konachan.getBoardType().equals(DefaultBoards.KONACHAN));
-        assertTrue(konachan.getImageType().equals(KonachanImage.class));
+        assertEquals(konachan.getBoardType(), DefaultBoards.KONACHAN);
+        assertEquals(konachan.getImageType(), KonachanImage.class);
 
-        assertTrue(rule34.getBoardType().equals(DefaultBoards.R34));
-        assertTrue(rule34.getImageType().equals(Rule34Image.class));
+        assertEquals(rule34.getBoardType(), DefaultBoards.R34);
+        assertEquals(rule34.getImageType(), Rule34Image.class);
 
-        assertTrue(yandere.getBoardType().equals(DefaultBoards.YANDERE));
-        assertTrue(yandere.getImageType().equals(YandereImage.class));
+        assertEquals(yandere.getBoardType(), DefaultBoards.YANDERE);
+        assertEquals(yandere.getImageType(), YandereImage.class);
 
-        assertTrue(danbooru.getBoardType().equals(DefaultBoards.DANBOORU));
-        assertTrue(danbooru.getImageType().equals(DanbooruImage.class));
+        assertEquals(danbooru.getBoardType(), DefaultBoards.DANBOORU);
+        assertEquals(danbooru.getImageType(), DanbooruImage.class);
 
-        assertTrue(safebooru.getBoardType().equals(DefaultBoards.SAFEBOORU));
-        assertTrue(safebooru.getImageType().equals(SafebooruImage.class));
+        assertEquals(safebooru.getBoardType(), DefaultBoards.SAFEBOORU);
+        assertEquals(safebooru.getImageType(), SafebooruImage.class);
     }
 }
