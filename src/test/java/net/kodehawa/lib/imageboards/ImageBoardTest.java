@@ -69,7 +69,7 @@ public class ImageBoardTest {
     public void blockingTest() {
         printImages(e621.get(2).blocking());
         printImages(konachan.get(2).blocking());
-        //printImages(rule34.get(2).blocking());
+        printImages(rule34.get(2).blocking());
         printImages(yandere.get(2).blocking());
         printImages(danbooru.get(2).blocking());
         printImages(safebooru.get(2).blocking());
@@ -96,20 +96,25 @@ public class ImageBoardTest {
 
         assertTrue(konachan.search(1, tag).blocking().get(0).getTags().contains(tag));
 
-        /*assertTrue(rule34.search(1, tag).blocking().get(0).getTags().contains(tag) ||
-                rule34.search(1, tag).blocking().get(0).getTags().contains(knownAliases[0]));*/
+        assertTrue(rule34.search(1, tag).blocking().get(0).getTags().contains(tag) ||
+                rule34.search(1, tag).blocking().get(0).getTags().contains(knownAliases[0]));
 
         assertTrue(yandere.search(1, tag).blocking().get(0).getTags().contains(tag));
 
         assertTrue(danbooru.search(1, tag).blocking().get(0).getTags().contains(tag));
 
-        //assertTrue(safebooru.search(1, tag).blocking().get(0).getTags().contains(tag));
+        assertTrue(safebooru.search(1, tag).blocking().get(0).getTags().contains(tag));
 
         assertTrue(yandere.search("animal_ears yuri", Rating.EXPLICIT).blocking().get(0).getTags().contains(tag));
 
         assertSame(yandere.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
+        assertSame(danbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
         assertSame(konachan.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
+        assertSame(konachan.search(tag, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
+        assertSame(konachan.search("", Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
+        assertSame(konachan.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
+        assertSame(danbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
     }
 
     @Test

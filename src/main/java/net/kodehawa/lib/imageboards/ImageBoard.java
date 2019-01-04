@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Image board API instance.
@@ -190,7 +189,7 @@ public class ImageBoard<T extends BoardImage> {
      * @return A {@link RequestAction request action} that returns a list of images.
      */
     public RequestAction<List<T>> get(int page, int limit, Rating rating) {
-        return makeRequest(page, limit, null, rating);
+        return makeRequest(page, limit, "", rating);
     }
 
     /**
@@ -267,6 +266,10 @@ public class ImageBoard<T extends BoardImage> {
     }
 
     public RequestAction<List<T>> search(String[] search, Rating rating) {
+        return search(0, 60, String.join(" ", search), rating);
+    }
+
+    public RequestAction<List<T>> search(Rating rating, String... search) {
         return search(0, 60, String.join(" ", search), rating);
     }
 
