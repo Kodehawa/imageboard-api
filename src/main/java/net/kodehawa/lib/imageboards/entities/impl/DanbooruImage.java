@@ -77,6 +77,9 @@ public class DanbooruImage implements BoardImage {
     }
 
     private String getFixedURL(String url) {
+        if (url == null) {
+            return null;
+        }
         Matcher matcher = urlPattern.matcher(url);
         if(matcher.find()) {
             if(matcher.group(1).isEmpty()) {
