@@ -39,6 +39,8 @@ There is a `ImageBoards` class located under utils, that one contains static, pr
  * Yande.re
  * Danbooru
  * Safebooru
+ * Gelbooru
+ * e926
 
 Creating your own Image Board API instance is possible, but would require a little tweaking.
     Please refer to the `ImageBoards.java` and `CustomBoard.java` to set up boards that are not included
