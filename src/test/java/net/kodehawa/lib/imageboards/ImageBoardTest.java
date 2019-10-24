@@ -96,6 +96,8 @@ public class ImageBoardTest {
 
     @Test
     public void tagsReturnRelevantResults() {
+        ImageBoard.throwExceptionOnEOF = false;
+
         String tag = "animal_ears";
         String[] knownAliases = {"animal_ear", "animal_humanoid"};
 
@@ -122,9 +124,9 @@ public class ImageBoardTest {
         assertSame(yandere.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
-        assertSame(gelbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
-        assertSame(gelbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.EXPLICIT);
-        assertSame(gelbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
+        assertSame(gelbooru.search(tag, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
+        assertSame(gelbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
+        assertSame(gelbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
         assertSame(konachan.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(konachan.search(tag, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
         assertSame(konachan.search("", Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);

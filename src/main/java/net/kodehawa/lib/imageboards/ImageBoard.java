@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import net.kodehawa.lib.imageboards.boards.Board;
+import net.kodehawa.lib.imageboards.boards.DefaultBoards;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 import net.kodehawa.lib.imageboards.entities.exceptions.QueryFailedException;
@@ -290,8 +291,10 @@ public class ImageBoard<T extends BoardImage> {
             urlBuilder.addQueryParameter(board.getPageMarker(), String.valueOf(page));
         if (search != null) {
             StringBuilder tags = new StringBuilder(search.toLowerCase().trim());
-            if(rating != null)
-                tags.append(" rating:").append(rating.getShortName());
+            if(rating != null) {
+                //Fuck you gelbooru you're the only one doing this :(
+                tags.append(" rating:").append(board == DefaultBoards.GELBOORU ? rating.getLongName() : rating.getShortName());
+            }
             urlBuilder.addQueryParameter("tags", tags.toString());
         }
 
@@ -307,13 +310,13 @@ public class ImageBoard<T extends BoardImage> {
                     }
                 }
 
-                List<T> wallpapers = responseFormat.mapper.readValue(body.byteStream(),
+                List<T> images = responseFormat.mapper.readValue(body.byteStream(),
                         responseFormat.mapper.getTypeFactory().constructCollectionType(List.class, cls));
 
                 body.close();
 
-                if (wallpapers != null) {
-                    return wallpapers;
+                if (images != null) {
+                    return images;
                 } else {
                     return null;
                 }
