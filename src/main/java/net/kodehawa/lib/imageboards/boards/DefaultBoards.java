@@ -37,7 +37,9 @@ public enum DefaultBoards implements Board {
     KONACHAN("http", "konachan.com", "post.json", null, "page"),
     YANDERE("https", "yande.re", "post.json", null, "page"),
     DANBOORU("https", "danbooru.donmai.us", "posts.json", null, "page"),
-    SAFEBOORU("https", "safebooru.org", "index.php", "page=dapi&s=post&q=index&json=1", "pid");
+    SAFEBOORU("https", "safebooru.org", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
+    GELBOORU("https", "gelbooru.com", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
+    E926("https", "e926.net", "post/index.json", null, "page");
 
     private final String scheme;
     private final String pathSegment;

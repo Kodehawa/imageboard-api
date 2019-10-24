@@ -53,6 +53,8 @@ public class ImageBoard<T extends BoardImage> {
      */
     public static final String VERSION = "@version@";
 
+    public static final String userAgent = "ImageboardAPI/@version@/https://github.com/Kodehawa/imageboard-api";
+
     /**
      * Requester client.
      */

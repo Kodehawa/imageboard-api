@@ -39,4 +39,6 @@ public class DefaultImageBoards {
     public static final ImageBoard<YandereImage> YANDERE = new ImageBoard<>(client, DefaultBoards.YANDERE, YandereImage.class);
     public static final ImageBoard<DanbooruImage> DANBOORU = new ImageBoard<>(client, DefaultBoards.DANBOORU, DanbooruImage.class);
     public static final ImageBoard<SafebooruImage> SAFEBOORU = new ImageBoard<>(client, DefaultBoards.SAFEBOORU, SafebooruImage.class);
+    public static final ImageBoard<SafeFurryImage> E926 = new ImageBoard<>(client, DefaultBoards.E926, SafeFurryImage.class);
+    public static final ImageBoard<GelbooruImage> GELBOORU = new ImageBoard<>(client, DefaultBoards.GELBOORU, GelbooruImage.class);
 }

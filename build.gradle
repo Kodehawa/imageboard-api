@@ -1,5 +1,3 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 plugins {
     id 'com.jfrog.bintray' version '1.7.2'
     id 'java'
@@ -9,7 +7,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.1'
 }
 
-def versionObj = new Version(major: 2, minor: 0, revision: 7)
+def versionObj = new Version(major: 2, minor: 1, revision: 0)
 
 group 'net.kodehawa'
 def artifactid = 'imageboard-api'
@@ -34,6 +32,8 @@ task sourcesForRelease(type: Copy) {
     from 'src/main/java'
     into 'build/filteredSrc'
 }
+
+import org.apache.tools.ant.filters.ReplaceTokens
 
 //Task for the versioning system
 task prepareSource(type: Copy) {
@@ -77,8 +77,8 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 bintray {
-    user = bintrayUsername
-    key = bintrayApiKey
+    user = "$bintray_user"
+    key = "$bintray_api_key"
     publications = ["BintrayRelease"]
     pkg {
         repo = 'maven'
@@ -106,9 +106,9 @@ publishing {
     }
 }
 
-String getProjectProperty(String propertyName)
+String getProjectProperty(propertyName)
 {
-    String property = ""
+    def property = ""
     if (hasProperty(propertyName))
     {
         property = project.properties[propertyName]

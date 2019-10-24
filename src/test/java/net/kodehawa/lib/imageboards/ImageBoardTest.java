@@ -33,6 +33,8 @@ public class ImageBoardTest {
     private static final ImageBoard<YandereImage> yandere = DefaultImageBoards.YANDERE;
     private static final ImageBoard<DanbooruImage> danbooru = DefaultImageBoards.DANBOORU;
     private static final ImageBoard<SafebooruImage> safebooru = DefaultImageBoards.SAFEBOORU;
+    private static final ImageBoard<SafeFurryImage> e926 = DefaultImageBoards.E926;
+    private static final ImageBoard<GelbooruImage> gelbooru = DefaultImageBoards.GELBOORU;
 
     //Run this first to check if everything returns as expected
     public static void main(String[] args) {
@@ -42,6 +44,8 @@ public class ImageBoardTest {
         yandere.get(2).async(ImageBoardTest::printImages);
         danbooru.get(2).async(ImageBoardTest::printImages);
         safebooru.get(2).async(ImageBoardTest::printImages);
+        gelbooru.get(2).async(ImageBoardTest::printImages);
+        e926.get(2).async(ImageBoardTest::printImages);
     }
 
     private static void printImages(List<? extends BoardImage> images) {
@@ -63,6 +67,8 @@ public class ImageBoardTest {
         yandere.get(1).async(ImageBoardTest::assertImages);
         danbooru.get(1).async(ImageBoardTest::assertImages);
         safebooru.get(1).async(ImageBoardTest::assertImages);
+        gelbooru.get(1).async(ImageBoardTest::assertImages);
+        e926.get(1).async(ImageBoardTest::assertImages);
     }
 
     @Test
@@ -73,6 +79,8 @@ public class ImageBoardTest {
         printImages(yandere.get(2).blocking());
         printImages(danbooru.get(2).blocking());
         printImages(safebooru.get(2).blocking());
+        printImages(gelbooru.get(2).blocking());
+        printImages(e926.get(2).blocking());
     }
 
     @Test(expected = NullPointerException.class)
@@ -107,14 +115,22 @@ public class ImageBoardTest {
 
         assertTrue(yandere.search("animal_ears yuri", Rating.EXPLICIT).blocking().get(0).getTags().contains(tag));
 
+        assertTrue(gelbooru.search(1, tag).blocking().get(0).getTags().contains(tag));
+        assertTrue(e926.search(1, tag).blocking().get(0).getTags().contains(tag) ||
+                e926.search(1, tag).blocking().get(0).getTags().contains(knownAliases[1]));
+
         assertSame(yandere.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
+        assertSame(gelbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
+        assertSame(gelbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.EXPLICIT);
+        assertSame(gelbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
         assertSame(konachan.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(konachan.search(tag, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
         assertSame(konachan.search("", Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
         assertSame(konachan.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
         assertSame(danbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
+        assertSame(e926.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
     }
 
     @Test
@@ -136,5 +152,12 @@ public class ImageBoardTest {
 
         assertEquals(safebooru.getBoardType(), DefaultBoards.SAFEBOORU);
         assertEquals(safebooru.getImageType(), SafebooruImage.class);
+
+        assertEquals(gelbooru.getBoardType(), DefaultBoards.GELBOORU);
+        assertEquals(gelbooru.getImageType(), GelbooruImage.class);
+
+        assertEquals(e926.getBoardType(), DefaultBoards.E926);
+        assertEquals(e926.getImageType(), SafeFurryImage.class);
+
     }
 }
