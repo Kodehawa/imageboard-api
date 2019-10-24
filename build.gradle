@@ -1,5 +1,5 @@
 plugins {
-    id 'com.jfrog.bintray' version '1.7.2'
+    id 'com.jfrog.bintray' version '1.8.4'
     id 'java'
     id 'maven'
     id 'maven-publish'
@@ -138,8 +138,8 @@ build {
 bintrayUpload {
     dependsOn build
 
-    onlyIf { !getProjectProperty("bintrayUsername").empty }
-    onlyIf { !getProjectProperty("bintrayApiKey").empty }
+    onlyIf { !"$bintray_user".isEmpty() }
+    onlyIf { !"$bintray_api_key".isEmpty() }
 }
 
 class Version {
