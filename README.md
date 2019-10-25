@@ -48,7 +48,7 @@ Creating your own Image Board API instance is possible, but would require a litt
 
 
 ### Implementation
-You can find implementation details and a lot of examples in the [tests for this project](https://github.com/Kodehawa/imageboard-api/blob/master/src/test/java/net/kodehawa/lib/imageboards/ImageBoardTest.java)
+You can find implementation details and a lot of examples in the [tests for this project](https://github.com/Kodehawa/imageboard-api/blob/master/src/test/java/net/kodehawa/lib/imageboards/ImageBoardTest.java) and in [Mantaro](https://github.com/Mantaro/MantaroBot/blob/master/src/main/java/net/kodehawa/mantarobot/commands/image/ImageboardUtils.java#L57)
 
 ### Random Images
 ```java
