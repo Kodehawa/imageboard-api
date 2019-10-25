@@ -46,6 +46,10 @@ Creating your own Image Board API instance is possible, but would require a litt
     Please refer to the `ImageBoards.java` and `CustomBoard.java` to set up boards that are not included
     with this API.
 
+
+### Implementation
+You can find implementation details and a lot of examples in the [tests for this project](https://github.com/Kodehawa/imageboard-api/blob/master/src/test/java/net/kodehawa/lib/imageboards/ImageBoardTest.java)
+
 ### Random Images
 ```java
 import net.kodehawa.lib.imageboards.entities.BoardImage;
