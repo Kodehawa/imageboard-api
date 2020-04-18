@@ -1,5 +1,5 @@
 # ImageBoard API
- [ ![Download](https://api.bintray.com/packages/kodehawa/imageboard-api/imageboard-api/images/download.svg) ](https://bintray.com/kodehawa/imageboard-api/imageboard-api/_latestVersion) 
+ [ ![Download](https://api.bintray.com/packages/kodehawa/maven/imageboard-api/images/download.svg) ](https://bintray.com/kodehawa/maven/imageboard-api/_latestVersion) 
  
 ImageBoard API is a simple asynchronous API wrapper around 
     the most popular danbooru-compatible imageboard APIs.
@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies { 
-    compile 'net.kodehawa:imageboard-api:2.1'
+    compile 'net.kodehawa:imageboard-api:2.2'
 }
 ```
 
