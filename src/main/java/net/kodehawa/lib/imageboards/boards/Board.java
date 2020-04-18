@@ -47,4 +47,6 @@ public interface Board {
      * @return Page marker.
      */
     String getPageMarker();
+
+    String getOuterObject();
 }

@@ -30,22 +30,21 @@ package net.kodehawa.lib.imageboards.boards;
  * @author Kodehawa
  */
 public enum DefaultBoards implements Board {
-    //Lewd APIs
     R34("https", "rule34.xxx", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
-    E621("https", "e621.net", "post/index.json", null, "page"),
-    //Normal APIs
+    E621("https", "e621.net", "posts.json", null, "page", "posts"),
     KONACHAN("http", "konachan.com", "post.json", null, "page"),
     YANDERE("https", "yande.re", "post.json", null, "page"),
     DANBOORU("https", "danbooru.donmai.us", "posts.json", null, "page"),
     SAFEBOORU("https", "safebooru.org", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
     GELBOORU("https", "gelbooru.com", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
-    E926("https", "e926.net", "post/index.json", null, "page");
+    E926("https", "e926.net", "posts.json", null, "page", "posts");
 
     private final String scheme;
     private final String pathSegment;
     private final String host;
     private final String query;
     private final String pageMarker;
+    private final String outerObject;
 
     DefaultBoards(String scheme, String host, String pathSegment, String query, String pageMarker) {
         this.scheme = scheme;
@@ -53,6 +52,16 @@ public enum DefaultBoards implements Board {
         this.query = query;
         this.pathSegment = pathSegment;
         this.pageMarker = pageMarker;
+        this.outerObject = null;
+    }
+
+    DefaultBoards(String scheme, String host, String pathSegment, String query, String pageMarker, String outerObject) {
+        this.scheme = scheme;
+        this.host = host;
+        this.query = query;
+        this.pathSegment = pathSegment;
+        this.pageMarker = pageMarker;
+        this.outerObject = outerObject;
     }
 
     @Override
@@ -78,5 +87,10 @@ public enum DefaultBoards implements Board {
     @Override
     public String getPageMarker() {
         return pageMarker;
+    }
+
+    @Override
+    public String getOuterObject() {
+        return outerObject;
     }
 }

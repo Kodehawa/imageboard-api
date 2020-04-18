@@ -31,10 +31,13 @@ import net.kodehawa.lib.imageboards.requests.RequestFactory;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -300,7 +303,7 @@ public class ImageBoard<T extends BoardImage> {
 
         HttpUrl url = urlBuilder.build();
         return requestFactory.makeRequest(url, response -> {
-            log.debug("Making request to {} (Response format: {}, Imageboard: {}, Target: {})", url.toString(), responseFormat, board, cls);
+            log.info("Making request to {} (Response format: {}, Imageboard: {}, Target: {})", url.toString(), responseFormat, board, cls);
             try (ResponseBody body = response.body()) {
                 if (body == null) {
                     if(throwExceptionOnEOF) {
@@ -310,8 +313,16 @@ public class ImageBoard<T extends BoardImage> {
                     }
                 }
 
-                List<T> images = responseFormat.mapper.readValue(body.byteStream(),
-                        responseFormat.mapper.getTypeFactory().constructCollectionType(List.class, cls));
+                ObjectMapper mapper = responseFormat.mapper;
+                List<T> images;
+                InputStream inputStream = body.byteStream();
+
+                if(board.getOuterObject() != null) {
+                    String posts = mapper.writeValueAsString(mapper.readTree(inputStream).get(board.getOuterObject()));
+                    images = mapper.readValue(posts, mapper.getTypeFactory().constructCollectionType(List.class, cls));
+                } else {
+                    images = mapper.readValue(inputStream, mapper.getTypeFactory().constructCollectionType(List.class, cls));
+                }
 
                 body.close();
 
@@ -324,6 +335,8 @@ public class ImageBoard<T extends BoardImage> {
                 if(e.getMessage().contains("No content to map due to end-of-input") && !throwExceptionOnEOF) {
                     return Collections.emptyList();
                 }
+
+                e.printStackTrace();
 
                 throw new QueryParseException(e);
             }

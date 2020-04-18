@@ -27,13 +27,15 @@ public class CustomBoard implements Board {
     private final String pathSegment;
     private final String separator;
     private final String pageMarker;
+    private final String outerObject;
 
-    public CustomBoard(String scheme, String host, String pathSegment, String separator, String pageMarker) {
+    public CustomBoard(String scheme, String host, String pathSegment, String separator, String pageMarker, String outerObject) {
         this.scheme = scheme;
         this.pathSegment = pathSegment;
         this.separator = separator;
         this.host = host;
         this.pageMarker = pageMarker;
+        this.outerObject = outerObject;
     }
 
     @Override
@@ -59,5 +61,10 @@ public class CustomBoard implements Board {
     @Override
     public String getPageMarker() {
         return pageMarker;
+    }
+
+    @Override
+    public String getOuterObject() {
+        return outerObject;
     }
 }
