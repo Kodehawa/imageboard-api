@@ -1,4 +1,6 @@
 # ImageBoard API
+ [ ![Download](https://api.bintray.com/packages/kodehawa/imageboard-api/imageboard-api/images/download.svg) ](https://bintray.com/kodehawa/imageboard-api/imageboard-api/_latestVersion) 
+ 
 ImageBoard API is a simple asynchronous API wrapper around 
     the most popular danbooru-compatible imageboard APIs.
     The interface also supports other types of custom boards
