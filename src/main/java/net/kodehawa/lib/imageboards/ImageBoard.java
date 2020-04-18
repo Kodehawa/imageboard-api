@@ -301,7 +301,7 @@ public class ImageBoard<T extends BoardImage> {
 
         HttpUrl url = urlBuilder.build();
         return requestFactory.makeRequest(url, response -> {
-            log.info("Making request to {} (Response format: {}, Imageboard: {}, Target: {})", url.toString(), responseFormat, board, cls);
+            log.debug("Making request to {} (Response format: {}, Imageboard: {}, Target: {})", url.toString(), responseFormat, board, cls);
             try (ResponseBody body = response.body()) {
                 if (body == null) {
                     if(throwExceptionOnEOF) {
