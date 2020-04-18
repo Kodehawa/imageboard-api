@@ -68,17 +68,17 @@ public class ImageBoard<T extends BoardImage> {
     /**
      * Image board's endpoint.
      */
-    private Board board;
+    private final Board board;
 
     /**
      * Deserialization target.
      */
-    private Class<T> cls;
+    private final Class<T> cls;
 
     /**
      * GET return format of the board.
      */
-    private ResponseFormat responseFormat;
+    private final ResponseFormat responseFormat;
 
     /**
      * Changes whether we're gonna throw exceptions on EOF or no
@@ -268,18 +268,6 @@ public class ImageBoard<T extends BoardImage> {
         return search(0, 60, search, rating);
     }
 
-    public RequestAction<List<T>> search(List<String> search, Rating rating) {
-        return search(0, 60, String.join(" ", search), rating);
-    }
-
-    public RequestAction<List<T>> search(String[] search, Rating rating) {
-        return search(0, 60, String.join(" ", search), rating);
-    }
-
-    public RequestAction<List<T>> search(Rating rating, String... search) {
-        return search(0, 60, String.join(" ", search), rating);
-    }
-
     private RequestAction<List<T>> makeRequest(int page, int limit, String search, Rating rating) throws QueryParseException, QueryFailedException {
         HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
                 .scheme(board.getScheme())
@@ -324,11 +312,7 @@ public class ImageBoard<T extends BoardImage> {
 
                 body.close();
 
-                if (images != null) {
-                    return images;
-                } else {
-                    return null;
-                }
+                return images;
             } catch (IOException e) {
                 if(e.getMessage().contains("No content to map due to end-of-input") && !throwExceptionOnEOF) {
                     return Collections.emptyList();
