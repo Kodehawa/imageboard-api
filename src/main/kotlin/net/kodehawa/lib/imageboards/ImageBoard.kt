@@ -217,13 +217,16 @@ class ImageBoard<T : BoardImage?>(
             search: String?,
             rating: Rating?
     ): RequestAction<List<T>> {
+
         val urlBuilder = HttpUrl.Builder()
                 .scheme(boardType.scheme)
                 .host(boardType.host)
                 .addPathSegments(boardType.path)
                 .query(boardType.query)
                 .addQueryParameter("limit", limit.toString())
+
         if (page != 0) urlBuilder.addQueryParameter(boardType.pageMarker, page.toString())
+
         if (search != null) {
             val tags = StringBuilder(search.toLowerCase().trim { it <= ' ' })
             if (rating != null) {
