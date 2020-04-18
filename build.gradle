@@ -1,3 +1,12 @@
+buildscript {
+    ext.kotlin_version = '1.3.72'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 plugins {
     id 'com.jfrog.bintray' version '1.8.4'
     id 'java'
@@ -14,6 +23,7 @@ def artifactid = 'imageboard-api'
 version "$versionObj"
 
 apply plugin: 'java'
+apply plugin: 'kotlin'
 
 sourceCompatibility = 1.8
 
@@ -26,6 +36,7 @@ dependencies {
     compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.9.0'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 task sourcesForRelease(type: Copy) {
@@ -77,8 +88,8 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 bintray {
-    user = "$bintray_user"
-    key = "$bintray_api_key"
+    //user = "$bintray_user"
+    //key = "$bintray_api_key"
     publications = ["BintrayRelease"]
     pkg {
         repo = 'maven'
@@ -116,9 +127,9 @@ String getProjectProperty(propertyName)
     return property
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
-}
+//task wrapper(type: Wrapper) {
+//    gradleVersion = '6.3'
+//}
 
 build {
     dependsOn clean
@@ -140,6 +151,16 @@ bintrayUpload {
 
     onlyIf { !"$bintray_user".isEmpty() }
     onlyIf { !"$bintray_api_key".isEmpty() }
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 class Version {
