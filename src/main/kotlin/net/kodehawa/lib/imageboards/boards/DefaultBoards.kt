@@ -29,70 +29,70 @@ package net.kodehawa.lib.imageboards.boards
  * @author Kodehawa
  */
 enum class DefaultBoards(
-        override val scheme: String,
-        override val host: String,
-        override val path: String,
-        override val query: String?,
-        override val pageMarker: String
+		override val scheme: String,
+		override val host: String,
+		override val path: String,
+		override val query: String?,
+		override val pageMarker: String
 ) : Board {
-    //Lewd APIs
-    R34(
-            "https",
-            "rule34.xxx",
-            "index.php",
-            "page=dapi&s=post&q=index&json=1",
-            "pid"
-    ),
-    E621(
-            "https",
-            "e621.net",
-            "post/index.json",
-            null,
-            "page"
-    ),
+	//Lewd APIs
+	R34(
+			"https",
+			"rule34.xxx",
+			"index.php",
+			"page=dapi&s=post&q=index&json=1",
+			"pid"
+	),
+	E621(
+			"https",
+			"e621.net",
+			"post/index.json",
+			null,
+			"page"
+	),
 
-    //Normal APIs
-    KONACHAN(
-            "http",
-            "konachan.com",
-            "post.json",
-            null,
-            "page"
-    ),
-    YANDERE(
-            "https",
-            "yande.re",
-            "post.json",
-            null,
-            "page"
-    ),
-    DANBOORU(
-            "https",
-            "danbooru.donmai.us",
-            "posts.json",
-            null,
-            "page"
-    ),
-    SAFEBOORU(
-            "https",
-            "safebooru.org",
-            "index.php",
-            "page=dapi&s=post&q=index&json=1",
-            "pid"
-    ),
-    GELBOORU(
-            "https",
-            "gelbooru.com",
-            "index.php",
-            "page=dapi&s=post&q=index&json=1",
-            "pid"
-    ),
-    E926(
-            "https",
-            "e926.net",
-            "post/index.json",
-            null,
-            "page"
-    );
+	//Normal APIs
+	KONACHAN(
+			"http",
+			"konachan.com",
+			"post.json",
+			null,
+			"page"
+	),
+	YANDERE(
+			"https",
+			"yande.re",
+			"post.json",
+			null,
+			"page"
+	),
+	DANBOORU(
+			"https",
+			"danbooru.donmai.us",
+			"posts.json",
+			null,
+			"page"
+	),
+	SAFEBOORU(
+			"https",
+			"safebooru.org",
+			"index.php",
+			"page=dapi&s=post&q=index&json=1",
+			"pid"
+	),
+	GELBOORU(
+			"https",
+			"gelbooru.com",
+			"index.php",
+			"page=dapi&s=post&q=index&json=1",
+			"pid"
+	),
+	E926(
+			"https",
+			"e926.net",
+			"post/index.json",
+			null,
+			"page"
+	);
 
 }

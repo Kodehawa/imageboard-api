@@ -32,28 +32,28 @@ import okhttp3.Response
  */
 class RequestFactory(private val client: OkHttpClient) {
 
-    /**
-     * Creates a [request action][RequestAction] on a URL.
-     *
-     * @param url       Target url.
-     * @param transform Successful response transformer.
-     * @param <T>       Return type.
-     * @return Request action.
-    </T> */
-    fun <T> makeRequest(url: String, transform: (Response) -> T): RequestAction<T> =
-            makeRequest(HttpUrl.parse(url)!!, transform)
+	/**
+	 * Creates a [request action][RequestAction] on a URL.
+	 *
+	 * @param url       Target url.
+	 * @param transform Successful response transformer.
+	 * @param <T>       Return type.
+	 * @return Request action.
+	</T> */
+	fun <T> makeRequest(url: String, transform: (Response) -> T): RequestAction<T> =
+			makeRequest(HttpUrl.parse(url)!!, transform)
 
-    /**
-     * Creates a [request action][RequestAction] on a URL.
-     *
-     * @param url       Target url.
-     * @param transform Successful response transformer.
-     * @param <T>       Return type.
-     * @return Request action.
-    </T> */
-    fun <T> makeRequest(url: HttpUrl, transform: (Response) -> T): RequestAction<T> =
-            RequestAction(client.newCall(Request.Builder().url(url).header(
-                    "User-Agent",
-                    ImageBoard.userAgent
-            ).build()), transform)
+	/**
+	 * Creates a [request action][RequestAction] on a URL.
+	 *
+	 * @param url       Target url.
+	 * @param transform Successful response transformer.
+	 * @param <T>       Return type.
+	 * @return Request action.
+	</T> */
+	fun <T> makeRequest(url: HttpUrl, transform: (Response) -> T): RequestAction<T> =
+			RequestAction(client.newCall(Request.Builder().url(url).header(
+					"User-Agent",
+					ImageBoard.userAgent
+			).build()), transform)
 }
