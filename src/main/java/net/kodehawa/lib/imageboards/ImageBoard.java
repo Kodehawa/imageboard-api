@@ -31,8 +31,6 @@ import net.kodehawa.lib.imageboards.requests.RequestFactory;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -335,8 +333,6 @@ public class ImageBoard<T extends BoardImage> {
                 if(e.getMessage().contains("No content to map due to end-of-input") && !throwExceptionOnEOF) {
                     return Collections.emptyList();
                 }
-
-                e.printStackTrace();
 
                 throw new QueryParseException(e);
             }
