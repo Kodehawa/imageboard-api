@@ -210,6 +210,17 @@ public class ImageBoard<T extends BoardImage> {
         return get(0, limit, rating);
     }
 
+    public RequestAction<List<T>> search(List<String> search, Rating rating) {
+        return search(0, 60, String.join(" ", search), rating);
+    }
+
+    public RequestAction<List<T>> search(String[] search, Rating rating) {
+        return search(0, 60, String.join(" ", search), rating);
+    }
+
+    public RequestAction<List<T>> search(Rating rating, String... search) {
+        return search(0, 60, String.join(" ", search), rating);
+    }
 
     /**
      * Get the first page's results from the image board search, limited at 60 images.
