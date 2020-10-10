@@ -73,4 +73,10 @@ public class SafebooruImage implements BoardImage {
     public String getURL(){
         return getFileUrl();
     }
+
+    // Doesn't implement it, probably doesn't matter since it's a safe board.
+    @Override
+    public boolean hasChildren() {
+        return false;
+    }
 }

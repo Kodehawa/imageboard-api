@@ -50,6 +50,7 @@ public class KonachanImage implements BoardImage {
     private String source;
     private String status;
     private String tags;
+    private boolean has_children;
 
     public int getCreated_at() {
         return created_at;
@@ -130,6 +131,10 @@ public class KonachanImage implements BoardImage {
         return status;
     }
 
+    public boolean isHas_children() {
+        return has_children;
+    }
+
     @Override
     public int getScore() {
         return score;
@@ -158,5 +163,10 @@ public class KonachanImage implements BoardImage {
     @Override
     public String getURL() {
         return getParsedUrl();
+    }
+
+    @Override
+    public boolean hasChildren() {
+        return isHas_children();
     }
 }

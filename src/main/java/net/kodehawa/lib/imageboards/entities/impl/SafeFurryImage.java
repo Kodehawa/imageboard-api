@@ -144,4 +144,10 @@ public class SafeFurryImage implements BoardImage {
             return url;
         }
     }
+
+    // Doesn't implement it, probably doesn't matter since it's a safe board.
+    @Override
+    public boolean hasChildren() {
+        return false;
+    }
 }

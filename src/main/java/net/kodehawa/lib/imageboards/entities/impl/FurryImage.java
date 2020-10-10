@@ -16,6 +16,7 @@
 
 package net.kodehawa.lib.imageboards.entities.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
@@ -32,11 +33,16 @@ public class FurryImage implements BoardImage {
     private String description;
     private Rating rating;
     private File file;
+    private boolean has_children;
 
     @JsonProperty("score")
     private Score score;
     @JsonProperty("tags")
     private Tags tags;
+
+    public boolean isHas_children() {
+        return has_children;
+    }
 
     //Image description
     public String getDescription() {
@@ -47,42 +53,8 @@ public class FurryImage implements BoardImage {
         return file;
     }
 
-    @Override
-    public int getWidth() {
-        return file.width;
-    }
-
-    @Override
-    public int getHeight() {
-        return file.height;
-    }
-
-    @Override
-    public int getScore() {
-        return score.total;
-    }
-
-    @Override
-    public Rating getRating() {
-        return rating;
-    }
-
-    @Override
-    public List<String> getTags() {
-        return tags.getAll();
-    }
-
     public Tags getAllTags() {
         return tags;
-    }
-
-    public List<String> getArtist() {
-        return tags.artist;
-    }
-
-    @Override
-    public String getURL() {
-        return file.url;
     }
 
     static class Score {
@@ -168,5 +140,45 @@ public class FurryImage implements BoardImage {
         public String getUrl() {
             return url;
         }
+    }
+
+    @Override
+    public int getWidth() {
+        return getFile().getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return getFile().getHeight();
+    }
+
+    @Override
+    public int getScore() {
+        return score.getTotal();
+    }
+
+    @Override
+    public Rating getRating() {
+        return rating;
+    }
+
+    @Override
+    @JsonIgnore
+    public List<String> getTags() {
+        return tags.getAll();
+    }
+
+    public List<String> getArtist() {
+        return getAllTags().getArtist();
+    }
+
+    @Override
+    public String getURL() {
+        return getFile().getUrl();
+    }
+
+    @Override
+    public boolean hasChildren() {
+        return isHas_children();
     }
 }

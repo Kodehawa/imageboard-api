@@ -46,6 +46,7 @@ public class DanbooruImage implements BoardImage {
     private String file_url;
     private String large_file_url;
     private String preview_file_url;
+    private boolean has_children;
 
     private Pattern urlPattern = Pattern.compile("https(:)?//[\\w\\d.]*donmai.us");
 
@@ -55,7 +56,7 @@ public class DanbooruImage implements BoardImage {
      * @return The *reachable* URL to get this image. PNG format, or the extension defined in file_ext.
      */
     public String getParsedFileUrl() {
-        return getFixedURL(file_url);
+        return getFixedURL(getFile_url());
     }
 
     /**
@@ -64,7 +65,7 @@ public class DanbooruImage implements BoardImage {
      * @return The *reachable* URL to get this image. JPG format.
      */
     public String getParsedLargeFileUrl() {
-        return getFixedURL(large_file_url);
+        return getFixedURL(getLarge_file_url());
     }
 
     /**
@@ -73,13 +74,14 @@ public class DanbooruImage implements BoardImage {
      * @return The *reachable* URL to get this image. JPG format.
      */
     public String getParsedPreviewFileUrl() {
-        return getFixedURL(this.preview_file_url);
+        return getFixedURL(this.getPreview_file_url());
     }
 
     private String getFixedURL(String url) {
         if (url == null) {
             return null;
         }
+
         Matcher matcher = urlPattern.matcher(url);
         if(matcher.find()) {
             if(matcher.group(1).isEmpty()) {
@@ -92,36 +94,6 @@ public class DanbooruImage implements BoardImage {
             // URL without domain (/data/XXX)
             return "https://danbooru.donmai.us" + url;
         }
-    }
-
-    @Override
-    public int getWidth() {
-        return image_width;
-    }
-
-    @Override
-    public int getHeight() {
-        return image_height;
-    }
-
-    @Override
-    public Rating getRating() {
-        return rating;
-    }
-
-    @Override
-    public int getScore() {
-        return score;
-    }
-
-    @Override
-    public List<String> getTags() {
-        return Collections.unmodifiableList(Arrays.asList(tag_string.split(" ")));
-    }
-
-    @Override
-    public String getURL() {
-        return getParsedFileUrl();
     }
 
     public int getUploader_id() {
@@ -186,5 +158,44 @@ public class DanbooruImage implements BoardImage {
 
     public String getPreview_file_url() {
         return preview_file_url;
+    }
+
+    public boolean isHas_children() {
+        return has_children;
+    }
+
+    @Override
+    public int getWidth() {
+        return image_width;
+    }
+
+    @Override
+    public int getHeight() {
+        return image_height;
+    }
+
+    @Override
+    public Rating getRating() {
+        return rating;
+    }
+
+    @Override
+    public int getScore() {
+        return score;
+    }
+
+    @Override
+    public List<String> getTags() {
+        return Collections.unmodifiableList(Arrays.asList(tag_string.split(" ")));
+    }
+
+    @Override
+    public String getURL() {
+        return getParsedFileUrl();
+    }
+
+    @Override
+    public boolean hasChildren() {
+        return isHas_children();
     }
 }

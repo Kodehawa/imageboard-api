@@ -8,7 +8,7 @@ plugins {
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
-def versionObj = new Version(major: 2, minor: 2, revision: 1)
+def versionObj = new Version(major: 2, minor: 3, revision: 0)
 
 group 'net.kodehawa'
 def artifactid = 'imageboard-api'

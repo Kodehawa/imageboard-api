@@ -19,6 +19,7 @@ package net.kodehawa.lib.imageboards;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import net.kodehawa.lib.imageboards.boards.Board;
 import net.kodehawa.lib.imageboards.boards.DefaultBoards;
@@ -79,11 +80,6 @@ public class ImageBoard<T extends BoardImage> {
      * GET return format of the board.
      */
     private final ResponseFormat responseFormat;
-
-    /**
-     * Changes whether we're gonna throw exceptions on EOF or no
-     */
-    public static boolean throwExceptionOnEOF = true;
 
     /**
      * Create a new image board instance.
@@ -246,6 +242,17 @@ public class ImageBoard<T extends BoardImage> {
     /**
      * Get the first page's results from the image board search, limited at 60 images.
      *
+     * @param limit Maximum number of images.
+     * @param search Image tags.
+     * @return A {@link RequestAction request action} that returns a list of images.
+     */
+    public RequestAction<List<T>> search(int limit, String search, Rating rating) {
+        return search(0, limit, search, rating);
+    }
+
+    /**
+     * Get the first page's results from the image board search, limited at 60 images.
+     *
      * @param page Page number.
      * @param limit Maximum number of images.
      * @param search Image tags.
@@ -303,32 +310,28 @@ public class ImageBoard<T extends BoardImage> {
             log.debug("Making request to {} (Response format: {}, Imageboard: {}, Target: {})", url.toString(), responseFormat, board, cls);
             try (ResponseBody body = response.body()) {
                 if (body == null) {
-                    if(throwExceptionOnEOF) {
-                        throw new QueryParseException(new NullPointerException("Received an empty body from the imageboard URL. (From board: " + board + ", Target: " + cls + ")"));
-                    } else {
-                        return Collections.emptyList();
-                    }
+                    log.warn("Received empty body from imageboard! Returning empty list.");
+                    return Collections.emptyList();
                 }
 
                 ObjectMapper mapper = responseFormat.mapper;
                 List<T> images;
-                InputStream inputStream = body.byteStream();
+                InputStream json = body.byteStream();
 
                 if(board.getOuterObject() != null) {
-                    String posts = mapper.writeValueAsString(mapper.readTree(inputStream).get(board.getOuterObject()));
+                    String posts = mapper.writeValueAsString(mapper.readTree(json).get(board.getOuterObject()));
                     images = mapper.readValue(posts, mapper.getTypeFactory().constructCollectionType(List.class, cls));
                 } else {
-                    images = mapper.readValue(inputStream, mapper.getTypeFactory().constructCollectionType(List.class, cls));
+                    images = mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, cls));
                 }
 
                 body.close();
 
                 return images;
+            } catch (MismatchedInputException eof) {
+                log.warn("Received MismatchedInputException from imageboard! Returning empty list.", eof);
+                return Collections.emptyList();
             } catch (IOException e) {
-                if(e.getMessage().contains("No content to map due to end-of-input") && !throwExceptionOnEOF) {
-                    return Collections.emptyList();
-                }
-
                 throw new QueryParseException(e);
             }
         });

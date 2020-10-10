@@ -50,12 +50,16 @@ public class ImageBoardTest {
 
     private static void printImages(List<? extends BoardImage> images) {
         for (BoardImage image : images) {
-            System.out.println(image.getURL()
+            System.out.println(
+                    "ImageBoard: " + image.getClass()
+                    + " " + image.getURL()
                     + " " + image.getScore()
                     + " " + image.getRating()
                     + " " + image.getTags()
                     + " " + image.getHeight()
-                    + " " + image.getWidth());
+                    + " " + image.getWidth()
+                    + " " + image.hasChildren()
+            );
         }
     }
 
@@ -81,6 +85,14 @@ public class ImageBoardTest {
         printImages(safebooru.get(2).blocking());
         printImages(gelbooru.get(2).blocking());
         printImages(e926.get(2).blocking());
+
+        // Check is_children results?
+        printImages(e621.search(3, "cub", Rating.EXPLICIT).blocking());
+        printImages(konachan.search(3, "loli", Rating.EXPLICIT).blocking());
+        printImages(rule34.search(3, "lolicon", Rating.EXPLICIT).blocking());
+        printImages(yandere.search(3, "loli", Rating.EXPLICIT).blocking());
+        printImages(danbooru.search(3, "loli", Rating.EXPLICIT).blocking());
+        printImages(gelbooru.search(3, "loli", Rating.EXPLICIT).blocking());
     }
 
     @Test(expected = NullPointerException.class)
@@ -96,8 +108,6 @@ public class ImageBoardTest {
 
     @Test
     public void tagsReturnRelevantResults() {
-        ImageBoard.throwExceptionOnEOF = false;
-
         String tag = "animal_ears";
         String[] knownAliases = {"animal_ear", "animal_humanoid"};
 
@@ -133,6 +143,16 @@ public class ImageBoardTest {
         assertSame(konachan.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
         assertSame(danbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
         assertSame(e926.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
+    }
+
+    // @Test
+    // Imageboards only half-assed this bullshit and adding this test just makes it fail lol
+    public void properChildrenTagging() {
+        assertSame(yandere.search("loli", Rating.EXPLICIT).blocking().get(4).hasChildren(), true);
+        assertSame(gelbooru.search("loli", Rating.EXPLICIT).blocking().get(5).hasChildren(), true);
+        assertSame(danbooru.search("loli", Rating.EXPLICIT).blocking().get(5).hasChildren(), true);
+        assertSame(konachan.search("lolicon", Rating.EXPLICIT).blocking().get(5).hasChildren(), true);
+        assertSame(e621.search("cub", Rating.EXPLICIT).blocking().get(5).hasChildren(), true);
     }
 
     @Test

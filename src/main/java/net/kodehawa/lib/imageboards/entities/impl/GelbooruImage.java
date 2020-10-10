@@ -19,10 +19,7 @@ public class GelbooruImage implements BoardImage {
     private String tags;
     private String file_url; //Thanks gelbooru for giving a full url I love you
     private int score;
-
-    public int getScore() {
-        return score;
-    }
+    private boolean has_children;
 
     public String getSource() {
         return source;
@@ -30,14 +27,6 @@ public class GelbooruImage implements BoardImage {
 
     public String getHash() {
         return hash;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
     }
 
     public int getId() {
@@ -52,19 +41,46 @@ public class GelbooruImage implements BoardImage {
         return owner;
     }
 
-    public Rating getRating() {
-        return rating;
-    }
-
-    public List<String> getTags() {
-        return Collections.unmodifiableList(Arrays.asList(tags.split(" ")));
-    }
-
     public String getFile_url() {
         return file_url;
     }
 
+    public boolean isHas_children() {
+        return has_children;
+    }
+
+    @Override
+    public Rating getRating() {
+        return rating;
+    }
+
+    @Override
+    public List<String> getTags() {
+        return Collections.unmodifiableList(Arrays.asList(tags.split(" ")));
+    }
+
+    @Override
+    public int getScore() {
+        return score;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
     public String getURL() {
         return getFile_url();
+    }
+
+    @Override
+    public boolean hasChildren() {
+        return isHas_children();
     }
 }

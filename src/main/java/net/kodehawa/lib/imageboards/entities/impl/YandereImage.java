@@ -16,6 +16,7 @@
 
 package net.kodehawa.lib.imageboards.entities.impl;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
@@ -59,12 +60,12 @@ public class YandereImage implements BoardImage {
     private List<String> frames_pending;
     private String frames_pending_string;
     private String frames_string;
-    private Boolean has_children;
-    private Boolean is_held;
-    private Boolean is_note_locked;
-    private Boolean is_pending;
-    private Boolean is_rating_locked;
-    private Boolean is_shown_in_index;
+    private boolean has_children;
+    private boolean is_held;
+    private boolean is_note_locked;
+    private boolean is_pending;
+    private boolean is_rating_locked;
+    private boolean is_shown_in_index;
     private int last_commented_at;
     private int last_noted_at;
     private String md5;
@@ -144,6 +145,10 @@ public class YandereImage implements BoardImage {
         return status;
     }
 
+    public boolean isHas_children() {
+        return has_children;
+    }
+
     @Override
     public int getScore() {
         return score;
@@ -172,5 +177,10 @@ public class YandereImage implements BoardImage {
     @Override
     public String getURL() {
         return getFile_url();
+    }
+
+    @Override
+    public boolean hasChildren() {
+        return isHas_children();
     }
 }

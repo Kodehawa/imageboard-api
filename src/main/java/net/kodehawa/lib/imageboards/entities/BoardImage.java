@@ -52,4 +52,9 @@ public interface BoardImage {
      * @return Image url.
      */
     String getURL();
+
+    /**
+     * @return Whether the image depicts children or not. Not all image boards detect this, so don't rely on this alone!.
+     */
+    boolean hasChildren();
 }

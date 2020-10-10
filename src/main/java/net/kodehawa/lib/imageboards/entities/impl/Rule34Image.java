@@ -16,6 +16,7 @@
 
 package net.kodehawa.lib.imageboards.entities.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
@@ -35,7 +36,7 @@ public class Rule34Image implements BoardImage {
 
     //Backwards-compatible.
     public String getFile_url() {
-        return "https://img.rule34.xxx/images/" + directory + "/" + image;
+        return "https://img.rule34.xxx/images/" + getDirectory() + "/" + getImage();
     }
 
     public String getDirectory() {
@@ -72,7 +73,15 @@ public class Rule34Image implements BoardImage {
     }
 
     @Override
+    @JsonIgnore
     public String getURL(){
         return getFile_url();
+    }
+
+    // Doesn't implement it, lol.
+    @Override
+    @JsonIgnore
+    public boolean hasChildren() {
+        return false;
     }
 }
