@@ -66,6 +66,6 @@ public class RequestFactory {
      * @return Request action.
      */
     public <T> RequestAction<T> makeRequest(HttpUrl url, Function<Response, T> transform) {
-        return new RequestAction<>(client.newCall(new Request.Builder().url(url).header("User-Agent", ImageBoard.userAgent).build()), transform);
+        return new RequestAction<>(client.newCall(new Request.Builder().url(url).header("User-Agent", ImageBoard.getUserAgent()).build()), transform);
     }
 }

@@ -59,7 +59,7 @@ public class ImageBoard<T extends BoardImage> {
     /**
      * User agent to send to the services we request data from.
      */
-    public static final String userAgent = "ImageboardAPI/@version@/https://github.com/Kodehawa/imageboard-api";
+    private static String userAgent = "ImageBoardAPI/https://github.com/Kodehawa/imageboard-api";
 
     /**
      * Requester client.
@@ -136,6 +136,24 @@ public class ImageBoard<T extends BoardImage> {
         this.board = landing;
         this.responseFormat = responseFormat;
         this.cls = cls;
+    }
+
+    /**
+     * Set a custom user agent to use in the requests to imageboards.
+     * The default one is ImageBoardAPI/version/https://github.com/Kodehawa/imageboard-api
+     * This can be changed to basically anything, even a browser agent. Please don't abuse, though.
+     * @param agent The new user agent to make HTTP requests with.
+     */
+    public static void setUserAgent(String agent) {
+        userAgent = agent;
+    }
+
+    /**
+     * Get the current user agent used by ImageBoard. This can be changed with {@link #setUserAgent(String)} 
+     * @return the current user agent used to make HTTP requests with.
+     */
+    public static String getUserAgent() {
+        return userAgent;
     }
 
     /**
@@ -244,6 +262,7 @@ public class ImageBoard<T extends BoardImage> {
      *
      * @param limit Maximum number of images.
      * @param search Image tags.
+     * @param rating The rating to look for
      * @return A {@link RequestAction request action} that returns a list of images.
      */
     public RequestAction<List<T>> search(int limit, String search, Rating rating) {
