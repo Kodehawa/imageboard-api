@@ -22,7 +22,9 @@ Creating your own Image Board API instance is possible, but would require a litt
     Please refer to the `ImageBoards.java` and `CustomBoard.java` to set up boards that are not included
     with this API. The boorus listed above are available by default with no further configuration required by the user.
 
-## Dependencies
+## Adding ImageBoardAPI to your project
+[Check instructions here for the latest version, in case this is outdated](https://bintray.com/kodehawa/maven/imageboard-api/_latestVersion)
+
 #### Gradle
 ```groovy
 repositories {
@@ -32,7 +34,7 @@ repositories {
 }
 
 dependencies { 
-    compile 'net.kodehawa:imageboard-api:2.2.1'
+    compile 'net.kodehawa:imageboard-api:2.3.1'
 }
 ```
 
@@ -42,19 +44,20 @@ Add the `https://dl.bintray.com/kodehawa/maven` repository to your pom.
 <dependency>
   <groupId>net.kodehawa</groupId>
   <artifactId>imageboard-api</artifactId>
-  <version>2.2.1</version>
+  <version>2.3.1</version>
   <type>pom</type>
 </dependency>
 ```
+
 ## Set Up
 There is a `ImageBoards` class located under utils, that one contains static, pre-created 
     ImageBoardAPI objects for you, but you can roll your own.
    
 
-
 ### Implementation
 You can find implementation details and a lot of examples in the [tests for this project](https://github.com/Kodehawa/imageboard-api/blob/master/src/test/java/net/kodehawa/lib/imageboards/ImageBoardTest.java) and in [Mantaro](https://github.com/Mantaro/MantaroBot/blob/master/src/main/java/net/kodehawa/mantarobot/commands/image/ImageboardUtils.java#L57)
 
+## Examples
 ### Random Images
 ```java
 import net.kodehawa.lib.imageboards.entities.BoardImage;
