@@ -18,7 +18,7 @@ This helps you craft requests to most of the danbooru-compatible imageboards (bo
  * Gelbooru
  * e926
 
-Creating your own Image Board API instance is possible, but would require a little tweaking.
+Creating your own ImageBoard instance is possible, but would require a little tweaking.
     Please refer to the `ImageBoards.java` and `CustomBoard.java` to set up boards that are not included
     with this API. The boorus listed above are available by default with no further configuration required by the user.
 
