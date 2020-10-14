@@ -7,17 +7,20 @@ ImageBoard API is a simple asynchronous API wrapper around
     given a little tweaking.
 
 This helps you craft requests to most of the danbooru-compatible imageboards (boorus) that exist out there. 
-    
-    Supports the following boorus (imageboards):
-    - Danbooru
-    - Gelbooru
-    - Konachan
-    - Yande.re
-    - Rule34
-    - e621
-    - e926 (safe mirror of e621)
-    - Safebooru (safe mirror of Danbooru)
-    
+
+#### Supported Image Boards
+ * Rule34
+ * e621
+ * Konachan
+ * Yande.re
+ * Danbooru
+ * Safebooru
+ * Gelbooru
+ * e926
+
+Creating your own Image Board API instance is possible, but would require a little tweaking.
+    Please refer to the `ImageBoards.java` and `CustomBoard.java` to set up boards that are not included
+    with this API. The boorus listed above are available by default with no further configuration required by the user.
 
 ## Dependencies
 #### Gradle
@@ -46,20 +49,7 @@ Add the `https://dl.bintray.com/kodehawa/maven` repository to your pom.
 ## Set Up
 There is a `ImageBoards` class located under utils, that one contains static, pre-created 
     ImageBoardAPI objects for you, but you can roll your own.
-    
-#### Default Image Boards
- * Rule34
- * e621
- * Konachan
- * Yande.re
- * Danbooru
- * Safebooru
- * Gelbooru
- * e926
-
-Creating your own Image Board API instance is possible, but would require a little tweaking.
-    Please refer to the `ImageBoards.java` and `CustomBoard.java` to set up boards that are not included
-    with this API.
+   
 
 
 ### Implementation
