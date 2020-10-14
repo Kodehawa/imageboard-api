@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies { 
-    compile 'net.kodehawa:imageboard-api:2.3.1'
+    implementation 'net.kodehawa:imageboard-api:2.3.1'
 }
 ```
 
