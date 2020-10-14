@@ -139,7 +139,7 @@ public class ImageBoard<T extends BoardImage> {
     }
 
     /**
-     * Set a custom user agent to use in the requests to imageboards.
+     * Set a custom user agent to use in the requests to image boards (boorus).
      * The default one is ImageBoardAPI/https://github.com/Kodehawa/imageboard-api
      * This can be changed to basically anything, even a browser agent. Please don't abuse, though.
      * @param agent The new user agent to make HTTP requests with.
@@ -326,10 +326,10 @@ public class ImageBoard<T extends BoardImage> {
 
         HttpUrl url = urlBuilder.build();
         return requestFactory.makeRequest(url, response -> {
-            log.debug("Making request to {} (Response format: {}, Imageboard: {}, Target: {})", url.toString(), responseFormat, board, cls);
+            log.debug("Making request to {} (Response format: {}, ImageBoard: {}, Target: {})", url.toString(), responseFormat, board, cls);
             try (ResponseBody body = response.body()) {
                 if (body == null) {
-                    log.warn("Received empty body from imageboard! Returning empty list.");
+                    log.warn("Received empty body from a ImageBoard ({})! Returning empty list.", getImageType());
                     return Collections.emptyList();
                 }
 
@@ -348,7 +348,7 @@ public class ImageBoard<T extends BoardImage> {
 
                 return images;
             } catch (MismatchedInputException eof) {
-                log.warn("Received MismatchedInputException from imageboard! Returning empty list.", eof);
+                log.warn("Received MismatchedInputException from a ImageBoard ({})! Returning empty list.", getImageType(), eof);
                 return Collections.emptyList();
             } catch (IOException e) {
                 throw new QueryParseException(e);
@@ -357,7 +357,7 @@ public class ImageBoard<T extends BoardImage> {
     }
 
     /**
-     * The type of the specified Imageboard.
+     * The type of the specified ImageBoard.
      * This is important because if you specify the wrong type, it'll be impossible to deserialize it properly.
      */
     public enum ResponseFormat {

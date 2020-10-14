@@ -23,7 +23,20 @@ import okhttp3.OkHttpClient;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Utility class represting already-created objects around the most used imageboards.
+ * Utility class representing already-created objects around the most used image boards.
+ * As of now, this contains the following boorus / imageboards:
+ * <ul>
+ *     <li>e621 - Furry pictures, both NSFW and safe.</li>
+ *     <li>Konachan (owned by booru.org) - Anime pictures, both NSFW and safe.</li>
+ *     <li>Rule34 (owned by booru.org) - Anime pictures, only NSFW</li>
+ *     <li>Yande.re - Anime pictures, both NSFW and safe (though tagging is sloppy, would recommend setting this to only NSFW)</li>
+ *     <li>Danbooru (the original one) - Anime pictures, both NSFW and safe.</li>
+ *     <li>Safebooru (owned by booru.org) - Anime pictures, only safe.</li>
+ *     <li>e926 (a safe version of e621) - Furry pictures, only safe.</li>
+ * </ul>
+ *
+ * It's recommended to lock the usage of the boorus to only NSFW channels unless the image is safe. If you're not
+ * using this for a discord bot, then just use as your own discretion :P
  *
  * @author Kodehawa
  */
