@@ -140,7 +140,7 @@ public class ImageBoard<T extends BoardImage> {
 
     /**
      * Set a custom user agent to use in the requests to imageboards.
-     * The default one is ImageBoardAPI/version/https://github.com/Kodehawa/imageboard-api
+     * The default one is ImageBoardAPI/https://github.com/Kodehawa/imageboard-api
      * This can be changed to basically anything, even a browser agent. Please don't abuse, though.
      * @param agent The new user agent to make HTTP requests with.
      */
