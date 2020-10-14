@@ -6,6 +6,19 @@ ImageBoard API is a simple asynchronous API wrapper around
     The interface also supports other types of custom boards
     given a little tweaking.
 
+This helps you craft requests to most of the danbooru-compatible imageboards (boorus) that exist out there. 
+    
+    Supports the following boorus (imageboards):
+    - Danbooru
+    - Gelbooru
+    - Konachan
+    - Yande.re
+    - Rule34
+    - e621
+    - e926 (safe mirror of e621)
+    - Safebooru (safe mirror of Danbooru)
+    
+
 ## Dependencies
 #### Gradle
 ```groovy
