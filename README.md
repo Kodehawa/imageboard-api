@@ -1,10 +1,9 @@
 # ImageBoard API
  [ ![Download](https://api.bintray.com/packages/kodehawa/maven/imageboard-api/images/download.svg) ](https://bintray.com/kodehawa/maven/imageboard-api/_latestVersion) 
  
-ImageBoard API is a simple asynchronous API wrapper around 
-    the most popular danbooru-compatible imageboard APIs.
-    The interface also supports other types of custom boards
-    given a little tweaking.
+ImageBoard API is a simple asynchronous Java API wrapper around  the most popular danbooru-compatible imageboard APIs.
+
+The interface also supports other types of custom boards given a little tweaking. Releases are published in [Bintray](https://bintray.com/kodehawa/maven/imageboard-api/_latestVersion).
 
 This helps you craft requests to most of the danbooru-compatible imageboards (boorus) that exist out there. 
 
