@@ -17,6 +17,7 @@
 package net.kodehawa.lib.imageboards.entities.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
@@ -50,6 +51,7 @@ public class KonachanImage implements BoardImage {
     private String source;
     private String status;
     private String tags;
+    @JsonProperty("has_children")
     private boolean has_children;
 
     public int getCreated_at() {

@@ -6,7 +6,7 @@ plugins {
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
-def versionObj = new Version(major: 2, minor: 3, revision: 2)
+def versionObj = new Version(major: 2, minor: 4, revision: 0)
 
 group 'net.kodehawa'
 version "$versionObj"
@@ -22,12 +22,13 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.11.3'
-    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.14.9'
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+    implementation 'org.slf4j:slf4j-api:1.7.30'
 
     testImplementation 'ch.qos.logback:logback-classic:1.2.3'
-    testImplementation group: 'junit', name: 'junit', version: '4.13.1'
+    testImplementation 'junit:junit:4.13.1'
 }
 
 task sourcesForRelease(type: Copy) {

@@ -1,5 +1,6 @@
 package net.kodehawa.lib.imageboards.entities.impl;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
@@ -19,6 +20,7 @@ public class GelbooruImage implements BoardImage {
     private String tags;
     private String file_url; //Thanks gelbooru for giving a full url I love you
     private int score;
+    @JsonProperty("has_children")
     private boolean has_children;
 
     public String getSource() {

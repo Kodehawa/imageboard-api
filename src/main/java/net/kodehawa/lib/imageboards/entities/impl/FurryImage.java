@@ -33,6 +33,7 @@ public class FurryImage implements BoardImage {
     private String description;
     private Rating rating;
     private File file;
+    @JsonProperty("has_children")
     private boolean has_children;
 
     @JsonProperty("score")
@@ -120,9 +121,13 @@ public class FurryImage implements BoardImage {
     }
 
     static class File {
+        @JsonProperty("width")
         private int width;
+        @JsonProperty("height")
         private int height;
+        @JsonProperty("size")
         private int size;
+        @JsonProperty("url")
         private String url;
 
         public int getWidth() {

@@ -15,6 +15,7 @@
  */
 
 package net.kodehawa.lib.imageboards.entities.impl;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
@@ -43,9 +44,13 @@ public class DanbooruImage implements BoardImage {
     private String uploader_name;
     private String tag_string_artist;
     private String tag_string_character;
+    @JsonProperty("file_url")
     private String file_url;
+    @JsonProperty("large_file_url")
     private String large_file_url;
+    @JsonProperty("preview_file_url")
     private String preview_file_url;
+    @JsonProperty("has_children")
     private boolean has_children;
 
     private Pattern urlPattern = Pattern.compile("https(:)?//[\\w\\d.]*donmai.us");

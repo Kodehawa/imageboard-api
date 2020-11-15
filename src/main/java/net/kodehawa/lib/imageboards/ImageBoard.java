@@ -20,13 +20,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import net.kodehawa.lib.imageboards.boards.Board;
 import net.kodehawa.lib.imageboards.boards.DefaultBoards;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 import net.kodehawa.lib.imageboards.entities.exceptions.QueryFailedException;
 import net.kodehawa.lib.imageboards.entities.exceptions.QueryParseException;
+import net.kodehawa.lib.imageboards.entities.impl.DanbooruImage;
+import net.kodehawa.lib.imageboards.entities.impl.FurryImage;
 import net.kodehawa.lib.imageboards.requests.RequestAction;
 import net.kodehawa.lib.imageboards.requests.RequestFactory;
 import okhttp3.HttpUrl;
@@ -321,6 +322,12 @@ public class ImageBoard<T extends BoardImage> {
                 //Fuck you gelbooru you're the only one doing this :(
                 tags.append(" rating:").append(board == DefaultBoards.GELBOORU ? rating.getLongName() : rating.getShortName());
             }
+
+            // Why, just, why, why would you return anything but?
+            if (getImageType() == FurryImage.class || getImageType() == DanbooruImage.class) {
+                tags.append(" status:active");
+            }
+
             urlBuilder.addQueryParameter("tags", tags.toString());
         }
 
@@ -359,26 +366,17 @@ public class ImageBoard<T extends BoardImage> {
     /**
      * The type of the specified ImageBoard.
      * This is important because if you specify the wrong type, it'll be impossible to deserialize it properly.
+     * For now we only have JSON, as all imageboards now support a JSON response.
+     * If your imageboard doesn't by default, make sure it's an option.
      */
     public enum ResponseFormat {
         /** JSON response type. */
-        JSON(new ObjectMapper()),
-
-        /** XML response type. */
-        XML(new XmlMapper());
+        JSON(new ObjectMapper());
 
         private final ObjectMapper mapper;
 
         ResponseFormat(ObjectMapper mapper) {
             this.mapper = mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        }
-
-        private <T> T readValue(String p, JavaType valueType) {
-            try {
-                return mapper.readValue(p, valueType);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 }
