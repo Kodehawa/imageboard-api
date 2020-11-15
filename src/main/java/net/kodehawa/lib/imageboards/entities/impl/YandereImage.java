@@ -183,4 +183,10 @@ public class YandereImage implements BoardImage {
     public boolean hasChildren() {
         return isHas_children();
     }
+
+    @Override
+    public boolean isPending() {
+        // ?????????????
+        return is_pending || status.equalsIgnoreCase("pending");
+    }
 }

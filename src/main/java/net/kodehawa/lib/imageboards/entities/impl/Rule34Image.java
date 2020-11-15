@@ -84,4 +84,10 @@ public class Rule34Image implements BoardImage {
     public boolean hasChildren() {
         return false;
     }
+
+    // Doesn't implement it
+    @Override
+    public boolean isPending() {
+        return false;
+    }
 }

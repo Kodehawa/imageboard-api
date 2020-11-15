@@ -59,6 +59,7 @@ public class ImageBoardTest {
                     + " " + image.getHeight()
                     + " " + image.getWidth()
                     + " " + image.hasChildren()
+                    + " " + image.isPending()
             );
         }
     }
@@ -91,7 +92,6 @@ public class ImageBoardTest {
     public void throwErrorNullConsumer() {
         e621.get(1).async(null);
     }
-
 
     public static void assertImages(List<? extends BoardImage> images) {
         assertNotEquals(images.get(0).getURL(), null);

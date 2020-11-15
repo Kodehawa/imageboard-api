@@ -33,6 +33,8 @@ public class FurryImage implements BoardImage {
     private String description;
     private Rating rating;
     private File file;
+    private Flags flags;
+
     @JsonProperty("has_children")
     private boolean has_children;
 
@@ -56,6 +58,10 @@ public class FurryImage implements BoardImage {
 
     public Tags getAllTags() {
         return tags;
+    }
+
+    public Flags getFlags() {
+        return flags;
     }
 
     static class Score {
@@ -117,6 +123,39 @@ public class FurryImage implements BoardImage {
             return Stream.of(general, species, character, lore, meta, artist, copyright)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
+        }
+    }
+
+    static class Flags {
+        private boolean pending;
+        private boolean flagged;
+        private boolean note_locked;
+        private boolean status_locked;
+        private boolean rating_locked;
+        private boolean deleted;
+
+        public boolean isPending() {
+            return pending;
+        }
+
+        public boolean isFlagged() {
+            return flagged;
+        }
+
+        public boolean isNote_locked() {
+            return note_locked;
+        }
+
+        public boolean isStatus_locked() {
+            return status_locked;
+        }
+
+        public boolean isRating_locked() {
+            return rating_locked;
+        }
+
+        public boolean isDeleted() {
+            return deleted;
         }
     }
 
@@ -185,5 +224,10 @@ public class FurryImage implements BoardImage {
     @Override
     public boolean hasChildren() {
         return isHas_children();
+    }
+
+    @Override
+    public boolean isPending() {
+        return getFlags().isPending() || getFlags().isDeleted() || getFlags().isFlagged();
     }
 }

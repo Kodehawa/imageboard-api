@@ -79,4 +79,10 @@ public class SafebooruImage implements BoardImage {
     public boolean hasChildren() {
         return false;
     }
+
+    // Doesn't implement it, old version of board
+    @Override
+    public boolean isPending() {
+        return false;
+    }
 }

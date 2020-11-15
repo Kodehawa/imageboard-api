@@ -14,6 +14,7 @@ public class SafeFurryImage implements BoardImage {
     private String description;
     private Rating rating;
     private File file;
+    private Flags flags;
 
     @JsonProperty("score")
     private Score score;
@@ -58,6 +59,10 @@ public class SafeFurryImage implements BoardImage {
 
     public List<String> getArtist() {
         return tags.artist;
+    }
+
+    public Flags getFlags() {
+        return flags;
     }
 
     static class Score {
@@ -145,9 +150,47 @@ public class SafeFurryImage implements BoardImage {
         }
     }
 
+    static class Flags {
+        private boolean pending;
+        private boolean flagged;
+        private boolean note_locked;
+        private boolean status_locked;
+        private boolean rating_locked;
+        private boolean deleted;
+
+        public boolean isPending() {
+            return pending;
+        }
+
+        public boolean isFlagged() {
+            return flagged;
+        }
+
+        public boolean isNote_locked() {
+            return note_locked;
+        }
+
+        public boolean isStatus_locked() {
+            return status_locked;
+        }
+
+        public boolean isRating_locked() {
+            return rating_locked;
+        }
+
+        public boolean isDeleted() {
+            return deleted;
+        }
+    }
+
     // Doesn't implement it, probably doesn't matter since it's a safe board.
     @Override
     public boolean hasChildren() {
         return false;
+    }
+
+    @Override
+    public boolean isPending() {
+        return getFlags().isPending() || getFlags().isDeleted() || getFlags().isFlagged();
     }
 }

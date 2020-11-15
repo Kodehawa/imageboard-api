@@ -53,6 +53,10 @@ public class DanbooruImage implements BoardImage {
     @JsonProperty("has_children")
     private boolean has_children;
 
+    private boolean is_pending;
+    private boolean is_flagged;
+    private boolean is_deleted;
+
     private Pattern urlPattern = Pattern.compile("https(:)?//[\\w\\d.]*donmai.us");
 
     /**
@@ -169,6 +173,18 @@ public class DanbooruImage implements BoardImage {
         return has_children;
     }
 
+    public boolean isIs_pending() {
+        return is_pending;
+    }
+
+    public boolean isIs_flagged() {
+        return is_flagged;
+    }
+
+    public boolean isIs_deleted() {
+        return is_deleted;
+    }
+
     @Override
     public int getWidth() {
         return image_width;
@@ -202,5 +218,10 @@ public class DanbooruImage implements BoardImage {
     @Override
     public boolean hasChildren() {
         return isHas_children();
+    }
+
+    @Override
+    public boolean isPending() {
+        return is_pending || is_deleted || is_flagged;
     }
 }

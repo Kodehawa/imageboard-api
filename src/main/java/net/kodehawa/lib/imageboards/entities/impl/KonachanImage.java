@@ -53,6 +53,8 @@ public class KonachanImage implements BoardImage {
     private String tags;
     @JsonProperty("has_children")
     private boolean has_children;
+    @JsonProperty("is_held")
+    private boolean is_held;
 
     public int getCreated_at() {
         return created_at;
@@ -170,5 +172,10 @@ public class KonachanImage implements BoardImage {
     @Override
     public boolean hasChildren() {
         return isHas_children();
+    }
+
+    @Override
+    public boolean isPending() {
+        return is_held;
     }
 }

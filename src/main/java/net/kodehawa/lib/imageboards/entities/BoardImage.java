@@ -57,4 +57,9 @@ public interface BoardImage {
      * @return Whether the image depicts children or not. Not all image boards detect this, so don't rely on this alone!.
      */
     boolean hasChildren();
+
+    /**
+     * @return Whether the image is pending, held or deleted.
+     */
+    boolean isPending();
 }

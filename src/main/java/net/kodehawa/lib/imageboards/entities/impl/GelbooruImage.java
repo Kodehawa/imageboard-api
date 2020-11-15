@@ -85,4 +85,10 @@ public class GelbooruImage implements BoardImage {
     public boolean hasChildren() {
         return isHas_children();
     }
+
+    // Doesn't implement this
+    @Override
+    public boolean isPending() {
+        return false;
+    }
 }

@@ -17,7 +17,6 @@
 package net.kodehawa.lib.imageboards;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import net.kodehawa.lib.imageboards.boards.Board;
@@ -28,6 +27,7 @@ import net.kodehawa.lib.imageboards.entities.exceptions.QueryFailedException;
 import net.kodehawa.lib.imageboards.entities.exceptions.QueryParseException;
 import net.kodehawa.lib.imageboards.entities.impl.DanbooruImage;
 import net.kodehawa.lib.imageboards.entities.impl.FurryImage;
+import net.kodehawa.lib.imageboards.entities.impl.SafeFurryImage;
 import net.kodehawa.lib.imageboards.requests.RequestAction;
 import net.kodehawa.lib.imageboards.requests.RequestFactory;
 import okhttp3.HttpUrl;
@@ -324,7 +324,9 @@ public class ImageBoard<T extends BoardImage> {
             }
 
             // Why, just, why, why would you return anything but?
-            if (getImageType() == FurryImage.class || getImageType() == DanbooruImage.class) {
+            // Other imageboards do this aswell, but we can't filter on all
+            // Use BoardImage#isPending to check yourself
+            if (getImageType() == FurryImage.class || getImageType() == SafeFurryImage.class || getImageType() == DanbooruImage.class) {
                 tags.append(" status:active");
             }
 
