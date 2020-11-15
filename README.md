@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies { 
-    implementation 'net.kodehawa:imageboard-api:2.3.1'
+    implementation 'net.kodehawa:imageboard-api:2.4.1'
 }
 ```
 
@@ -42,7 +42,7 @@ Add the `https://dl.bintray.com/kodehawa/maven` repository to your pom.
 <dependency>
   <groupId>net.kodehawa</groupId>
   <artifactId>imageboard-api</artifactId>
-  <version>2.3.1</version>
+  <version>2.4.1</version>
   <type>pom</type>
 </dependency>
 ```
