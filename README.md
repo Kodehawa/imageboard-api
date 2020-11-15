@@ -111,3 +111,9 @@ public class TagImages {
     }
 }
 ```
+
+### Filter bad results
+
+You might want to filter BoardImage#isPending, as the tags/rating of those is almost guaranteed to never be correct.
+
+For filtering other results, you can filter tags from BoardImage#getTags and use a .contains call on the list.
