@@ -22,11 +22,14 @@ import net.kodehawa.lib.imageboards.entities.Rating;
 import net.kodehawa.lib.imageboards.entities.impl.*;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
 public class ImageBoardTest {
+
     private static final ImageBoard<FurryImage> e621 = DefaultImageBoards.E621;
     private static final ImageBoard<KonachanImage> konachan = DefaultImageBoards.KONACHAN;
     private static final ImageBoard<Rule34Image> rule34 = DefaultImageBoards.RULE34;
@@ -52,14 +55,15 @@ public class ImageBoardTest {
         for (BoardImage image : images) {
             System.out.println(
                     "ImageBoard: " + image.getClass()
-                    + " " + image.getURL()
-                    + " " + image.getScore()
-                    + " " + image.getRating()
-                    + " " + image.getTags()
-                    + " " + image.getHeight()
-                    + " " + image.getWidth()
-                    + " " + image.hasChildren()
-                    + " " + image.isPending()
+                            + " " + image.getURL()
+                            + " " + image.getScore()
+                            + " " + image.getRating()
+                            + " " + image.getTags()
+                            + " " + image.getHeight()
+                            + " " + image.getWidth()
+                            + " " + image.hasChildren()
+                            + " " + image.isPending()
+                            + " " + new Date(image.getCreationMillis()).toString()
             );
         }
     }
@@ -163,5 +167,18 @@ public class ImageBoardTest {
         assertEquals(e926.getBoardType(), DefaultBoards.E926);
         assertEquals(e926.getImageType(), SafeFurryImage.class);
 
+    }
+
+    @Test
+    public void recentDate() {
+        long oneDayAgo = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1);
+        assertTrue(e621.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
+        assertTrue(konachan.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
+        assertTrue(rule34.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
+        assertTrue(yandere.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
+        assertTrue(danbooru.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
+        assertTrue(safebooru.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
+        assertTrue(gelbooru.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
+        assertTrue(e926.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
     }
 }

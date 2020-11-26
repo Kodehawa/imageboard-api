@@ -22,6 +22,8 @@ public class GelbooruImage implements BoardImage {
     private int score;
     @JsonProperty("has_children")
     private boolean has_children;
+    @JsonProperty("change")
+    private long change; // timestamp in seconds
 
     public String getSource() {
         return source;
@@ -90,5 +92,10 @@ public class GelbooruImage implements BoardImage {
     @Override
     public boolean isPending() {
         return false;
+    }
+
+    @Override
+    public long getCreationMillis() {
+        return change * 1000;
     }
 }

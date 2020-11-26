@@ -16,6 +16,7 @@
 
 package net.kodehawa.lib.imageboards.entities.impl;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
@@ -32,6 +33,8 @@ public class SafebooruImage implements BoardImage {
     private int height;
     private int width;
     private String tags;
+    @JsonProperty("change")
+    private long change; // timestamp in seconds
 
     public String getFileUrl() {
         return "https://safebooru.org/images/" + directory + "/" + image;
@@ -84,5 +87,10 @@ public class SafebooruImage implements BoardImage {
     @Override
     public boolean isPending() {
         return false;
+    }
+
+    @Override
+    public long getCreationMillis() {
+        return change * 1000;
     }
 }

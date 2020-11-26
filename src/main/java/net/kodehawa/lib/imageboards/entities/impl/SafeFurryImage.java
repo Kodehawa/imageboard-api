@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SafeFurryImage implements BoardImage {
+    @JsonProperty("created_at")
+    private String created_at;
     private String description;
     private Rating rating;
     private File file;
@@ -192,5 +195,10 @@ public class SafeFurryImage implements BoardImage {
     @Override
     public boolean isPending() {
         return getFlags().isPending() || getFlags().isDeleted() || getFlags().isFlagged();
+    }
+
+    @Override
+    public long getCreationMillis() {
+        return ZonedDateTime.parse(created_at).toInstant().toEpochMilli();
     }
 }

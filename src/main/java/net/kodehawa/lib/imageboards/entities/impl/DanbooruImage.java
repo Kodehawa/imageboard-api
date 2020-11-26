@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,8 @@ import java.util.regex.Pattern;
  */
 public class DanbooruImage implements BoardImage {
     private int uploader_id;
+    @JsonProperty("created_at")
+    private String created_at;
     private int score;
     private String source;
     private Rating rating;
@@ -223,5 +226,10 @@ public class DanbooruImage implements BoardImage {
     @Override
     public boolean isPending() {
         return is_pending || is_deleted || is_flagged;
+    }
+
+    @Override
+    public long getCreationMillis() {
+        return ZonedDateTime.parse(created_at).toInstant().toEpochMilli();
     }
 }

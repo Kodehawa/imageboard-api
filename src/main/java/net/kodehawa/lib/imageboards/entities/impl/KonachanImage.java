@@ -30,7 +30,8 @@ import java.util.List;
  */
 public class KonachanImage implements BoardImage {
     private String author;
-    private int created_at;
+    @JsonProperty("created_at")
+    private long created_at;
     private long file_size;
     private String file_url;
     private int height;
@@ -56,7 +57,7 @@ public class KonachanImage implements BoardImage {
     @JsonProperty("is_held")
     private boolean is_held;
 
-    public int getCreated_at() {
+    public long getCreated_at() {
         return created_at;
     }
 
@@ -177,5 +178,10 @@ public class KonachanImage implements BoardImage {
     @Override
     public boolean isPending() {
         return is_held;
+    }
+
+    @Override
+    public long getCreationMillis() {
+        return created_at * 1000;
     }
 }

@@ -66,7 +66,7 @@ public class ImageBoard<T extends BoardImage> {
      * Requester client.
      */
     private final RequestFactory requestFactory;
-    
+
     /**
      * Image board's endpoint.
      */
@@ -150,7 +150,7 @@ public class ImageBoard<T extends BoardImage> {
     }
 
     /**
-     * Get the current user agent used by ImageBoard. This can be changed with {@link #setUserAgent(String)} 
+     * Get the current user agent used by ImageBoard. This can be changed with {@link #setUserAgent(String)}
      * @return the current user agent used to make HTTP requests with.
      */
     public static String getUserAgent() {
