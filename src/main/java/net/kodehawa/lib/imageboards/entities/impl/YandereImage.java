@@ -54,7 +54,8 @@ public class YandereImage implements BoardImage {
     private int actual_preview_height;
     private int approver_id;
     private int change;
-    private int created_at;
+    @JsonProperty("created_at")
+    private long created_at;
     private int creator_id;
     private List<String> frames;
     private List<String> frames_pending;
@@ -188,5 +189,10 @@ public class YandereImage implements BoardImage {
     public boolean isPending() {
         // ?????????????
         return is_pending || status.equalsIgnoreCase("pending");
+    }
+
+    @Override
+    public long getCreationMillis() {
+        return created_at * 1000;
     }
 }

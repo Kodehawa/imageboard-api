@@ -62,4 +62,10 @@ public interface BoardImage {
      * @return Whether the image is pending, held or deleted.
      */
     boolean isPending();
+
+    /**
+     * The time when the image was created in milliseconds
+     * @return millis
+     */
+    long getCreationMillis();
 }

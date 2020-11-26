@@ -17,6 +17,7 @@
 package net.kodehawa.lib.imageboards.entities.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 
@@ -33,6 +34,8 @@ public class Rule34Image implements BoardImage {
     private int height;
     private String tags;
     private int width;
+    @JsonProperty("change")
+    private long change; // timestamp in seconds
 
     //Backwards-compatible.
     public String getFile_url() {
@@ -89,5 +92,10 @@ public class Rule34Image implements BoardImage {
     @Override
     public boolean isPending() {
         return false;
+    }
+
+    @Override
+    public long getCreationMillis() {
+        return change * 1000;
     }
 }
