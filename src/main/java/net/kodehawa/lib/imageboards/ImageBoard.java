@@ -358,7 +358,7 @@ public class ImageBoard<T extends BoardImage> {
 
                 return images;
             } catch (MismatchedInputException eof) {
-                log.warn("Received MismatchedInputException from a ImageBoard ({})! Returning empty list.", getImageType(), eof);
+                log.debug("Received MismatchedInputException from a ImageBoard ({})! Returning empty list.", getImageType(), eof);
                 return Collections.emptyList();
             } catch (IOException e) {
                 throw new QueryParseException(e);
