@@ -339,7 +339,7 @@ public class ImageBoard<T extends BoardImage> {
             log.debug("Making request to {} (Response format: {}, ImageBoard: {}, Target: {})", url.toString(), responseFormat, board, cls);
             try (ResponseBody body = response.body()) {
                 if (body == null) {
-                    log.warn("Received empty body from a ImageBoard ({})! Returning empty list.", getImageType());
+                    log.debug("Received empty body from a ImageBoard ({})! Returning empty list.", getImageType());
                     return Collections.emptyList();
                 }
 
