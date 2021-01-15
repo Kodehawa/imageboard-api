@@ -54,7 +54,7 @@ public interface BoardImage {
     String getURL();
 
     /**
-     * @return Whether the image depicts children or not. Not all image boards detect this, so don't rely on this alone!.
+     * @return Whether the image has a children attached.
      */
     boolean hasChildren();
 

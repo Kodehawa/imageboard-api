@@ -34,12 +34,13 @@ public class Rule34Image implements BoardImage {
     private int height;
     private String tags;
     private int width;
+    private String file_url;
     @JsonProperty("change")
     private long change; // timestamp in seconds
 
     //Backwards-compatible.
     public String getFile_url() {
-        return "https://img.rule34.xxx/images/" + getDirectory() + "/" + getImage();
+        return file_url;
     }
 
     public String getDirectory() {
