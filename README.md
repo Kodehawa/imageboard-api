@@ -18,7 +18,7 @@ This helps you craft requests to most of the danbooru-compatible imageboards (bo
 
 Creating your own ImageBoard instance is possible, but would require a little tweaking.
     Please refer to the `ImageBoards.java` and `CustomBoard.java` to set up boards that are not included
-    with this API. The boorus listed above are available by default with no further configuration required by the user.
+    with this library. The boorus listed above are available by default with no further configuration required by the user.
 
 ## Adding ImageBoardAPI to your project
 [Check instructions here for the latest version, in case this is outdated](https://bintray.com/kodehawa/maven/imageboard-api/_latestVersion)
@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies { 
-    implementation 'net.kodehawa:imageboard-api:2.4.1'
+    implementation 'net.kodehawa:imageboard-api:2.4.5'
 }
 ```
 
@@ -42,7 +42,7 @@ Add the `https://dl.bintray.com/kodehawa/maven` repository to your pom.
 <dependency>
   <groupId>net.kodehawa</groupId>
   <artifactId>imageboard-api</artifactId>
-  <version>2.4.1</version>
+  <version>2.4.5</version>
   <type>pom</type>
 </dependency>
 ```
