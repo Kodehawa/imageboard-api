@@ -55,7 +55,6 @@ compileJava {
 }
 
 jar {
-    archiveBaseName = project.name
     manifest {
         attributes 'Implementation-Version': archiveVersion
     }
