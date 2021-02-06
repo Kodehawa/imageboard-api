@@ -33,6 +33,8 @@ public class SafebooruImage implements BoardImage {
     private int height;
     private int width;
     private String tags;
+    @JsonProperty("id")
+    private int id;
     @JsonProperty("change")
     private long change; // timestamp in seconds
 
@@ -65,6 +67,10 @@ public class SafebooruImage implements BoardImage {
     @Override
     public Rating getRating() {
         return Rating.SAFE;
+    }
+
+    public int getId(){
+        return id;
     }
 
     @Override
