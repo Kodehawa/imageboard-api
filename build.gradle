@@ -1,8 +1,6 @@
 plugins {
-    id 'com.jfrog.bintray' version '1.8.5'
     id 'java'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
@@ -63,10 +61,6 @@ jar {
     }
 }
 
-shadowJar {
-    classifier("withDependencies")
-}
-
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier("sources")
     from "${buildDir}/filteredSrc"
@@ -77,56 +71,17 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-bintray {
-    user = "$bintray_user"
-    key = "$bintray_api_key"
-    publications = ["BintrayRelease"]
-    pkg {
-        repo = 'maven'
-        name = 'imageboard-api'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/Kodehawa/imageboard-api.git'
-        publish = true
-        version {
-            name = project.version
-            released = new Date()
-        }
-    }
-}
-
-publishing {
-    publications {
-        BintrayRelease(MavenPublication) {
-            from components.java
-            groupId group
-            artifactId artifactid
-            version version
-            artifact javadocJar
-            artifact sourcesJar
-        }
-    }
-}
-
 build {
     dependsOn clean
     dependsOn jar
     dependsOn javadocJar
     dependsOn sourcesJar
-    dependsOn shadowJar
 
     dependsOn test
 
     jar.mustRunAfter clean
     javadocJar.mustRunAfter jar
     sourcesJar.mustRunAfter javadocJar
-    shadowJar.mustRunAfter sourcesJar
-}
-
-bintrayUpload {
-    dependsOn build
-
-    onlyIf { !"$bintray_user".isEmpty() }
-    onlyIf { !"$bintray_api_key".isEmpty() }
 }
 
 class Version {
