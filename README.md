@@ -1,5 +1,4 @@
 # ImageBoard API
- [ ![Download](https://api.bintray.com/packages/kodehawa/maven/imageboard-api/images/download.svg) ](https://bintray.com/kodehawa/maven/imageboard-api/_latestVersion) 
  
 ImageBoard API is a simple asynchronous Java API wrapper around  the most popular danbooru-compatible imageboard APIs.
 The interface also supports other types of custom boards given a little tweaking. Releases are published in [Bintray](https://bintray.com/kodehawa/maven/imageboard-api/_latestVersion).
@@ -26,26 +25,16 @@ Creating your own ImageBoard instance is possible, but would require a little tw
 #### Gradle
 ```groovy
 repositories {
-    maven {
-        url  "https://dl.bintray.com/kodehawa/maven" 
-    }
+			maven { url 'https://jitpack.io' }
 }
 
 dependencies { 
-    implementation 'net.kodehawa:imageboard-api:2.4.5'
+    implementation 'net.kodehawa:imageboard-api:1907d46a98'
 }
 ```
 
-#### Maven
-Add the `https://dl.bintray.com/kodehawa/maven` repository to your pom.
-```xml
-<dependency>
-  <groupId>net.kodehawa</groupId>
-  <artifactId>imageboard-api</artifactId>
-  <version>2.4.5</version>
-  <type>pom</type>
-</dependency>
-```
+You can replace 1907d46a98 for any tag.
+Check https://jitpack.io/#Kodehawa/imageboard-api for more instructions.
 
 ## Set Up
 There is a `ImageBoards` class located under utils, that one contains static, pre-created 
