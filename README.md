@@ -20,12 +20,12 @@ Creating your own ImageBoard instance is possible, but would require a little tw
     with this library. The boorus listed above are available by default with no further configuration required by the user.
 
 ## Adding ImageBoardAPI to your project
-[Check instructions here for the latest version, in case this is outdated](https://bintray.com/kodehawa/maven/imageboard-api/_latestVersion)
+[Check instructions here for the latest version, in case this is outdated](https://jitpack.io/#Kodehawa/imageboard-api)
 
 #### Gradle
 ```groovy
 repositories {
-			maven { url 'https://jitpack.io' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies { 
