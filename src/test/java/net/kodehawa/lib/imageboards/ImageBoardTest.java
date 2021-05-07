@@ -30,6 +30,10 @@ import static org.junit.Assert.*;
 
 public class ImageBoardTest {
 
+    static {
+        ImageBoard.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0");
+    }
+
     private static final ImageBoard<FurryImage> e621 = DefaultImageBoards.E621;
     private static final ImageBoard<KonachanImage> konachan = DefaultImageBoards.KONACHAN;
     private static final ImageBoard<Rule34Image> rule34 = DefaultImageBoards.RULE34;

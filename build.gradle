@@ -77,22 +77,22 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-bintray {
-    user = "$bintray_user"
-    key = "$bintray_api_key"
-    publications = ["BintrayRelease"]
-    pkg {
-        repo = 'maven'
-        name = 'imageboard-api'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/Kodehawa/imageboard-api.git'
-        publish = true
-        version {
-            name = project.version
-            released = new Date()
-        }
-    }
-}
+//bintray {
+//    user = "$bintray_user"
+//    key = "$bintray_api_key"
+//    publications = ["BintrayRelease"]
+//    pkg {
+//        repo = 'maven'
+//        name = 'imageboard-api'
+//        licenses = ['Apache-2.0']
+//        vcsUrl = 'https://github.com/Kodehawa/imageboard-api.git'
+//        publish = true
+//        version {
+//            name = project.version
+//            released = new Date()
+//        }
+//    }
+//}
 
 publishing {
     publications {

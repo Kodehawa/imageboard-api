@@ -60,7 +60,7 @@ public class ImageBoard<T extends BoardImage> {
     /**
      * User agent to send to the services we request data from.
      */
-    private static String userAgent = "ImageBoardAPI/https://github.com/Kodehawa/imageboard-api";
+    private static String userAgent;
 
     /**
      * Requester client.

@@ -66,6 +66,9 @@ public class RequestFactory {
      * @return Request action.
      */
     public <T> RequestAction<T> makeRequest(HttpUrl url, Function<Response, T> transform) {
+        if(ImageBoard.getUserAgent() == null) {
+            throw new IllegalStateException("User-Agent must be initialized to make requests, Initialize with ImageBoard.setUserAgent()");
+        }
         return new RequestAction<>(client.newCall(new Request.Builder().url(url).header("User-Agent", ImageBoard.getUserAgent()).build()), transform);
     }
 }
