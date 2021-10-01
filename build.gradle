@@ -77,32 +77,24 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-//bintray {
-//    user = "$bintray_user"
-//    key = "$bintray_api_key"
-//    publications = ["BintrayRelease"]
-//    pkg {
-//        repo = 'maven'
-//        name = 'imageboard-api'
-//        licenses = ['Apache-2.0']
-//        vcsUrl = 'https://github.com/Kodehawa/imageboard-api.git'
-//        publish = true
-//        version {
-//            name = project.version
-//            released = new Date()
-//        }
-//    }
-//}
-
 publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/kodehawa/imageboard-api")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
     publications {
-        BintrayRelease(MavenPublication) {
-            from components.java
-            groupId group
-            artifactId artifactid
-            version version
-            artifact javadocJar
-            artifact sourcesJar
+        gprSnapshot(MavenPublication) {
+            version = project.version + "-SNAPSHOT"
+            from(components.java)
+        }
+        gpr(MavenPublication) {
+            from(components.java)
         }
     }
 }
@@ -122,13 +114,6 @@ build {
     shadowJar.mustRunAfter sourcesJar
 }
 
-bintrayUpload {
-    dependsOn build
-
-    onlyIf { !"$bintray_user".isEmpty() }
-    onlyIf { !"$bintray_api_key".isEmpty() }
-}
-
 class Version {
     String major, minor, revision
 
@@ -136,3 +121,4 @@ class Version {
         "${major}.${minor}" + (revision == "0" ? "" : ".${revision}")
     }
 }
+
