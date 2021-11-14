@@ -30,7 +30,7 @@ package net.kodehawa.lib.imageboards.boards;
  * @author Kodehawa
  */
 public enum DefaultBoards implements Board {
-    R34("https", "rule34.xxx", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
+    R34("https", "api.rule34.xxx", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
     E621("https", "e621.net", "posts.json", null, "page", "posts"),
     KONACHAN("http", "konachan.com", "post.json", null, "page"),
     YANDERE("https", "yande.re", "post.json", null, "page"),
