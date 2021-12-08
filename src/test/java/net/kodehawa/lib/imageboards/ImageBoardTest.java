@@ -111,8 +111,9 @@ public class ImageBoardTest {
         String tag = "animal_ears";
         String[] knownAliases = {"animal_ear", "animal_humanoid"};
 
-        assertTrue(e621.search(1, tag).blocking().get(0).getTags().contains(tag) ||
-                e621.search(1, tag).blocking().get(0).getTags().contains(knownAliases[1]));
+        // This actually used to alias animal_ears to animal_humanoid, but it doesn't anymore (As of 08/12/2021)
+        // Nothing I can do on my side!
+        assertTrue(e621.search(1, knownAliases[1]).blocking().get(0).getTags().contains(knownAliases[1]));
 
         assertTrue(konachan.search(1, tag).blocking().get(0).getTags().contains(tag));
 
@@ -128,8 +129,8 @@ public class ImageBoardTest {
         assertTrue(yandere.search("animal_ears yuri", Rating.EXPLICIT).blocking().get(0).getTags().contains(tag));
 
         assertTrue(gelbooru.search(1, tag).blocking().get(0).getTags().contains(tag));
-        assertTrue(e926.search(1, tag).blocking().get(0).getTags().contains(tag) ||
-                e926.search(1, tag).blocking().get(0).getTags().contains(knownAliases[1]));
+        // Same for e961, no more tag aliases seemingly
+        assertTrue(e926.search(1, knownAliases[1]).blocking().get(0).getTags().contains(knownAliases[1]));
 
         assertSame(yandere.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
