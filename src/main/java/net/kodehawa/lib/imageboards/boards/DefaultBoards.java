@@ -36,7 +36,7 @@ public enum DefaultBoards implements Board {
     YANDERE("https", "yande.re", "post.json", null, "page"),
     DANBOORU("https", "danbooru.donmai.us", "posts.json", null, "page"),
     SAFEBOORU("https", "safebooru.org", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
-    GELBOORU("https", "gelbooru.com", "index.php", "page=dapi&s=post&q=index&json=1", "pid"),
+    GELBOORU("https", "gelbooru.com", "index.php", "page=dapi&s=post&q=index&json=1", "pid", "post"),
     E926("https", "e926.net", "posts.json", null, "page", "posts");
 
     private final String scheme;
