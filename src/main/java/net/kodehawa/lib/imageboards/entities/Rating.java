@@ -17,24 +17,24 @@
 package net.kodehawa.lib.imageboards.entities;
 
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Board image ratings. Just remember that God is watching.
+ *
  * @author Avarel
  */
+@JsonDeserialize(using = RatingDeserializer.class)
 public enum Rating {
     /**
      * Safe for family and friends. If you had any.
      */
-    @JsonProperty("s")
     SAFE("s"),
 
     /**
      * Questionable board images. Borderline explicit.
      * Would you show this to your grandma?
      */
-    @JsonProperty("q")
     QUESTIONABLE("q"),
 
     /**
@@ -43,7 +43,6 @@ public enum Rating {
      * Dirty af. Go see a therapist.
      */
     @JsonEnumDefaultValue
-    @JsonProperty("e")
     EXPLICIT("e");
 
     String shortName, longName;
@@ -68,8 +67,8 @@ public enum Rating {
      * @return The badge, or null if nothing is found.
      */
     public static Rating lookupFromString(String name) {
-        for(Rating b : Rating.values()) {
-            if(b.name().equalsIgnoreCase(name)) {
+        for (Rating b : Rating.values()) {
+            if (b.name().equalsIgnoreCase(name)) {
                 return b;
             }
         }
@@ -83,8 +82,8 @@ public enum Rating {
      * @return The badge, or null if nothing is found.
      */
     public static Rating lookupFromStringShort(String shortName) {
-        for(Rating b : Rating.values()) {
-            if(b.getShortName().equalsIgnoreCase(shortName)) {
+        for (Rating b : Rating.values()) {
+            if (b.getShortName().equalsIgnoreCase(shortName)) {
                 return b;
             }
         }
