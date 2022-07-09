@@ -132,10 +132,16 @@ public class ImageBoardTest {
         // Same for e961, no more tag aliases seemingly
         assertTrue(e926.search(1, knownAliases[1]).blocking().get(0).getTags().contains(knownAliases[1]));
 
+        // This shouldn't fail, even if Yande.re has no GENERAL rating, as we adjust to this.
+        assertSame(yandere.search(tag, Rating.GENERAL).blocking().get(0).getRating(), Rating.SAFE);
+
         assertSame(yandere.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
-        assertSame(gelbooru.search(tag, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
+        // This shouldn't fail even though Gelbooru has no SAFE rating, as we adjust to this.
+        assertSame(gelbooru.search(tag, Rating.SAFE).blocking().get(0).getRating(), Rating.GENERAL);
+        assertSame(gelbooru.search(tag, Rating.SENSITIVE).blocking().get(0).getRating(), Rating.SENSITIVE);
+        assertSame(gelbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
         assertSame(gelbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(gelbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
         assertSame(konachan.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);

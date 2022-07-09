@@ -6,7 +6,7 @@ plugins {
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
-def versionObj = new Version(major: 2, minor: 5, revision: 1)
+def versionObj = new Version(major: 2, minor: 5, revision: 2)
 
 group 'net.kodehawa'
 version "$versionObj"

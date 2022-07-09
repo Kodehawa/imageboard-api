@@ -27,6 +27,7 @@ import net.kodehawa.lib.imageboards.entities.exceptions.QueryFailedException;
 import net.kodehawa.lib.imageboards.entities.exceptions.QueryParseException;
 import net.kodehawa.lib.imageboards.entities.impl.DanbooruImage;
 import net.kodehawa.lib.imageboards.entities.impl.FurryImage;
+import net.kodehawa.lib.imageboards.entities.impl.GelbooruImage;
 import net.kodehawa.lib.imageboards.entities.impl.SafeFurryImage;
 import net.kodehawa.lib.imageboards.requests.RequestAction;
 import net.kodehawa.lib.imageboards.requests.RequestFactory;
@@ -313,6 +314,17 @@ public class ImageBoard<T extends BoardImage> {
                 .addPathSegments(board.getPath())
                 .query(board.getQuery())
                 .addQueryParameter("limit", String.valueOf(limit));
+
+        // Adjust for old Gelbooru searches.
+        if (rating == Rating.SAFE && getImageType() == GelbooruImage.class)
+            rating = Rating.GENERAL;
+        // Adjust in case someone uses GENERAL or SENSITIVE outside of Gelbooru.
+        // This is very much an adjustment due to Gelbooru being a outliar on the Rating system.
+        if (rating == Rating.GENERAL && getImageType() != GelbooruImage.class)
+            rating = Rating.SAFE;
+        // Adjust for SENSITIVE not existing outside of Gelbooru: adjust to questionable.
+        if (rating == Rating.SENSITIVE && getImageType() != GelbooruImage.class)
+            rating = Rating.QUESTIONABLE;
 
         if (page != 0)
             urlBuilder.addQueryParameter(board.getPageMarker(), String.valueOf(page));

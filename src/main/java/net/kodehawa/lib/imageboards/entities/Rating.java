@@ -27,25 +27,36 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = RatingDeserializer.class)
 public enum Rating {
     /**
-     * Safe for family and friends. If you had any.
+     * Safe for family and friends. I'd imagine.
      */
     SAFE("s"),
 
     /**
+     * Safe for family and friends. I'd imagine.
+     * DO NOT USE OUTSIDE OF GelbooruImage. This will adjust to SAFE otherwise.
+     */
+    GENERAL("g"), // Gelbooru bullshit?
+
+    /**
      * Questionable board images. Borderline explicit.
-     * Would you show this to your grandma?
      */
     QUESTIONABLE("q"),
 
     /**
+     * Sensitive board images. Borderline explicit.
+     * DO NOT USE OUTSIDE OF GelbooruImage. This will adjust to QUESTIONABLE otherwise.
+     */
+    SENSITIVE("se"), // gelbooru bullshit, part 2
+
+    /**
      * Default rating, assume the worst.
      * Board images with explicit/NSFW ratings.
-     * Dirty af. Go see a therapist.
      */
     @JsonEnumDefaultValue
     EXPLICIT("e");
 
-    String shortName, longName;
+    final String shortName;
+    final String longName;
 
     Rating(String shortName) {
         this.shortName = shortName;
