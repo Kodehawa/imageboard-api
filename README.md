@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies { 
-    implementation 'com.github.Kodehawa:imageboard-api:2d2db5f6a8'
+    implementation 'com.github.Kodehawa:imageboard-api:2.5.2'
 }
 ```
 
