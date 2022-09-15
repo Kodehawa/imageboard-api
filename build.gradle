@@ -27,7 +27,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
     implementation 'org.slf4j:slf4j-api:1.7.32'
 
-    testImplementation 'ch.qos.logback:logback-classic:1.2.5'
+    testImplementation 'ch.qos.logback:logback-classic:1.4.1'
     testImplementation 'junit:junit:4.13.2'
 }
 
