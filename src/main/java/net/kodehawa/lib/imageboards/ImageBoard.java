@@ -343,7 +343,7 @@ public class ImageBoard<T extends BoardImage> {
                 tags.append(" status:active");
             }
 
-            urlBuilder.addQueryParameter("tags", tags.toString());
+            urlBuilder.addEncodedQueryParameter("tags", tags.toString());
         }
 
         HttpUrl url = urlBuilder.build();

@@ -6,13 +6,10 @@ plugins {
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
-def versionObj = new Version(major: 2, minor: 5, revision: 2)
+def versionObj = new Version(major: 2, minor: 6, revision: 0)
 
 group 'net.kodehawa'
 version "$versionObj"
-
-def artifactid = 'imageboard-api'
-
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
@@ -22,12 +19,12 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.4'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
-    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
-    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.13.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'org.slf4j:slf4j-api:2.0.1'
 
-    testImplementation 'ch.qos.logback:logback-classic:1.2.5'
+    testImplementation 'ch.qos.logback:logback-classic:1.4.1'
     testImplementation 'junit:junit:4.13.2'
 }
 
