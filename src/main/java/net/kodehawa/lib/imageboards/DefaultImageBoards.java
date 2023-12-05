@@ -16,11 +16,7 @@
 
 package net.kodehawa.lib.imageboards;
 
-import net.kodehawa.lib.imageboards.boards.DefaultBoards;
 import net.kodehawa.lib.imageboards.entities.impl.*;
-import okhttp3.OkHttpClient;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Utility class representing already-created objects around the most used image boards.
@@ -41,17 +37,12 @@ import java.util.concurrent.TimeUnit;
  * @author Kodehawa
  */
 public class DefaultImageBoards {
-    private static final OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(3, TimeUnit.SECONDS)
-            .readTimeout(3, TimeUnit.SECONDS)
-            .build();
-
-    public static final ImageBoard<FurryImage> E621 = new ImageBoard<>(client, DefaultBoards.E621, FurryImage.class);
-    public static final ImageBoard<KonachanImage> KONACHAN = new ImageBoard<>(client, DefaultBoards.KONACHAN, KonachanImage.class);
-    public static final ImageBoard<Rule34Image> RULE34 = new ImageBoard<>(client, DefaultBoards.R34, Rule34Image.class);
-    public static final ImageBoard<YandereImage> YANDERE = new ImageBoard<>(client, DefaultBoards.YANDERE, YandereImage.class);
-    public static final ImageBoard<DanbooruImage> DANBOORU = new ImageBoard<>(client, DefaultBoards.DANBOORU, DanbooruImage.class);
-    public static final ImageBoard<SafebooruImage> SAFEBOORU = new ImageBoard<>(client, DefaultBoards.SAFEBOORU, SafebooruImage.class);
-    public static final ImageBoard<SafeFurryImage> E926 = new ImageBoard<>(client, DefaultBoards.E926, SafeFurryImage.class);
-    public static final ImageBoard<GelbooruImage> GELBOORU = new ImageBoard<>(client, DefaultBoards.GELBOORU, GelbooruImage.class);
+    public static final ImageBoard<FurryImage> E621 = ImageBoards.Default.E621;
+    public static final ImageBoard<KonachanImage> KONACHAN = ImageBoards.Default.KONACHAN;
+    public static final ImageBoard<Rule34Image> RULE34 = ImageBoards.Default.RULE34;
+    public static final ImageBoard<YandereImage> YANDERE = ImageBoards.Default.YANDERE;
+    public static final ImageBoard<DanbooruImage> DANBOORU = ImageBoards.Default.DANBOORU;
+    public static final ImageBoard<SafebooruImage> SAFEBOORU = ImageBoards.Default.SAFEBOORU;
+    public static final ImageBoard<SafeFurryImage> E926 = ImageBoards.Default.E926;
+    public static final ImageBoard<GelbooruImage> GELBOORU = ImageBoards.Default.GELBOORU;
 }
