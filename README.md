@@ -1,6 +1,6 @@
-# ImageBoard API
+# ImageBoard API (Booru Java Library)
  
-ImageBoard API is a simple asynchronous Java API wrapper around the most popular danbooru-compatible booru imageboard APIs.
+ImageBoard API is a simple asynchronous Java API wrapper around the most popular danbooru-compatible booru APIs.
 The interface also supports other types of custom boards given a little tweaking. Releases are published in [JitPack](https://jitpack.io/#Kodehawa/imageboard-api).
 
 This helps you craft requests to most of the danbooru-compatible imageboards (boorus) that exist out there. 
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies { 
-    implementation 'com.github.Kodehawa:imageboard-api:2.6.0'
+    implementation 'com.github.Kodehawa:imageboard-api:2.6.1'
 }
 ```
 
