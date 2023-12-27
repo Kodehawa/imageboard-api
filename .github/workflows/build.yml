@@ -25,7 +25,7 @@ jobs:
           if: github.event_name == 'release' && github.event.action == 'created'
           env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        - run: ./gradlew publishToSonatype
+        - run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
           if: github.event_name == 'release' && github.event.action == 'created'
           env:
                   SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
