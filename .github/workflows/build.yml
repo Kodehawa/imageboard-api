@@ -30,3 +30,5 @@ jobs:
           env:
                   SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
                   SONATYPE_PASS: ${{ secrets.SONATYPE_PASS }}
+                  SIGN_KEY: ${{ secrets.SIGN_KEY }}
+                  SIGN_PW: ${{ secrets.SIGN_PW }}

@@ -1,9 +1,10 @@
 plugins {
     id 'com.jfrog.bintray' version '1.8.5'
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
-    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
+    id 'io.github.gradle-nexus.publish-plugin' version "1.3.0"
     id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'signing'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
@@ -45,6 +46,23 @@ task prepareSource(type: Copy) {
 }
 prepareSource.dependsOn clean
 
+// Maven Central requirement
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+javadoc {
+    failOnError = true
+    options.memberLevel = JavadocMemberLevel.PUBLIC
+    options.author()
+    options.encoding = 'UTF-8'
+}
+
 compileJava {
     source = sourcesForRelease.destinationDir
     classpath = sourceSets.main.compileClasspath
@@ -63,16 +81,6 @@ jar {
 
 shadowJar {
     classifier("withDependencies")
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier("sources")
-    from "${buildDir}/filteredSrc"
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier("javadoc")
-    from javadoc.destinationDir
 }
 
 nexusPublishing {
@@ -97,11 +105,56 @@ publishing {
             }
         }
     }
+
     publications {
         gpr(MavenPublication) {
             from(components.java)
         }
+
+        mavenJava(MavenPublication) {
+            from(components.java)
+
+            pom {
+                name.set("imageboard-api")
+                description.set(" Simple asynchronous Java API wrapper around the most popular danbooru-compatible (Konachan, Yande.re, Danbooru, Gelbooru, etc) booru APIs. ")
+                url.set("https://github.com/Kodehawa/imageboard-api")
+                licenses {
+                    license {
+                        name.set("Apache-2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("1")
+                        name.set("Kodehawa")
+                        email.set("contact@mantaro.site")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/Kodehawa/imageboard-api.git")
+                    developerConnection.set("scm:git:ssh://github.com/Kodehawa/imageboard-api.git")
+                    url.set("https://github.com/Kodehawa/imageboard-api")
+                }
+            }
+        }
     }
+}
+
+signing {
+    def signingKey = base64Decode(System.getenv("SIGN_KEY"))
+    def signingPassword = System.getenv("SIGN_PW")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
+static def base64Decode(encodedString){
+    if(encodedString != null) {
+        byte[] decoded = encodedString.decodeBase64()
+        String decode = new String(decoded)
+        return decode
+    }
+    return null;
 }
 
 build {
