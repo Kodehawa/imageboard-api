@@ -1,5 +1,7 @@
 # ImageBoard (Booru) API
- 
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.kodehawa/imageboard-api/badge.svg?style=flat&gav=true)
+
 ImageBoard API is a simple asynchronous Java API wrapper around the most popular danbooru-compatible booru APIs. Pretty much, it is a Booru library for Java.
 The interface also supports other types of custom boards given a little tweaking. Releases are published in [JitPack](https://jitpack.io/#Kodehawa/imageboard-api).
 
