@@ -18,9 +18,6 @@ jobs:
           with:
               distribution: 'zulu'
               java-version: 11
-        - run: chmod +x gradlew && ./gradlew build publishGprSnapshotPublicationToGitHubPackagesRepository
-          env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         - run: ./gradlew publishGprPublicationToGitHubPackagesRepository
           if: github.event_name == 'release' && github.event.action == 'created'
           env:
