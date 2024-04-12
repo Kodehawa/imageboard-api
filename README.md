@@ -1,7 +1,9 @@
 # ImageBoard (Booru) API
- 
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.kodehawa/imageboard-api/badge.svg?style=flat&gav=true)](https://maven-badges.herokuapp.com/maven-central/io.github.kodehawa/imageboard-api)
+
 ImageBoard API is a simple asynchronous Java API wrapper around the most popular danbooru-compatible booru APIs. Pretty much, it is a Booru library for Java.
-The interface also supports other types of custom boards given a little tweaking. Releases are published in [JitPack](https://jitpack.io/#Kodehawa/imageboard-api).
+The interface also supports other types of custom boards given a little tweaking. Releases are published in [Maven Central](https://central.sonatype.com/artifact/io.github.kodehawa/imageboard-api).
 
 This helps you craft requests and search/fetch images on the danbooru-compatible imageboards (boorus) that exist out there. 
 
@@ -20,21 +22,18 @@ Creating your own ImageBoard instance is possible, but would require a little tw
     with this library. The boorus listed above are available by default with no further configuration required by the user.
 
 ## Adding ImageBoardAPI to your project
-[Check instructions here for the latest version, in case this is outdated](https://jitpack.io/#Kodehawa/imageboard-api)
+imageboard-api is available in Maven Central (Sonatype). Check [the Sonatype respository](https://central.sonatype.com/artifact/io.github.kodehawa/imageboard-api) for more information
 
 #### Gradle
 ```groovy
 repositories {
-    maven { url 'https://jitpack.io' }
+    mavenCentral()
 }
 
-dependencies { 
-    implementation 'com.github.Kodehawa:imageboard-api:2.6.1'
+dependencies {
+    implementation 'io.github.kodehawa:imageboard-api:2.6.1.1'
 }
 ```
-
-You can replace 1907d46a98 for any tag.
-Check https://jitpack.io/#Kodehawa/imageboard-api for more instructions.
 
 ## Set Up
 There is a `ImageBoards` class located under utils, that one contains static, pre-created 
