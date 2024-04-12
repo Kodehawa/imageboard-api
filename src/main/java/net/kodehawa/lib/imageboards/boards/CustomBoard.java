@@ -16,10 +16,13 @@
 
 package net.kodehawa.lib.imageboards.boards;
 
+import net.kodehawa.lib.imageboards.entities.impl.autocomplete.IAutoComplete;
+
 /**
  * Custom board information.
  *
  * @author Avarel
+ * @author Kodehawa
  */
 public class CustomBoard implements Board {
     private final String host;
@@ -28,6 +31,9 @@ public class CustomBoard implements Board {
     private final String separator;
     private final String pageMarker;
     private final String outerObject;
+    private final String autoCompletePath;
+    private final String autoCompleteParameter;
+    private final Class<? extends IAutoComplete> autoCompletePOJO;
 
     public CustomBoard(String scheme, String host, String pathSegment, String separator, String pageMarker, String outerObject) {
         this.scheme = scheme;
@@ -36,6 +42,22 @@ public class CustomBoard implements Board {
         this.host = host;
         this.pageMarker = pageMarker;
         this.outerObject = outerObject;
+        this.autoCompleteParameter = null;
+        this.autoCompletePath = null;
+        this.autoCompletePOJO = null;
+    }
+
+    public CustomBoard(String scheme, String host, String pathSegment, String separator, String pageMarker, String outerObject, String autoCompleteParameter, 
+                       String autoCompletePath, Class<? extends IAutoComplete> autoCompletePOJO) {
+        this.scheme = scheme;
+        this.pathSegment = pathSegment;
+        this.separator = separator;
+        this.host = host;
+        this.pageMarker = pageMarker;
+        this.outerObject = outerObject;
+        this.autoCompleteParameter = autoCompleteParameter;
+        this.autoCompletePath = autoCompletePath;
+        this.autoCompletePOJO = autoCompletePOJO;
     }
 
     @Override
@@ -66,5 +88,20 @@ public class CustomBoard implements Board {
     @Override
     public String getOuterObject() {
         return outerObject;
+    }
+
+    @Override
+    public String getAutoCompletePath() {
+        return autoCompletePath;
+    }
+
+    @Override
+    public String getAutoCompleteParameter() {
+        return autoCompleteParameter;
+    }
+
+    @Override
+    public Class<? extends IAutoComplete> getAutoCompletePOJO() {
+        return autoCompletePOJO;
     }
 }

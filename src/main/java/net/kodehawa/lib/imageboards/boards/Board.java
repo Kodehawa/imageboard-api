@@ -16,6 +16,8 @@
 
 package net.kodehawa.lib.imageboards.boards;
 
+import net.kodehawa.lib.imageboards.entities.impl.autocomplete.IAutoComplete;
+
 /**
  * Information about the board.
  *
@@ -49,4 +51,10 @@ public interface Board {
     String getPageMarker();
 
     String getOuterObject();
+
+    String getAutoCompletePath();
+
+    String getAutoCompleteParameter();
+    
+    Class<? extends IAutoComplete> getAutoCompletePOJO();
 }

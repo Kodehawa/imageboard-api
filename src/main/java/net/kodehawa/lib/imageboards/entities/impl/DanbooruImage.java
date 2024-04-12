@@ -15,6 +15,7 @@
  */
 
 package net.kodehawa.lib.imageboards.entities.impl;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
@@ -107,7 +108,7 @@ public class DanbooruImage implements BoardImage {
             return "https://danbooru.donmai.us" + url;
         }
     }
-
+    
     public int getUploader_id() {
         return uploader_id;
     }

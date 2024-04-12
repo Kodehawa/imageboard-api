@@ -20,6 +20,7 @@ import net.kodehawa.lib.imageboards.boards.DefaultBoards;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
 import net.kodehawa.lib.imageboards.entities.Rating;
 import net.kodehawa.lib.imageboards.entities.impl.*;
+import net.kodehawa.lib.imageboards.entities.impl.autocomplete.IAutoComplete;
 import org.junit.Test;
 
 import java.util.Date;
@@ -72,6 +73,15 @@ public class ImageBoardTest {
         }
     }
 
+    private static void printAutoComplete(List<? extends IAutoComplete> images) {
+        for (IAutoComplete autocomplete : images) {
+            System.out.println(
+                    "Autocomplete: " + autocomplete.getClass()
+                    + " " + autocomplete.getTagName()
+            );
+        }
+    }
+
     @Test
     public void returnsNonNullValues() {
         e621.get(1).async(ImageBoardTest::assertImages);
@@ -94,6 +104,12 @@ public class ImageBoardTest {
         printImages(safebooru.get(2).blocking());
         printImages(gelbooru.get(2).blocking());
         printImages(e926.get(2).blocking());
+
+        printAutoComplete(e621.autocomplete("animal", 2).blocking());
+        printAutoComplete(gelbooru.autocomplete("animal", 2).blocking());
+        printAutoComplete(rule34.autocomplete("animal", 2).blocking());
+        printAutoComplete(danbooru.autocomplete("animal",2).blocking());
+        printAutoComplete(safebooru.autocomplete("animal", 2).blocking());
     }
 
     @Test(expected = NullPointerException.class)
@@ -157,6 +173,24 @@ public class ImageBoardTest {
         assertSame(konachan.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
         assertSame(danbooru.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
         assertSame(e926.get(7, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
+    }
+
+    @Test
+    public void autoCompleteReturnsResults() {
+        assertFalse(e621.autocomplete("animal").blocking().isEmpty());
+        assertFalse(gelbooru.autocomplete("animal").blocking().isEmpty());
+        assertFalse(rule34.autocomplete("animal").blocking().isEmpty());
+        assertFalse(danbooru.autocomplete("animal").blocking().isEmpty());
+        assertFalse(safebooru.autocomplete("animal").blocking().isEmpty());
+    }
+
+    @Test
+    public void autoCompleteReturnsRelevantResults() {
+        assertTrue(e621.autocomplete("animal").blocking().get(1).getTagName().contains("an")); // Don't ask me why. e621 searches by "antecedent_name" even if I ask for a name.
+        assertTrue(gelbooru.autocomplete("animal").blocking().get(1).getTagName().contains("animal"));
+        assertTrue(rule34.autocomplete("animal").blocking().get(1).getTagName().contains("animal")); 
+        assertTrue(danbooru.autocomplete("animal").blocking().get(1).getTagName().contains("animal"));
+        assertTrue(safebooru.autocomplete("animal").blocking().get(1).getTagName().contains("animal"));
     }
 
     @Test

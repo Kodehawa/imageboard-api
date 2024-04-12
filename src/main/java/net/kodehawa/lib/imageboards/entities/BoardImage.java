@@ -16,6 +16,9 @@
 
 package net.kodehawa.lib.imageboards.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import okhttp3.HttpUrl;
+
 import java.util.List;
 
 /**
@@ -68,4 +71,12 @@ public interface BoardImage {
      * @return millis
      */
     long getCreationMillis();
+
+    /**
+     * @return The URL to use to perform an autocomplete search.
+     */
+    @JsonIgnore
+    default HttpUrl getAutoCompleteURL(String query, int limit) {
+        return null;
+    }
 }

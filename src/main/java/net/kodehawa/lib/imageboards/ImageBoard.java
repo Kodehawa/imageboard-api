@@ -29,6 +29,7 @@ import net.kodehawa.lib.imageboards.entities.impl.DanbooruImage;
 import net.kodehawa.lib.imageboards.entities.impl.FurryImage;
 import net.kodehawa.lib.imageboards.entities.impl.GelbooruImage;
 import net.kodehawa.lib.imageboards.entities.impl.SafeFurryImage;
+import net.kodehawa.lib.imageboards.entities.impl.autocomplete.IAutoComplete;
 import net.kodehawa.lib.imageboards.requests.RequestAction;
 import net.kodehawa.lib.imageboards.requests.RequestFactory;
 import okhttp3.HttpUrl;
@@ -39,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.NonReadableChannelException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -212,7 +214,7 @@ public class ImageBoard<T extends BoardImage> {
      * @return A {@link RequestAction request action} that returns a list of images.
      */
     public RequestAction<List<T>> get(int page, int limit, Rating rating) {
-        return makeRequest(page, limit, "", rating);
+        return makeGetRequest(page, limit, "", rating);
     }
 
     /**
@@ -280,7 +282,7 @@ public class ImageBoard<T extends BoardImage> {
      * @return A {@link RequestAction request action} that returns a list of images.
      */
     public RequestAction<List<T>> search(int page, int limit, String search) {
-        return makeRequest(page, limit, search, null);
+        return makeGetRequest(page, limit, search, null);
     }
 
     /**
@@ -293,7 +295,7 @@ public class ImageBoard<T extends BoardImage> {
      * @return A {@link RequestAction request action} that returns a list of images.
      */
     public RequestAction<List<T>> search(int page, int limit, String search, Rating rating) {
-        return makeRequest(page, limit, search, rating);
+        return makeGetRequest(page, limit, search, rating);
     }
 
     /**
@@ -307,11 +309,69 @@ public class ImageBoard<T extends BoardImage> {
         return search(0, 60, search, rating);
     }
 
-    private RequestAction<List<T>> makeRequest(int page, int limit, String search, Rating rating) throws QueryParseException, QueryFailedException {
+    public <R extends IAutoComplete> RequestAction<List<R>> autocomplete(String query) {
+        return makeAutoCompleteRequest(query, 10);
+    }
+
+    public <R extends IAutoComplete> RequestAction<List<R>> autocomplete(String query, int limit) {
+        return makeAutoCompleteRequest(query, limit);
+    }
+
+    private <R extends IAutoComplete> RequestAction<List<R>> makeAutoCompleteRequest(String query, int limit) {
+        Class<? extends IAutoComplete> pojo = board.getAutoCompletePOJO();
+        if (pojo == null) {
+            throw new IllegalArgumentException("[Autocomplete] This Booru does not support autocomplete.");
+        }
+        
         HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
                 .scheme(board.getScheme())
                 .host(board.getHost())
-                .addPathSegments(board.getPath())
+                .addPathSegment(board.getAutoCompletePath());
+
+        // Why
+        if (getImageType() == GelbooruImage.class) {
+            urlBuilder.addEncodedQueryParameter("page", "autocomplete2");
+        }
+        
+        urlBuilder.addEncodedQueryParameter(board.getAutoCompleteParameter(), query)
+                .addQueryParameter("limit", String.valueOf(limit));
+        
+        // Why are you alone in this?
+        if (getImageType() == DanbooruImage.class) {
+            urlBuilder.addEncodedQueryParameter("search[type]", "tag_query");
+        }
+        
+        HttpUrl url = urlBuilder.build();
+        return requestFactory.makeRequest(url, response -> {
+            log.debug("[Autocomplete] Making request to {} (Response format: {}, Booru: {}, Target: {})", url.toString(), responseFormat, board, pojo);
+            try (ResponseBody body = response.body()) {
+                if (body == null) {
+                    log.debug("[Autocomplete] Received empty body from a Booru ({})! Returning empty list.", getImageType());
+                    return Collections.emptyList();
+                }
+
+                ObjectMapper mapper = responseFormat.mapper;
+                List<R> images;
+                InputStream json = body.byteStream();
+
+                images = mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, pojo));
+                body.close();
+
+                return images;
+            } catch (MismatchedInputException eof) {
+                log.debug("[Autocomplete] Received MismatchedInputException from a Booru ({})! Returning empty list.", getImageType(), eof);
+                return Collections.emptyList();
+            } catch (IOException e) {
+                throw new QueryParseException(e);
+            }
+        });
+    }
+    
+    private RequestAction<List<T>> makeGetRequest(int page, int limit, String search, Rating rating) throws QueryParseException, QueryFailedException {
+        HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
+                .scheme(board.getScheme())
+                .host(board.getHost())
+                .addEncodedPathSegment(board.getPath())
                 .query(board.getQuery())
                 .addQueryParameter("limit", String.valueOf(limit));
 
@@ -348,10 +408,10 @@ public class ImageBoard<T extends BoardImage> {
 
         HttpUrl url = urlBuilder.build();
         return requestFactory.makeRequest(url, response -> {
-            log.debug("Making request to {} (Response format: {}, ImageBoard: {}, Target: {})", url.toString(), responseFormat, board, cls);
+            log.debug("[Get] Making request to {} (Response format: {}, Booru: {}, Target: {})", url.toString(), responseFormat, board, cls);
             try (ResponseBody body = response.body()) {
                 if (body == null) {
-                    log.debug("Received empty body from a ImageBoard ({})! Returning empty list.", getImageType());
+                    log.debug("[Get] Received empty body from a Booru ({})! Returning empty list.", getImageType());
                     return Collections.emptyList();
                 }
 
@@ -370,7 +430,7 @@ public class ImageBoard<T extends BoardImage> {
 
                 return images;
             } catch (MismatchedInputException eof) {
-                log.debug("Received MismatchedInputException from a ImageBoard ({})! Returning empty list.", getImageType(), eof);
+                log.debug("[Get] Received MismatchedInputException from a Booru ({})! Returning empty list.", getImageType(), eof);
                 return Collections.emptyList();
             } catch (IOException e) {
                 throw new QueryParseException(e);
