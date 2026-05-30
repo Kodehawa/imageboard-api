@@ -35,24 +35,22 @@ public class ImageBoardTest {
         ImageBoard.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0");
     }
 
+    // Note: Currently Yandere is down so this check is skipped
+
     private static final ImageBoard<FurryImage> e621 = DefaultImageBoards.E621;
     private static final ImageBoard<KonachanImage> konachan = DefaultImageBoards.KONACHAN;
-    private static final ImageBoard<Rule34Image> rule34 = DefaultImageBoards.RULE34;
-    private static final ImageBoard<YandereImage> yandere = DefaultImageBoards.YANDERE;
+    //private static final ImageBoard<YandereImage> yandere = DefaultImageBoards.YANDERE;
     private static final ImageBoard<DanbooruImage> danbooru = DefaultImageBoards.DANBOORU;
     private static final ImageBoard<SafebooruImage> safebooru = DefaultImageBoards.SAFEBOORU;
     private static final ImageBoard<SafeFurryImage> e926 = DefaultImageBoards.E926;
-    private static final ImageBoard<GelbooruImage> gelbooru = DefaultImageBoards.GELBOORU;
 
     //Run this first to check if everything returns as expected
     public static void main(String[] args) {
         e621.get(2).async(ImageBoardTest::printImages);
         konachan.get(2).async(ImageBoardTest::printImages);
-        rule34.get(2).async(ImageBoardTest::printImages);
-        yandere.get(2).async(ImageBoardTest::printImages);
+        //yandere.get(2).async(ImageBoardTest::printImages);
         danbooru.get(2).async(ImageBoardTest::printImages);
         safebooru.get(2).async(ImageBoardTest::printImages);
-        gelbooru.get(2).async(ImageBoardTest::printImages);
         e926.get(2).async(ImageBoardTest::printImages);
     }
 
@@ -86,11 +84,9 @@ public class ImageBoardTest {
     public void returnsNonNullValues() {
         e621.get(1).async(ImageBoardTest::assertImages);
         konachan.get(1).async(ImageBoardTest::assertImages);
-        rule34.get(1).async(ImageBoardTest::assertImages);
-        yandere.get(1).async(ImageBoardTest::assertImages);
+        //yandere.get(1).async(ImageBoardTest::assertImages);
         danbooru.get(1).async(ImageBoardTest::assertImages);
         safebooru.get(1).async(ImageBoardTest::assertImages);
-        gelbooru.get(1).async(ImageBoardTest::assertImages);
         e926.get(1).async(ImageBoardTest::assertImages);
     }
 
@@ -98,16 +94,12 @@ public class ImageBoardTest {
     public void blockingTest() {
         printImages(e621.get(2).blocking());
         printImages(konachan.get(2).blocking());
-        printImages(rule34.get(2).blocking());
-        printImages(yandere.get(2).blocking());
+        //printImages(yandere.get(2).blocking());
         printImages(danbooru.get(2).blocking());
         printImages(safebooru.get(2).blocking());
-        printImages(gelbooru.get(2).blocking());
         printImages(e926.get(2).blocking());
 
         printAutoComplete(e621.autocomplete("animal", 2).blocking());
-        printAutoComplete(gelbooru.autocomplete("animal", 2).blocking());
-        printAutoComplete(rule34.autocomplete("animal", 2).blocking());
         printAutoComplete(danbooru.autocomplete("animal",2).blocking());
         printAutoComplete(safebooru.autocomplete("animal", 2).blocking());
     }
@@ -135,38 +127,28 @@ public class ImageBoardTest {
         // Nothing I can do on my side!
         assertTrue(e621.search(1, knownAliases[1]).blocking().get(0).getTags().contains(knownAliases[1]));
         assertTrue(konachan.search(1, tag).blocking().get(0).getTags().contains(tag));
-        assertTrue(rule34.search(1, tag).blocking().get(0).getTags().contains(tag) ||
-                rule34.search(1, tag).blocking().get(0).getTags().contains(knownAliases[0]));
 
-        assertTrue(yandere.search(1, tag).blocking().get(0).getTags().contains(tag));
+        //assertTrue(yandere.search(1, tag).blocking().get(0).getTags().contains(tag));
         assertTrue(danbooru.search(1, tag).blocking().get(0).getTags().contains(tag));
         assertTrue(safebooru.search(1, tag).blocking().get(0).getTags().contains(tag));
-        assertTrue(yandere.search("animal_ears yuri", Rating.EXPLICIT).blocking().get(0).getTags().contains(tag));
-        assertTrue(gelbooru.search(1, tag).blocking().get(0).getTags().contains(tag));
+        //assertTrue(yandere.search("animal_ears yuri", Rating.EXPLICIT).blocking().get(0).getTags().contains(tag));
 
         // Tag removal
         assertFalse(e621.search(100, tagRemoval2).blocking().stream().anyMatch(image -> image.getTags().contains(knownAliases[1])));
         assertFalse(konachan.search(100, tagRemoval).blocking().stream().anyMatch(image -> image.getTags().contains(tag)));
-        assertFalse(rule34.search(100, tagRemoval).blocking().stream().anyMatch(image -> image.getTags().contains(tag)));
-        assertFalse(yandere.search(100, tagRemoval).blocking().stream().anyMatch(image -> image.getTags().contains(tag)));
+        //assertFalse(yandere.search(100, tagRemoval).blocking().stream().anyMatch(image -> image.getTags().contains(tag)));
         assertFalse(danbooru.search(100, tagRemoval1).blocking().stream().anyMatch(image -> image.getTags().contains(tag)));
         assertFalse(safebooru.search(100, tagRemoval).blocking().stream().anyMatch(image -> image.getTags().contains(tag)));
-        assertFalse(yandere.search(tagRemoval1, Rating.EXPLICIT).blocking().stream().anyMatch(image -> image.getTags().contains(tag)));
-        assertFalse(gelbooru.search(100, tagRemoval).blocking().stream().anyMatch(image -> image.getTags().contains(tag)));
+        //assertFalse(yandere.search(tagRemoval1, Rating.EXPLICIT).blocking().stream().anyMatch(image -> image.getTags().contains(tag)));
 
         // Same for e961, no more tag aliases seemingly
         assertTrue(e926.search(1, knownAliases[1]).blocking().get(0).getTags().contains(knownAliases[1]));
         // This shouldn't fail, even if Yande.re has no GENERAL rating, as we adjust to this.
-        assertSame(yandere.search(tag, Rating.GENERAL).blocking().get(0).getRating(), Rating.SAFE);
-        assertSame(yandere.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
+        //assertSame(yandere.search(tag, Rating.GENERAL).blocking().get(0).getRating(), Rating.SAFE);
+        //assertSame(yandere.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(danbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
-        // This shouldn't fail even though Gelbooru has no SAFE rating, as we adjust to this.
-        assertSame(gelbooru.search(tag, Rating.SAFE).blocking().get(0).getRating(), Rating.GENERAL);
-        assertSame(gelbooru.search(tag, Rating.SENSITIVE).blocking().get(0).getRating(), Rating.SENSITIVE);
-        assertSame(gelbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
-        assertSame(gelbooru.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
-        assertSame(gelbooru.search(tag, Rating.QUESTIONABLE).blocking().get(0).getRating(), Rating.QUESTIONABLE);
+
         assertSame(konachan.search(tag, Rating.EXPLICIT).blocking().get(0).getRating(), Rating.EXPLICIT);
         assertSame(konachan.search(tag, Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
         assertSame(konachan.search("", Rating.SAFE).blocking().get(0).getRating(), Rating.SAFE);
@@ -178,8 +160,6 @@ public class ImageBoardTest {
     @Test
     public void autoCompleteReturnsResults() {
         assertFalse(e621.autocomplete("animal").blocking().isEmpty());
-        assertFalse(gelbooru.autocomplete("animal").blocking().isEmpty());
-        assertFalse(rule34.autocomplete("animal").blocking().isEmpty());
         assertFalse(danbooru.autocomplete("animal").blocking().isEmpty());
         assertFalse(safebooru.autocomplete("animal").blocking().isEmpty());
     }
@@ -187,8 +167,6 @@ public class ImageBoardTest {
     @Test
     public void autoCompleteReturnsRelevantResults() {
         assertTrue(e621.autocomplete("animal").blocking().get(1).getTagName().contains("an")); // Don't ask me why. e621 searches by "antecedent_name" even if I ask for a name.
-        assertTrue(gelbooru.autocomplete("animal").blocking().get(1).getTagName().contains("animal"));
-        assertTrue(rule34.autocomplete("animal").blocking().get(1).getTagName().contains("animal")); 
         assertTrue(danbooru.autocomplete("animal").blocking().get(1).getTagName().contains("animal"));
         assertTrue(safebooru.autocomplete("animal").blocking().get(1).getTagName().contains("animal"));
     }
@@ -201,20 +179,14 @@ public class ImageBoardTest {
         assertEquals(konachan.getBoardType(), DefaultBoards.KONACHAN);
         assertEquals(konachan.getImageType(), KonachanImage.class);
 
-        assertEquals(rule34.getBoardType(), DefaultBoards.R34);
-        assertEquals(rule34.getImageType(), Rule34Image.class);
-
-        assertEquals(yandere.getBoardType(), DefaultBoards.YANDERE);
-        assertEquals(yandere.getImageType(), YandereImage.class);
+        //assertEquals(yandere.getBoardType(), DefaultBoards.YANDERE);
+        //assertEquals(yandere.getImageType(), YandereImage.class);
 
         assertEquals(danbooru.getBoardType(), DefaultBoards.DANBOORU);
         assertEquals(danbooru.getImageType(), DanbooruImage.class);
 
         assertEquals(safebooru.getBoardType(), DefaultBoards.SAFEBOORU);
         assertEquals(safebooru.getImageType(), SafebooruImage.class);
-
-        assertEquals(gelbooru.getBoardType(), DefaultBoards.GELBOORU);
-        assertEquals(gelbooru.getImageType(), GelbooruImage.class);
 
         assertEquals(e926.getBoardType(), DefaultBoards.E926);
         assertEquals(e926.getImageType(), SafeFurryImage.class);
@@ -226,11 +198,9 @@ public class ImageBoardTest {
         long oneDayAgo = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1);
         assertTrue(e621.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
         assertTrue(konachan.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
-        assertTrue(rule34.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
-        assertTrue(yandere.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
+        //assertTrue(yandere.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
         assertTrue(danbooru.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
         assertTrue(safebooru.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
-        assertTrue(gelbooru.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
         assertTrue(e926.get(1).blocking().get(0).getCreationMillis() > oneDayAgo);
     }
 }

@@ -8,13 +8,13 @@ The interface also supports other types of custom boards given a little tweaking
 This helps you craft requests and search/fetch images on the danbooru-compatible imageboards (boorus) that exist out there. 
 
 #### Supported Booru Image Boards
- * Rule34
+ * Rule34 (*requires authentication*)
  * e621
  * Konachan
  * Yande.re
  * Danbooru
  * Safebooru
- * Gelbooru
+ * Gelbooru (*requires authentication*)
  * e926
 
 Creating your own ImageBoard instance is possible, but would require a little tweaking.
@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.kodehawa:imageboard-api:2.6.1.1'
+    implementation 'io.github.kodehawa:imageboard-api:3.0.0'
 }
 ```
 
@@ -44,6 +44,16 @@ There is a `ImageBoards` class located under utils, that one contains static, pr
 You can find implementation details and a lot of examples in the [tests for this project](https://github.com/Kodehawa/imageboard-api/blob/master/src/test/java/net/kodehawa/lib/imageboards/ImageBoardTest.java) and in [Mantaro](https://github.com/Mantaro/MantaroBot/blob/master/src/main/java/net/kodehawa/mantarobot/commands/image/ImageboardUtils.java#L54)
 
 The User-Agent must be initialized to make requests. You can initialize it with `ImageBoard.setUserAgent()`. The default one was blocked by most imageboards, setting your own is the best to avoid UA blocking.
+
+If a board requires authentication, you can provide a `BoardAuthorizationProvider` when constructing `ImageBoard`.  
+The provider is called in two stages:
+1. URL stage (`applyToUrl`) to inject query/path auth
+2. Request stage (`applyToRequest`) to inject headers
+
+For simple cases, use the built-in helpers like `HeaderAuthorization` or `UrlParameterAuthorization`.
+
+**Note**: This only really applies to custom boards, the default ones either don't require authentication or have a simplified
+construction method that just enables you to pass the required credentials without needing to worry about the auth provider.
 
 ## Examples
 ### Random Images
@@ -73,6 +83,9 @@ public class RandomImages {
         System.out.println(image.getTags());
         System.out.println(image.getHeight());
         System.out.println(image.getWidth());
+        
+        // Authenticated image board calls
+        BoardImage image = DefaultImageBoards.createGelbooru("authToken","userId").get(5).blocking().get(0);
     }
 }
 ```

@@ -17,6 +17,9 @@
 package net.kodehawa.lib.imageboards;
 
 import net.kodehawa.lib.imageboards.entities.impl.*;
+import okhttp3.OkHttpClient;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Utility class representing already-created objects around the most used image boards.
@@ -39,10 +42,34 @@ import net.kodehawa.lib.imageboards.entities.impl.*;
 public class DefaultImageBoards {
     public static final ImageBoard<FurryImage> E621 = ImageBoards.Default.E621;
     public static final ImageBoard<KonachanImage> KONACHAN = ImageBoards.Default.KONACHAN;
-    public static final ImageBoard<Rule34Image> RULE34 = ImageBoards.Default.RULE34;
     public static final ImageBoard<YandereImage> YANDERE = ImageBoards.Default.YANDERE;
     public static final ImageBoard<DanbooruImage> DANBOORU = ImageBoards.Default.DANBOORU;
     public static final ImageBoard<SafebooruImage> SAFEBOORU = ImageBoards.Default.SAFEBOORU;
     public static final ImageBoard<SafeFurryImage> E926 = ImageBoards.Default.E926;
-    public static final ImageBoard<GelbooruImage> GELBOORU = ImageBoards.Default.GELBOORU;
+
+    @NotNull
+    public static ImageBoard<GelbooruImage> createGelbooru(@NotNull String authorizationToken,
+                                                           @NotNull String userId) {
+        return createGelbooru(authorizationToken, userId, null);
+    }
+
+    @NotNull
+    public static ImageBoard<GelbooruImage> createGelbooru(@NotNull String authorizationToken,
+                                                           @NotNull String userId,
+                                                           @Nullable OkHttpClient client) {
+        return ImageBoards.createGelbooru(authorizationToken, userId, client);
+    }
+
+    @NotNull
+    public static ImageBoard<Rule34Image> createRule34(@NotNull String authorizationToken,
+                                                       @NotNull String userId) {
+        return createRule34(authorizationToken, userId, null);
+    }
+
+    @NotNull
+    public static ImageBoard<Rule34Image> createRule34(@NotNull String authorizationToken,
+                                                       @NotNull String userId,
+                                                       @Nullable OkHttpClient client) {
+        return ImageBoards.createRule34(authorizationToken, userId, client);
+    }
 }
