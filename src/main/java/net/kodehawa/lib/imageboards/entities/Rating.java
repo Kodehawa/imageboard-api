@@ -17,7 +17,7 @@
 package net.kodehawa.lib.imageboards.entities;
 
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Board image ratings. Just remember that God is watching.

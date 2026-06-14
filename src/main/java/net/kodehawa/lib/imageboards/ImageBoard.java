@@ -16,9 +16,6 @@
 
 package net.kodehawa.lib.imageboards;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import net.kodehawa.lib.imageboards.boards.Board;
 import net.kodehawa.lib.imageboards.boards.DefaultBoards;
 import net.kodehawa.lib.imageboards.entities.BoardImage;
@@ -30,17 +27,22 @@ import net.kodehawa.lib.imageboards.entities.impl.FurryImage;
 import net.kodehawa.lib.imageboards.entities.impl.GelbooruImage;
 import net.kodehawa.lib.imageboards.entities.impl.SafeFurryImage;
 import net.kodehawa.lib.imageboards.entities.impl.autocomplete.IAutoComplete;
+import net.kodehawa.lib.imageboards.requests.BoardRequestType;
 import net.kodehawa.lib.imageboards.requests.RequestAction;
 import net.kodehawa.lib.imageboards.requests.RequestFactory;
+import net.kodehawa.lib.imageboards.requests.auth.BoardAuthorizationProvider;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.MismatchedInputException;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.NonReadableChannelException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -84,6 +86,11 @@ public class ImageBoard<T extends BoardImage> {
      * GET return format of the board.
      */
     private final ResponseFormat responseFormat;
+    
+    /**
+     * Board-specific authorization hook.
+     */
+    private final BoardAuthorizationProvider authorizationProvider;
 
     /**
      * Create a new image board instance.
@@ -92,7 +99,7 @@ public class ImageBoard<T extends BoardImage> {
      * @param cls The class this refers to.
      */
     public ImageBoard(Board landing, Class<T> cls) {
-        this(landing, ResponseFormat.JSON, cls);
+        this(landing, ResponseFormat.JSON, cls, null);
     }
 
     /**
@@ -103,12 +110,36 @@ public class ImageBoard<T extends BoardImage> {
      * @param cls The class this refers to.
      */
     public ImageBoard(Board landing, ResponseFormat responseFormat, Class<T> cls) {
+        this(landing, responseFormat, cls, null);
+    }
+
+    /**
+     * Create a new image board instance.
+     *
+     * @param landing Board {@link Board API landing}.
+     * @param cls The class this refers to.
+     * @param authorizationProvider Authorization provider used to inject auth details in requests.
+     */
+    public ImageBoard(Board landing, Class<T> cls, BoardAuthorizationProvider authorizationProvider) {
+        this(landing, ResponseFormat.JSON, cls, authorizationProvider);
+    }
+
+    /**
+     * Create a new image board instance.
+     *
+     * @param landing Board {@link Board API landing}.
+     * @param responseFormat Response format of the board.
+     * @param cls The class this refers to.
+     * @param authorizationProvider Authorization provider used to inject auth details in requests.
+     */
+    public ImageBoard(Board landing, ResponseFormat responseFormat, Class<T> cls, BoardAuthorizationProvider authorizationProvider) {
         this(new OkHttpClient.Builder()
                         .readTimeout(2, TimeUnit.SECONDS)
                         .build(),
                 landing,
                 responseFormat,
-                cls);
+                cls,
+                authorizationProvider);
     }
 
     /**
@@ -121,7 +152,7 @@ public class ImageBoard<T extends BoardImage> {
     public ImageBoard(OkHttpClient client,
                         Board landing,
                         Class<T> cls) {
-        this(client, landing, ResponseFormat.JSON, cls);
+        this(client, landing, ResponseFormat.JSON, cls, null);
     }
 
     /**
@@ -136,10 +167,48 @@ public class ImageBoard<T extends BoardImage> {
                       Board landing,
                       ResponseFormat responseFormat,
                       Class<T> cls) {
+        this(client, landing, responseFormat, cls, null);
+    }
+
+    /**
+     * Create a new image board instance.
+     *
+     * @param client {@link RequestFactory}'s request client.
+     * @param landing Board {@link Board API landing}.
+     * @param cls The class this refers to.
+     * @param authorizationProvider Authorization provider used to inject auth details in requests.
+     */
+    public ImageBoard(OkHttpClient client,
+                      Board landing,
+                      Class<T> cls,
+                      BoardAuthorizationProvider authorizationProvider) {
+        this(client, landing, ResponseFormat.JSON, cls, authorizationProvider);
+    }
+
+    /**
+     * Create a new image board instance.
+     *
+     * @param client {@link RequestFactory}'s request client.
+     * @param landing Board {@link Board API landing}.
+     * @param responseFormat Response format of the board.
+     * @param cls The class this refers to.
+     * @param authorizationProvider Authorization provider used to inject auth details in requests.
+     * @throws IllegalArgumentException if the board requires authorization but no such provider is present
+     */
+    public ImageBoard(OkHttpClient client,
+                      Board landing,
+                      ResponseFormat responseFormat,
+                      Class<T> cls,
+                      @Nullable BoardAuthorizationProvider authorizationProvider) {
         this.requestFactory = new RequestFactory(client);
         this.board = landing;
         this.responseFormat = responseFormat;
         this.cls = cls;
+        this.authorizationProvider = authorizationProvider;
+
+        if (board.requiresAuthorization() && authorizationProvider == null) {
+            throw new IllegalArgumentException("This board requires authorization, but no provider was given.");
+        }
     }
 
     /**
@@ -341,8 +410,8 @@ public class ImageBoard<T extends BoardImage> {
             urlBuilder.addEncodedQueryParameter("search[type]", "tag_query");
         }
         
-        HttpUrl url = urlBuilder.build();
-        return requestFactory.makeRequest(url, response -> {
+        return requestFactory.makeRequest(urlBuilder, board, BoardRequestType.AUTOCOMPLETE, authorizationProvider, response -> {
+            HttpUrl url = response.request().url();
             log.debug("[Autocomplete] Making request to {} (Response format: {}, Booru: {}, Target: {})", url.toString(), responseFormat, board, pojo);
             try (ResponseBody body = response.body()) {
                 if (body == null) {
@@ -361,7 +430,7 @@ public class ImageBoard<T extends BoardImage> {
             } catch (MismatchedInputException eof) {
                 log.debug("[Autocomplete] Received MismatchedInputException from a Booru ({})! Returning empty list.", getImageType(), eof);
                 return Collections.emptyList();
-            } catch (IOException e) {
+            } catch (JacksonException e) {
                 throw new QueryParseException(e);
             }
         });
@@ -406,8 +475,8 @@ public class ImageBoard<T extends BoardImage> {
             urlBuilder.addEncodedQueryParameter("tags", tags.toString());
         }
 
-        HttpUrl url = urlBuilder.build();
-        return requestFactory.makeRequest(url, response -> {
+        return requestFactory.makeRequest(urlBuilder, board, BoardRequestType.GET, authorizationProvider, response -> {
+            HttpUrl url = response.request().url();
             log.debug("[Get] Making request to {} (Response format: {}, Booru: {}, Target: {})", url.toString(), responseFormat, board, cls);
             try (ResponseBody body = response.body()) {
                 if (body == null) {
@@ -432,7 +501,7 @@ public class ImageBoard<T extends BoardImage> {
             } catch (MismatchedInputException eof) {
                 log.debug("[Get] Received MismatchedInputException from a Booru ({})! Returning empty list.", getImageType(), eof);
                 return Collections.emptyList();
-            } catch (IOException e) {
+            } catch (JacksonException e) {
                 throw new QueryParseException(e);
             }
         });
@@ -451,7 +520,9 @@ public class ImageBoard<T extends BoardImage> {
         private final ObjectMapper mapper;
 
         ResponseFormat(ObjectMapper mapper) {
-            this.mapper = mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            this.mapper = mapper.rebuild()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .build();
         }
     }
 }

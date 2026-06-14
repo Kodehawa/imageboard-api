@@ -18,10 +18,14 @@ package net.kodehawa.lib.imageboards;
 
 import net.kodehawa.lib.imageboards.boards.DefaultBoards;
 import net.kodehawa.lib.imageboards.entities.impl.*;
+import net.kodehawa.lib.imageboards.requests.auth.CompoundAuthorization;
+import net.kodehawa.lib.imageboards.requests.auth.HeaderAuthorization;
+import net.kodehawa.lib.imageboards.requests.auth.UrlParameterAuthorization;
 import okhttp3.OkHttpClient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -52,8 +56,6 @@ public class ImageBoards {
     @NotNull
     public final ImageBoard<KonachanImage> KONACHAN;
     @NotNull
-    public final ImageBoard<Rule34Image> RULE34;
-    @NotNull
     public final ImageBoard<YandereImage> YANDERE;
     @NotNull
     public final ImageBoard<DanbooruImage> DANBOORU;
@@ -61,27 +63,52 @@ public class ImageBoards {
     public final ImageBoard<SafebooruImage> SAFEBOORU;
     @NotNull
     public final ImageBoard<SafeFurryImage> E926;
-    @NotNull
-    public final ImageBoard<GelbooruImage> GELBOORU;
 
     public ImageBoards(@Nullable OkHttpClient client) {
-        OkHttpClient localClient = client;
-        if (localClient == null) {
-            localClient = new OkHttpClient.Builder()
-                    .connectTimeout(3, TimeUnit.SECONDS)
-                    .readTimeout(3, TimeUnit.SECONDS)
-                    .build();
-        }
+        OkHttpClient localClient = client == null ? defaultClient() : client;
 
         E621 = new ImageBoard<>(localClient, DefaultBoards.E621, FurryImage.class);
         KONACHAN = new ImageBoard<>(localClient, DefaultBoards.KONACHAN, KonachanImage.class);
-        RULE34 = new ImageBoard<>(localClient, DefaultBoards.R34, Rule34Image.class);
         YANDERE = new ImageBoard<>(localClient, DefaultBoards.YANDERE, YandereImage.class);
         DANBOORU = new ImageBoard<>(localClient, DefaultBoards.DANBOORU, DanbooruImage.class);
         SAFEBOORU = new ImageBoard<>(localClient, DefaultBoards.SAFEBOORU, SafebooruImage.class);
         E926 = new ImageBoard<>(localClient, DefaultBoards.E926, SafeFurryImage.class);
-        GELBOORU = new ImageBoard<>(localClient, DefaultBoards.GELBOORU, GelbooruImage.class);
+    }
+
+    public static ImageBoard<GelbooruImage> createGelbooru(@NotNull String authorizationToken, @NotNull String userId, @Nullable OkHttpClient client) {
+        return new ImageBoard<>(client == null ? defaultClient() : client,
+                DefaultBoards.GELBOORU, GelbooruImage.class,
+                CompoundAuthorization.of(
+                        new UrlParameterAuthorization("api_key",
+                                Objects.requireNonNull(authorizationToken, "authorization token cannot be null")
+                        ),
+                        new UrlParameterAuthorization("user_id",
+                                Objects.requireNonNull(userId, "user_id cannot be null")
+                        )
+                )
+        );
+    }
+
+    public static ImageBoard<Rule34Image> createRule34(@NotNull String authorizationToken, @NotNull String userId, @Nullable OkHttpClient client) {
+        return new ImageBoard<>(client == null ? defaultClient() : client,
+                DefaultBoards.R34, Rule34Image.class,
+                CompoundAuthorization.of(
+                        new UrlParameterAuthorization("api_key",
+                                Objects.requireNonNull(authorizationToken, "authorization token cannot be null")
+                        ),
+                        new UrlParameterAuthorization("user_id",
+                                Objects.requireNonNull(userId, "user_id cannot be null")
+                        )
+                )
+        );
     }
 
     public static final ImageBoards Default = new ImageBoards(null);
+
+    private static OkHttpClient defaultClient(){
+        return new OkHttpClient.Builder()
+                .connectTimeout(3, TimeUnit.SECONDS)
+                .readTimeout(3, TimeUnit.SECONDS)
+                .build();
+    }
 }

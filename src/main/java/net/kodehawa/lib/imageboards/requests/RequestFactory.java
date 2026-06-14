@@ -17,10 +17,13 @@
 package net.kodehawa.lib.imageboards.requests;
 
 import net.kodehawa.lib.imageboards.ImageBoard;
+import net.kodehawa.lib.imageboards.requests.auth.BoardAuthorizationProvider;
+import net.kodehawa.lib.imageboards.boards.Board;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
@@ -69,6 +72,43 @@ public class RequestFactory {
         if(ImageBoard.getUserAgent() == null) {
             throw new IllegalStateException("User-Agent must be initialized to make requests, Initialize with ImageBoard.setUserAgent()");
         }
-        return new RequestAction<>(client.newCall(new Request.Builder().url(url).header("User-Agent", ImageBoard.getUserAgent()).build()), transform);
+
+        return makeRequest(url.newBuilder(), null, null, null, transform);
+    }
+
+    /**
+     * Creates a {@link RequestAction request action} from a URL builder.
+     * This overload allows URL and request authorization injection.
+     *
+     * @param urlBuilder Target URL builder.
+     * @param board Board context.
+     * @param requestType Request type context.
+     * @param authorizationProvider Authorization hooks.
+     * @param transform Successful response transformer.
+     * @param <T> Return type.
+     * @return Request action.
+     */
+    public <T> RequestAction<T> makeRequest(HttpUrl.Builder urlBuilder,
+                                            Board board,
+                                            BoardRequestType requestType,
+                                            @Nullable BoardAuthorizationProvider authorizationProvider,
+                                            Function<Response, T> transform) {
+        if(ImageBoard.getUserAgent() == null) {
+            throw new IllegalStateException("User-Agent must be initialized to make requests, Initialize with ImageBoard.setUserAgent()");
+        }
+
+        if (authorizationProvider != null) {
+            authorizationProvider.applyToUrl(board, requestType, urlBuilder);
+        }
+
+        HttpUrl url = urlBuilder.build();
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(url)
+                .header("User-Agent", ImageBoard.getUserAgent());
+        if (authorizationProvider != null) {
+            authorizationProvider.applyToRequest(board, requestType, requestBuilder);
+        }
+
+        return new RequestAction<>(client.newCall(requestBuilder.build()), transform);
     }
 }

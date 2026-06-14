@@ -50,6 +50,13 @@ public interface Board {
      */
     String getPageMarker();
 
+    /**
+     * @return Check if this board requires an API key of some sort
+     */
+    default boolean requiresAuthorization() {
+        return this == DefaultBoards.GELBOORU || this == DefaultBoards.R34;
+    }
+
     String getOuterObject();
 
     String getAutoCompletePath();
